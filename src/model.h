@@ -1,0 +1,61 @@
+#ifndef __MODEL_H__
+#define __MODEL_H__
+
+#include "input.h"
+#include "affine.h"
+#include "conv2d.h"
+#include "relu.h"
+#include "output.h"
+#include "utils.h"
+
+template <typename T>
+class Model {
+    public:
+
+    vector<Layer<T>*> layers;
+    
+    Model(){
+        this->layers.clear();
+    }
+
+    void add_layer(Layer<T>* layer){
+        this->layers.push_back(layer);
+    }
+
+    void read_params(const char* PARAMS_FILE_PATH){
+        size_t layer_offset = 0;
+        for(Layer<T>* layer : this->layers){
+            if(layer->type == LAYER_TYPES::AFFINE){
+                layer_offset += ((Affine<T>*) layer)->set_parameters(PARAMS_FILE_PATH, layer_offset);
+            } else if(layer->type == LAYER_TYPES::CONV2D){
+                layer_offset += ((Conv2D<T>*) layer)->set_parameters(PARAMS_FILE_PATH, layer_offset);
+            }
+        }
+    }
+
+    void forward(vector<float> x, float eps, set<int> sensitive_attrs = {}){
+        ((Input<T>*) this->layers[0])->set_sensitive_attrs(sensitive_attrs);
+        ((Input<T>*) this->layers[0])->set_input(x, eps);
+        
+        Layer<T>* prev_layer = this->layers[0];
+        for(int i = 1; i < this->layers.size(); i++){
+            // cout << "\nLayer " << i << "\n";
+
+            this->layers[i]->forward(prev_layer);
+
+            for(Zonotope<T>* zono : this->layers[i]->expressions){
+                // cout << zono->concrete().to_string() << "\n";
+            }
+
+            prev_layer = this->layers[i];
+        }
+    }
+
+    void reset(){
+        for(int i = 0; i < this->layers.size(); i++){
+            this->layers[i]->expressions.clear();
+        }
+    }
+};
+
+#endif
