@@ -100,12 +100,12 @@ int main(int argc, char** argv){
         model->reset();
     }
 
-    cout << NUM_VERIFIED << "/" << (NUM_CLASSIFIED) << " examples verified.\n";
+    cout << NUM_VERIFIED << " examples verified.\n";
 
     if constexpr (TYPE_EQ(T, IntFp)){
         endComputation(party);  
 
-        cerr << "hehe\n";
+        // cerr << "hehe\n";
 
         bool cheated = finalize_zk_arith<BoolIO<NetIO>>();
         if(party == BOB){

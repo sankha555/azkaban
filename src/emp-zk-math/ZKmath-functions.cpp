@@ -753,13 +753,13 @@ void ZKDivRange(int party, IntFp* a, IntFp* b, IntFp* c, int dim){
 void ZKDiv(int party, IntFp *x, IntFp *y, int dim, int mode = 0)  //y=1/x
 {
 
-	cerr << "x: " << x[0].reveal() << "\n";
+	// cerr << "x: " << x[0].reveal() << "\n";
 
 	// step 1: msnzb
 	IntFp *k = new IntFp[dim];
 	ZKmsnzb(party, x, k, dim);
 
-	cerr << "k: " << k[0].reveal() << "\n";
+	// cerr << "k: " << k[0].reveal() << "\n";
 	
 	// step 2: extend
 	IntFp *extendLen = new IntFp[dim]; 
@@ -769,7 +769,7 @@ void ZKDiv(int party, IntFp *x, IntFp *y, int dim, int mode = 0)  //y=1/x
 	IntFp *z = new IntFp[dim];
 	ZKExtend(party, x, extendLen, z, dim);  
 
-	cerr << "z: " << z[0].reveal() << "\n";
+	// cerr << "z: " << z[0].reveal() << "\n";
 
 	// step 3: DigitDec
 	for (int i = 0; i < dim; i++){
@@ -779,8 +779,8 @@ void ZKDiv(int party, IntFp *x, IntFp *y, int dim, int mode = 0)  //y=1/x
 	IntFp *z0 = new IntFp[dim];
 	ZKPositiveDigDecAny(party, z, z1, z0, DIV_M, DIV_N - 1 - DIV_M, dim);
 
-	cerr << "z2: " << z1[0].reveal() << "\n";
-	cerr << "z1: " << z0[0].reveal() << "\n";
+	// cerr << "z2: " << z1[0].reveal() << "\n";
+	// cerr << "z1: " << z0[0].reveal() << "\n";
 
 
 	LUTTwoValueIntFp *LUTdiv_mode = LUTdiv;
@@ -800,21 +800,21 @@ void ZKDiv(int party, IntFp *x, IntFp *y, int dim, int mode = 0)  //y=1/x
 		if (party == ALICE){
 			// a \in (1/2, 1)
 
-			cerr << "z1: " <<  HIGH64(z[i].value) << "\n";
+			// cerr << "z1: " <<  HIGH64(z[i].value) << "\n";
 
 			uint64_t digit = (uint64_t)HIGH64(z1[i].value);
 			coff1 = LUTdiv_mode->writes_a[digit];
-			cerr << "a: " << coff1 << "\n";
+			// cerr << "a: " << coff1 << "\n";
         	// b \in (1/4, 1)
 			coff2 = LUTdiv_mode->writes_b[digit];
-			cerr << "b: " << coff2 << "\n";
+			// cerr << "b: " << coff2 << "\n";
 		}
 		IntFp a = IntFp(coff1, ALICE);
 		IntFp b = IntFp(coff2, ALICE);
 		LUTdiv_mode->LUTTwoValueread(z1[i], a, b);
 
 		yprime[i] = (b * z0[i]).negate() + a;
-		cerr << "y': " << yprime[i].reveal() << "\n";
+		// cerr << "y': " << yprime[i].reveal() << "\n";
 
 	}
 
@@ -824,11 +824,11 @@ void ZKDiv(int party, IntFp *x, IntFp *y, int dim, int mode = 0)  //y=1/x
 		ZKgeneralTruncAny(party, yprime, yprimeTrunc, dim, DIV_N - 1);
 	}
 
-	cerr << "y'_t: " << yprimeTrunc[0].reveal() << "\n";
+	// cerr << "y'_t: " << yprimeTrunc[0].reveal() << "\n";
 
 	ZKExtend(party, yprimeTrunc, extendLen, yprime, dim);  // re-use yprime to place the outputs of ZKExtend
 
-	cerr << "y'_e: " << yprime[0].reveal() << "\n";
+	// cerr << "y'_e: " << yprime[0].reveal() << "\n";
 
 
 	if (mode == 1){
@@ -837,7 +837,7 @@ void ZKDiv(int party, IntFp *x, IntFp *y, int dim, int mode = 0)  //y=1/x
 		ZKgeneralTruncAny(party, yprime, y, dim, DIV_N - SCALE - 1);  
 	}
 
-	cerr << "y: " << y[0].reveal() << "\n\n";
+	// cerr << "y: " << y[0].reveal() << "\n\n";
 
 
 	delete[] k;
@@ -848,85 +848,6 @@ void ZKDiv(int party, IntFp *x, IntFp *y, int dim, int mode = 0)  //y=1/x
 	delete[] yprime;
 	delete[] yprimeTrunc;
 }
-
-/*
-void ZKDiv(int party, IntFp *x, IntFp *y, int dim, int mode = 0)  //y=1/x; mode{0 = chenkai, 1 = lower, 2 = upper}
-{
-	// step 1: msnzb
-	IntFp *k = new IntFp[dim];
-	ZKmsnzb(party, x, k, dim);
-	
-	// step 2: extend
-	IntFp *extendLen = new IntFp[dim]; 
-	for (int i = 0; i < dim; i++){
-		extendLen[i] = k[i].negate() + (DIV_N - 1);
-	}
-	IntFp *z = new IntFp[dim];
-	ZKExtend(party, x, extendLen, z, dim);  
-
-	// step 3: DigitDec
-	for (int i = 0; i < dim; i++){
-		z[i] = z[i] + (PR - (1ULL << (DIV_N - 1)));     
-	}
-	IntFp *z1 = new IntFp[dim];
-	IntFp *z0 = new IntFp[dim];
-	ZKPositiveDigDecAny(party, z, z1, z0, DIV_M, DIV_N - 1 - DIV_M, dim);
-
-	// step 4: LUT + y'trunc
-	IntFp *yprime = new IntFp[dim];
-	IntFp *yprimeTrunc = new IntFp[dim];
-	int32_t tmp = 1ULL << DIV_M;
-	uint64_t coff1 = 0;
-	uint64_t coff2 = 0;
-
-	LUTTwoValueIntFp* LUTDivMode = LUTdiv;
-	// if(mode == 1){
-	// 	LUTDivMode = LUTdiv_lower;
-	// } else if(mode == 2){
-	// 	LUTDivMode = LUTdiv_upper;
-	// }
-
-	for (int i = 0; i < dim; i++){
-		if (party == ALICE){
-			// a \in (1/2, 1)
-			uint64_t digit = (uint64_t)HIGH64(z1[i].value);
-			coff1 = LUTDivMode->writes_a[digit];
-        	// b \in (1/4, 1)
-			coff2 = LUTDivMode->writes_b[digit];
-			// cout << coff1 << " " << coff2 << "\n";
-		}
-		IntFp a = IntFp(coff1, ALICE);
-		IntFp b = IntFp(coff2, ALICE);
-		LUTDivMode->LUTTwoValueread(z1[i], a, b);
-
-		yprime[i] = (b * z0[i]).negate() + a;
-	}
-
-	if (mode == 2){
-		ZKgeneralTruncAnyRoundUp(party, yprime, yprimeTrunc, dim, DIV_N - 1);
-	} else {
-		ZKgeneralTruncAny(party, yprime, yprimeTrunc, dim, DIV_N - 1);
-	}
-
-	
-	ZKExtend(party, yprimeTrunc, extendLen, yprime, dim);  // re-use yprime to place the outputs of ZKExtend
-	
-	if (mode == 2){
-		ZKgeneralTruncAnyRoundUp(party, yprime, y, dim, DIV_N - SCALE - 1);  
-	} else {
-		ZKgeneralTruncAny(party, yprime, y, dim, DIV_N - SCALE - 1);  
-	}
-
-	delete[] k;
-	delete[] extendLen;
-	delete[] z;
-	delete[] z1;
-	delete[] z0;
-	delete[] yprime;
-	delete[] yprimeTrunc;
-}
-*/
-
 
 
 void ZKrSqrt(int party, IntFp *x, IntFp *y, int dim, int iter)
