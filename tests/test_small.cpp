@@ -40,10 +40,6 @@ int main(int argc, char** argv){
     cerr << party << "\n";
 
     auto now = std::chrono::system_clock::now();
-    std::time_t now_c = std::chrono::system_clock::to_time_t(now);
-    std::cout << "Start time: " << std::ctime(&now_c);
-
-
 
     if constexpr (TYPE_EQ(T, IntFp)){
         for (int i = 0; i < threads; ++i){
@@ -52,6 +48,10 @@ int main(int argc, char** argv){
                 party == ALICE
             );
         }
+
+        now = std::chrono::system_clock::now();
+        std::time_t now_c = std::chrono::system_clock::to_time_t(now);
+        std::cout << "Start time: " << std::ctime(&now_c);
 
         setup_plain_prot(false, "");
         setup_zk_arith<BoolIO<NetIO>>(ios, threads, party);
