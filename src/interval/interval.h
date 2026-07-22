@@ -601,7 +601,7 @@ class Interval {
         }
 
         if constexpr (TYPE_EQ(T, IntFp)) {
-            
+
             // accumulate
             for(size_t i = 0; i < n; i++){
                 // cout << "A: " << A[i].to_string() << " " << "; B: " << B[i].to_string() << "\n"; 

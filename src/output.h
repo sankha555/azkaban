@@ -81,8 +81,8 @@ class Output : public Layer<T> {
                 new_noise_symbols[index] = new_noise_symbols[index] - curr_zono->noise_symbols[index];
             }
 
-            Zonotope<T>* new_zono = new Zonotope<T>(new_center, new_noise_symbols);
-            Interval<T> bound =  new_zono->concrete();
+            Zonotope<T> new_zono(new_center, new_noise_symbols);
+            Interval<T> bound =  new_zono.concrete();
 
             if constexpr (TYPE_EQ(T, float) || TYPE_EQ(T, int64_t)){
                 if(bound.inf <= 0){

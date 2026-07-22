@@ -50,5 +50,42 @@ install(DIRECTORY src/emp-zk DESTINATION include/)
 install(FILES cmake/emp-zk-config.cmake DESTINATION cmake/)
 install(TARGETS emp-zono DESTINATION lib)
 
-enable_testing()
+# ------------------------------------------------------------------
+# Valgrind / memory-leak checking
+# ------------------------------------------------------------------
+# Detect valgrind and expose it to the test targets (see tests/CMakeLists.txt).
+find_program(VALGRIND_COMMAND valgrind)
+
+if(VALGRIND_COMMAND)
+    message(STATUS "Valgrind found: ${VALGRIND_COMMAND}")
+
+    # Default options reused by the custom 'valgrind' targets and by CTest's
+    # built-in memcheck (ctest -T memcheck).
+    set(VALGRIND_OPTIONS
+        "--leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1")
+
+    # Wire up 'ctest -T memcheck'. These variables must be set before
+    # include(CTest) so they land in DartConfiguration.tcl.
+    set(MEMORYCHECK_COMMAND "${VALGRIND_COMMAND}"
+        CACHE FILEPATH "Path to valgrind" FORCE)
+    set(MEMORYCHECK_COMMAND_OPTIONS "${VALGRIND_OPTIONS}"
+        CACHE STRING "Options passed to valgrind by 'ctest -T memcheck'" FORCE)
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tests/valgrind.supp")
+        set(MEMORYCHECK_SUPPRESSIONS_FILE
+            "${CMAKE_CURRENT_SOURCE_DIR}/tests/valgrind.supp"
+            CACHE FILEPATH "Valgrind suppressions file" FORCE)
+    endif()
+
+    # NOTE: the default build enables -march=native and -ffast-math. If valgrind
+    # aborts with "unrecognised instruction", rebuild without those flags
+    # (or with a lower -march) so valgrind can interpret the binary.
+else()
+    message(WARNING
+        "Valgrind not found - 'make valgrind' targets and 'ctest -T memcheck' "
+        "will be unavailable. Install it with e.g. 'apt-get install valgrind'.")
+endif()
+
+# include(CTest) enables testing (like enable_testing()) and turns on the
+# memcheck dashboard target configured above.
+include(CTest)
 add_subdirectory(tests)

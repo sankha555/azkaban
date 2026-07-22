@@ -295,7 +295,7 @@ class Conv2D : public Layer<T> {
     int out_h;
     int out_w;
 
-    Parameters<T>* kernel;
+    Parameters<T>* kernel = nullptr;
 
     Conv2D(
         int in_channels, int out_channels, int image_h, int image_w, 
@@ -317,6 +317,10 @@ class Conv2D : public Layer<T> {
         this->out_w = (this->image_w + 2 * pad_w - kernel_w) / stride_w + 1;
 
         this->type = LAYER_TYPES::CONV2D;
+    }
+
+    ~Conv2D(){
+        delete this->kernel;
     }
 
     size_t set_parameters(const char* PARAMS_FILE_PATH, size_t layer_offset){

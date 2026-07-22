@@ -15,6 +15,13 @@ class Layer {
     vector<Zonotope<T>*> expressions;
 
     virtual void forward(Layer<T>* prev_layer) = 0;
+
+    virtual ~Layer() {
+        for(Zonotope<T>* zono : this->expressions){
+            delete zono;
+        }
+        this->expressions.clear();
+    }
 };
 
 #endif

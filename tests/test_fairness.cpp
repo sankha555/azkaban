@@ -1,5 +1,11 @@
 #include "src/model.h"
 
+#include <sys/resource.h>  // getrusage, RUSAGE_SELF
+#include <csignal>         // signal, raise
+#include <cstdlib>         // std::atexit
+#include <cstdio>          // fprintf
+#include <unistd.h>        // write, STDERR_FILENO
+
 int threads = 1;
 int port = 10000;
 
@@ -29,7 +35,60 @@ void init_verification(){
     FIELD_MINUS_ONE = IntFp(PR - 1, PUBLIC);
 }
 
+// ---------------------------------------------------------------------------
+// Peak RAM (maximum resident set size) reporting.
+// Prints the process's peak RSS on normal completion, on exit(), and on fatal
+// or interrupt signals (abort, segfault, Ctrl-C, etc.). On Linux getrusage()
+// reports ru_maxrss in kilobytes.
+// ---------------------------------------------------------------------------
+static void print_peak_rss(){
+    struct rusage ru;
+    if(getrusage(RUSAGE_SELF, &ru) != 0) return;
+    long kb = ru.ru_maxrss;
+    fprintf(stderr, "[peak-rss] Maximum resident set size: %ld KB (%.2f MB)\n",
+            kb, kb / 1024.0);
+}
+
+// Async-signal-safe variant: uses only getrusage() + write() with manual
+// integer formatting (printf/iostream are not signal-safe).
+static void print_peak_rss_signal_safe(){
+    struct rusage ru;
+    if(getrusage(RUSAGE_SELF, &ru) != 0) return;
+
+    char buf[128];
+    size_t pos = 0;
+    const char prefix[] = "[peak-rss] Maximum resident set size: ";
+    for(size_t i = 0; prefix[i] && pos < sizeof(buf); ++i) buf[pos++] = prefix[i];
+
+    long kb = ru.ru_maxrss;
+    if(kb < 0 && pos < sizeof(buf)){ buf[pos++] = '-'; kb = -kb; }
+    char digits[24];
+    int nd = 0;
+    do { digits[nd++] = char('0' + kb % 10); kb /= 10; } while(kb && nd < (int)sizeof(digits));
+    while(nd-- > 0 && pos < sizeof(buf)) buf[pos++] = digits[nd];
+
+    const char suffix[] = " KB\n";
+    for(size_t i = 0; suffix[i] && pos < sizeof(buf); ++i) buf[pos++] = suffix[i];
+
+    ssize_t written = write(STDERR_FILENO, buf, pos);
+    (void) written;
+}
+
+static void rss_signal_handler(int signo){
+    print_peak_rss_signal_safe();
+    signal(signo, SIG_DFL);  // restore default so exit status / core dump is correct
+    raise(signo);            // re-raise to terminate as usual
+}
+
+static void install_peak_rss_reporting(){
+    std::atexit(print_peak_rss);
+    const int sigs[] = {SIGINT, SIGTERM, SIGSEGV, SIGABRT, SIGFPE, SIGBUS};
+    for(int s : sigs) signal(s, rss_signal_handler);
+}
+
 int main(int argc, char** argv){
+
+    install_peak_rss_reporting();
 
     // SCALE = FXPSCALE;
 
@@ -72,12 +131,12 @@ int main(int argc, char** argv){
     set<int> sensitive_attrs{2};
 
     Model<T>* model = new Model<T>();
-    model->add_layer(new Input<T>(24));
-    model->add_layer(new Affine<T>(24, 2));
+    model->add_layer(new Input<T>(14));
+    model->add_layer(new Affine<T>(14, 8));
+    model->add_layer(new ReLU<T>(8));
+    model->add_layer(new Affine<T>(8, 2));
     model->add_layer(new ReLU<T>(2));
-    model->add_layer(new Affine<T>(2, 4));
-    model->add_layer(new ReLU<T>(4));
-    model->add_layer(new Affine<T>(4, 2));
+    model->add_layer(new Affine<T>(2, 2));
     model->add_layer(new Output<T>(2));
 
     model->read_params(PARAMS_FILE_PATH.c_str());
@@ -102,6 +161,8 @@ int main(int argc, char** argv){
 
     cout << NUM_VERIFIED << " examples verified.\n";
 
+    delete model;
+
     if constexpr (TYPE_EQ(T, IntFp)){
         endComputation(party);  
 
@@ -113,8 +174,9 @@ int main(int argc, char** argv){
         }
 
         for (int i = 0; i < threads; ++i) {
-            delete ios[i]->io;
+            NetIO* net = ios[i]->io;
             delete ios[i];
+            delete net;
         }
     }
 

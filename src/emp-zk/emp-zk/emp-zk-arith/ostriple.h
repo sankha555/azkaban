@@ -67,6 +67,7 @@ public:
     delete[] andgate_out_buffer;
     delete[] andgate_left_buffer;
     delete[] andgate_right_buffer;
+    delete pool;
   }
   /* ---------------------inputs----------------------*/
 
@@ -223,6 +224,7 @@ public:
         for (int i = 0; i < threads; ++i)
           W = add_mod(W, sum[i]);
       }
+      delete[] sum;
     }
 
     if (party == ALICE) {

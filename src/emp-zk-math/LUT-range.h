@@ -177,6 +177,9 @@ public:
 
 		LUTRangecheck_permutation(readsPackList, writesNoMacPackList, writesPackList, a[2]);
 
+		delete[] a;
+		delete[] randomness;
+
 		// resize reads and writesMac
 		readsMAC_index.resize(0);
 		readsMAC_version.resize(0);

@@ -392,6 +392,8 @@ void endComputation(int party)
     }
     delete LUTmsnzb2value;
     delete LUTdiv;
+    delete LUTdivLower;
+    delete LUTdivUpper;
     delete LUTextend;
     for (int i = 0; i < EXP_LUT_NUM; i++){  
         delete LUTexp[i];
@@ -404,6 +406,9 @@ void endComputation(int party)
     delete LUTvrfyCmpLy;
     for (int i = 0; i < FINIAL_CMP_LUT_NUM; i++){
         delete LUTvrfyCmpLx_InP[i];
+    }
+    for (int i = 0; i < FINIAL_CMP_LUT_NUM; i++){
+        delete LUTCmpLx[i];
     }
 }
 

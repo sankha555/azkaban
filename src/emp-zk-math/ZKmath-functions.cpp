@@ -986,6 +986,13 @@ void ZKSigmoid(int party, IntFp *x, IntFp *y, int dim, int scale)
 	for (int i = 0; i < dim; i++){
 		y[i] = b[i] * d1[i] + (b[i].negate() + 1) * d2[i];
 	}
+
+	delete[] b;
+	delete[] x_bar;
+	delete[] z;
+	delete[] d1;
+	delete[] zaddone;
+	delete[] d2;
 }
 
 void ZKGeLU(int party, IntFp *x, IntFp *y, int dim)
@@ -1177,6 +1184,9 @@ void ZKminmax4(int party, IntFp* x, IntFp* y){
 
     y[0] = cmp[1]*(diff[1].negate()) + min0;    // min
     y[1] = cmp[0]*diff[0] + max1;               // max
+
+    delete[] diff;
+    delete[] cmp;
 }
 
 

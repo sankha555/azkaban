@@ -191,6 +191,9 @@ public:
 
 		LUTTwoValuecheck_permutation(readsPackList, writesNoMacPackList, writesPackList, a[4]);
 
+		delete[] a;
+		delete[] randomness;
+
 		// resize reads and writesMac
 		readsMAC_index.resize(0);
 		readsMAC_a.resize(0);

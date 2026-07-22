@@ -248,6 +248,9 @@ public:
 
 		LUTcheck_permutation(readsPackList, writesNoMacPackList, writesPackList, a[3]);
 
+		delete[] a;
+		delete[] randomness;
+
 		// resize reads and writesMac
 		readsMAC_index.resize(0);
 		readsMAC_value.resize(0);

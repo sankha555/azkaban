@@ -53,8 +53,19 @@ class Model {
 
     void reset(){
         for(int i = 0; i < this->layers.size(); i++){
+            for(Zonotope<T>* zono : this->layers[i]->expressions){
+                delete zono;
+            }
             this->layers[i]->expressions.clear();
         }
+        GLOBAL_NOISE_SYMBOL_CTR = 0;
+    }
+
+    ~Model(){
+        for(Layer<T>* layer : this->layers){
+            delete layer;
+        }
+        this->layers.clear();
     }
 };
 

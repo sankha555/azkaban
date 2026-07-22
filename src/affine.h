@@ -8,12 +8,16 @@ template <typename T>
 class Affine : public Layer<T> {
     public:
 
-    Parameters<T>* params;
+    Parameters<T>* params = nullptr;
 
     Affine(size_t num_inputs, size_t num_neurons){
         this->input_size = num_inputs;
         this->output_size = num_neurons;
         this->type = LAYER_TYPES::AFFINE;
+    }
+
+    ~Affine(){
+        delete this->params;
     }
 
     size_t set_parameters(const char* PARAMS_FILE_PATH, size_t layer_offset){
