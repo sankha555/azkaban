@@ -135,6 +135,12 @@ public:
                             }
                         }
 
+                        // Symbol k is not present in ANY predecessor of this output
+                        // neuron -> its coefficient is exactly zero. Skipping keeps the
+                        // zonotope sparse (the key set is public/structural, so both
+                        // parties skip identically) and avoids two wasted ZK truncations.
+                        // if (A.empty()) continue;
+
                         Interval<T> coeff = Interval<T>::inner_product(A.size(), A, B);
                         new_noise_symbols[k] = coeff;
                     }

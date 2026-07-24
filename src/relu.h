@@ -27,6 +27,7 @@ class ReLU : public Layer<T> {
                 Interval<float> new_center;
                 map<size_t, Interval<float>> new_noise_symbols;
 
+                // assert(input_zono->noise_symbols.size() <= GLOBAL_NOISE_SYMBOL_CTR-i);
                 assert(input_zono->noise_symbols.size() == GLOBAL_NOISE_SYMBOL_CTR-i);
 
                 if (bounds.inf >= 0){

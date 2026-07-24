@@ -37,7 +37,7 @@ class Input : public Layer<T> {
             // cout << i << ": " << x_itvl.to_string() << "\n";
 
             this->expressions.push_back(node);
-            cout << this->expressions.back()->center.to_string() << "\n";
+            // cout << this->expressions.back()->center.to_string() << "\n";
         }
     }
 

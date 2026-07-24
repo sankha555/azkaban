@@ -131,12 +131,12 @@ int main(int argc, char** argv){
     set<int> sensitive_attrs{2};
 
     Model<T>* model = new Model<T>();
-    model->add_layer(new Input<T>(14));
-    model->add_layer(new Affine<T>(14, 8));
-    model->add_layer(new ReLU<T>(8));
-    model->add_layer(new Affine<T>(8, 2));
+    model->add_layer(new Input<T>(24));
+    model->add_layer(new Affine<T>(24, 2));
     model->add_layer(new ReLU<T>(2));
-    model->add_layer(new Affine<T>(2, 2));
+    model->add_layer(new Affine<T>(2, 4));
+    model->add_layer(new ReLU<T>(4));
+    model->add_layer(new Affine<T>(4, 2));
     model->add_layer(new Output<T>(2));
 
     model->read_params(PARAMS_FILE_PATH.c_str());

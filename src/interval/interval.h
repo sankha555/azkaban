@@ -116,8 +116,10 @@ class Interval {
             this->inf = T(0);
             this->sup = T(0);
         } else {
-            this->inf = IntFp(0, ALICE);
-            this->sup = IntFp(0, ALICE);
+            // this->inf = IntFp(0, ALICE);
+            // this->sup = IntFp(0, ALICE);
+            this->inf = FIELD_ZERO;
+            this->sup = FIELD_ZERO;
         }
     }
     Interval(T l, T u) : inf(l), sup(u) {}
@@ -601,6 +603,10 @@ class Interval {
         }
 
         if constexpr (TYPE_EQ(T, IntFp)) {
+
+            // Empty inner product == 0. Return the zero interval without spending two
+            // ZK truncations on it (called on structurally-absent noise symbols).
+            // if(n == 0) return res;
 
             // accumulate
             for(size_t i = 0; i < n; i++){
