@@ -701,5 +701,197 @@ if near:
               f"cost={cost/1e6:.0f}M  conv1={cc1}  a1={a1}  "
               f"(r1={r1} r2={r2} r3={r3})")
 
+
+# ==========================================================================
+# CIFAR-10 MLP MODELS (no conv).  Target: ~410 neurons, <= 17 min.
+#
+# For an MLP the first Affine sees the raw input as SPARSE (D=0, so it is
+# cheap: out*in mult).  But right after it, the symbol set becomes dense over
+# K = 3072 (the CIFAR input dim), so EVERY later hidden Affine pays
+#     mul ~= width * width * D   with  D >= 3072  (input-dominated).
+# => total MUL ~= width * neurons * D  (roughly linear in WIDTH), so for a
+# fixed 410-neuron budget a NARROW+DEEP net is cheaper than a WIDE+shallow one.
+#
+# The 4x100 net matches the existing params file data/params/cifar_relu_4_100.txt
+# EXACTLY (338610 floats = (3072+1)*100 + 3*(100+1)*100 + (100+1)*10), so it is
+# the only 410-neuron MLP we can run with real trained weights.
+# --------------------------------------------------------------------------
+def mins_prop(cost):
+    """Pure proportional wall-clock estimate (min) from the 840M -> 6.0 h anchor.
+    (The recalibrated overhead+slope fit is conv-affine-path specific and does
+    NOT apply at the tiny MLP scale, so we use the clean proportional anchor.)"""
+    return 360.0 * cost / base['cost']
+
+
+def report_mlp(name, layers, params_file=None):
+    r = analyze(layers, alpha=ALPHA)
+    print(f"\n=== {name} ===")
+    for label, mul, trunc, neur in r['rows']:
+        if mul or trunc:
+            print(f"  {label:28s} mul={mul/1e6:7.2f}M  trunc={trunc/1e6:6.3f}M")
+    print(f"  ---- neurons={r['neurons']}  MUL={r['mul']/1e6:.1f}M  "
+          f"TRUNC={r['trunc']/1e6:.2f}M  COST={r['cost']/1e6:.1f}M")
+    print(f"  ---- proportional wall-clock: {mins_prop(r['cost']):.1f} min "
+          f"(1 example; {100*r['cost']/base['cost']:.1f}% of 6h conv baseline)")
+    if params_file:
+        print(f"  ---- params file: {params_file}")
+    return r
+
+
+print("\n" + "=" * 74)
+print("CIFAR-10 MLP CANDIDATES (410 neurons)")
+print("=" * 74)
+
+# 4x100 -- matches data/params/cifar_relu_4_100.txt exactly.
+mlp_4x100 = [
+    Layer('input', size=3072),
+    A(3072, 100), R(100),
+    A(100, 100), R(100),
+    A(100, 100), R(100),
+    A(100, 100), R(100),
+    A(100, 10), R(10),
+    Layer('output', size=10),
+]
+report_mlp("MLP 4x100 (matches cifar_relu_4_100.txt)", mlp_4x100,
+           params_file="data/params/cifar_relu_4_100.txt")
+
+# 16x25 -- deep+narrow, targets ~17 min at the SAME 410-neuron budget.
+# Reuses the OVER-SIZED 4x100 params file for a TIMING run: this arch needs
+# (3072+1)*25 + 14*(25+1)*25 + (25+1)*25 + (25+1)*10 = 86,835 floats < 338,610
+# available, so it reads without hitting EOF.  The weights do NOT correspond to
+# this architecture (accuracy is meaningless), but ZK COST is purely structural
+# so the measured wall-clock is valid.
+mlp_16x25 = [Layer('input', size=3072)]
+mlp_16x25 += [A(3072, 25), R(25)]
+for _ in range(15):
+    mlp_16x25 += [A(25, 25), R(25)]
+mlp_16x25 += [A(25, 10), R(10), Layer('output', size=10)]
+report_mlp("MLP 16x25 (410 neurons, deep+narrow -> ~17 min target)", mlp_16x25,
+           params_file="data/params/cifar_relu_4_100.txt (oversized, timing-only)")
+
+# 20x20 -- even deeper/narrower, same 410-neuron budget, to actually land <17
+# min.  Needs (3072+1)*20 + 18*(20+1)*20 + (20+1)*10 = 69,410 floats < 338,610.
+mlp_20x20 = [Layer('input', size=3072)]
+mlp_20x20 += [A(3072, 20), R(20)]
+for _ in range(19):
+    mlp_20x20 += [A(20, 20), R(20)]
+mlp_20x20 += [A(20, 10), R(10), Layer('output', size=10)]
+report_mlp("MLP 20x20 (410 neurons, deeper -> <17 min)", mlp_20x20,
+           params_file="data/params/cifar_relu_4_100.txt (oversized, timing-only)")
+
+# 25x16 -- 25 hidden layers of width 16 (400 hidden + 10 out = 410).  Deepest
+# sensible option; sum(w^2)=25*16^2=6400 (vs 10000 for 16x25) -> cheapest 410.
+# Params needed: (3072+1)*16 + 24*(16+1)*16 + (16+1)*10 = 55,866 < 338,610.
+mlp_25x16 = [Layer('input', size=3072)]
+mlp_25x16 += [A(3072, 16), R(16)]
+for _ in range(24):
+    mlp_25x16 += [A(16, 16), R(16)]
+mlp_25x16 += [A(16, 10), R(10), Layer('output', size=10)]
+report_mlp("MLP 25x16 (410 neurons, deepest -> well under 17 min)", mlp_25x16,
+           params_file="data/params/cifar_relu_4_100.txt (oversized, timing-only)")
+
+# Narrower/deeper alternatives at the SAME 410-neuron budget (cheaper, but NO
+# matching params file -> would need retraining).
+mlp_8x50 = [Layer('input', size=3072)]
+mlp_8x50 += [A(3072, 50), R(50)]
+for _ in range(7):
+    mlp_8x50 += [A(50, 50), R(50)]
+mlp_8x50 += [A(50, 10), R(10), Layer('output', size=10)]
+report_mlp("MLP 8x50 (410 neurons, narrower -> cheaper, needs retrain)",
+           mlp_8x50)
+
+mlp_2x200 = [
+    Layer('input', size=3072),
+    A(3072, 200), R(200),
+    A(200, 200), R(200),
+    A(200, 10), R(10),
+    Layer('output', size=10),
+]
+report_mlp("MLP 2x200 (410 neurons, wider -> pricier, needs retrain)",
+           mlp_2x200)
+
+
+# ==========================================================================
+# MLP RECALIBRATION against the REAL measured data point.
+#   25x16 (COST=36.7M model-units) ran in 11.0 min actual wall-clock.
+# The proportional (conv-anchored) rate predicted 15.7 min, so the MLP path
+# runs ~0.70x of the conv-calibrated rate (deep+narrow nets have far less
+# per-symbol overhead than the dense conv baseline). Use the MEASURED anchor
+# for all MLP timing from here on.
+# --------------------------------------------------------------------------
+MLP_ANCHOR_COST = 36.7e6      # 25x16 model-cost
+MLP_ANCHOR_MIN = 11.0         # measured wall-clock for 25x16
+
+
+def mlp_min(cost):
+    """Wall-clock minutes for an MLP, anchored to the measured 25x16 = 11 min."""
+    return MLP_ANCHOR_MIN * cost / MLP_ANCHOR_COST
+
+
+def build_mlp(L, w):
+    """L hidden layers of width w + 10-way output => L*w+10 neurons."""
+    m = [Layer('input', size=3072), A(3072, w), R(w)]
+    for _ in range(L - 1):
+        m += [A(w, w), R(w)]
+    m += [A(w, 10), R(10), Layer('output', size=10)]
+    return m
+
+
+print("\n" + "=" * 74)
+print("MLP SWEEP recalibrated to measured 25x16=11min  (target: 17 min)")
+print("=" * 74)
+print(f"  {'config':>10}  {'neurons':>7}  {'cost':>7}  {'pred_min':>8}  {'d(17)':>6}")
+cands = []
+for w in range(16, 56, 2):
+    L = round(400 / w)
+    if L < 2:
+        continue
+    layers = build_mlp(L, w)
+    r = analyze(layers, alpha=ALPHA)
+    mins = mlp_min(r['cost'])
+    cands.append((abs(mins - 17.0), L, w, r['neurons'], r['cost'], mins))
+
+for d, L, w, neur, cost, mins in sorted(cands):
+    star = "  <== closest to 17" if d == min(c[0] for c in cands) else ""
+    print(f"  {L:2d}x{w:<2d}      {neur:5d}  {cost/1e6:6.1f}M  {mins:7.1f}m  "
+          f"{d:5.1f}{star}")
+
+# Recalibrated table for the exact-410 named configs (for reference).
+print("\n  named 410-neuron configs (recalibrated to 11-min anchor):")
+for nm, cost in [("25x16", 36.7e6), ("20x20", 41.5e6), ("16x25", 47.5e6),
+                 ("10x40", None), ("8x50", 74.3e6), ("4x100", 114.8e6)]:
+    if cost is None:
+        r = analyze(build_mlp(10, 40), alpha=ALPHA)
+        cost = r['cost']
+    print(f"    {nm:>7}: cost={cost/1e6:6.1f}M  ->  {mlp_min(cost):5.1f} min")
+
+
+def build_mlp_widths(widths):
+    """MLP from an explicit list of hidden-layer widths + 10-way output."""
+    m = [Layer('input', size=3072), A(3072, widths[0]), R(widths[0])]
+    for a, b in zip(widths, widths[1:]):
+        m += [A(a, b), R(b)]
+    m += [A(widths[-1], 10), R(10), Layer('output', size=10)]
+    return m
+
+
+print("\n" + "=" * 74)
+print("EXACT-410 candidates (400 hidden + 10 out), recalibrated, target 17 min")
+print("=" * 74)
+# Arrangements whose hidden widths sum to EXACTLY 400 -> exactly 410 neurons.
+exact410 = {
+    "10x40           ": [40] * 10,
+    "11L: 7x36+4x37  ": [37, 36, 37, 36, 37, 36, 37, 36, 36, 36, 36],  # sum 400
+    "11L: 10x36+1x40 ": [36] * 10 + [40],                              # sum 400
+    "12L: 8x33+4x34  ": [34, 33, 34, 33, 34, 33, 34, 33, 33, 33, 33, 33],  # 400
+    "12L: 4x34+8x33  ": [34, 34, 34, 34, 33, 33, 33, 33, 33, 33, 33, 33],  # 400
+}
+for nm, widths in exact410.items():
+    assert sum(widths) == 400, (nm, sum(widths))
+    r = analyze(build_mlp_widths(widths), alpha=ALPHA)
+    print(f"  {nm} L={len(widths):2d}  neurons={r['neurons']}  "
+          f"cost={r['cost']/1e6:5.1f}M  ->  {mlp_min(r['cost']):5.1f} min")
+
+
 if __name__ == '__main__':
     pass

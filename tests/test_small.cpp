@@ -122,7 +122,10 @@ int main(int argc, char** argv){
 
 
     const string INPUT_FILE_PATH = "data/inputs/cifar_test.txt";
-    const string PARAMS_FILE_PATH = "data/params/cifar_relu_conv_small.txt";
+    // Conv model params (for the commented-out conv_small architectures below):
+    // const string PARAMS_FILE_PATH = "data/params/cifar_relu_conv_small.txt";
+    // MLP 4x100 params (410 neurons) -- matches the ACTIVE model below.
+    const string PARAMS_FILE_PATH = "data/params/cifar_relu_4_100.txt";
 
 
     // ---- ORIGINAL conv_small architecture (4862 neurons) ----------------
@@ -264,19 +267,93 @@ int main(int argc, char** argv){
     // NOTE: to instead match the ORIGINAL conv_small budget EXACTLY (4862),
     // bump the affine hidden 32 -> 92 (Affine<T>(64,92)/ReLU(92)/Affine(92,10)):
     // that lands 4862 at ~4.18 h, also comfortably under 5 h.
+    // Model<T>* model = new Model<T>();
+    // model->add_layer(new Input<T>(3072));
+    // model->add_layer(new Conv2D<T>(3, 22, 32, 32, 5, 5, 2, 2, 0, 0));    // -> 22x14x14 = 4312
+    // model->add_layer(new ReLU<T>(4312));
+    // model->add_layer(new Conv2D<T>(22, 24, 14, 14, 3, 3, 3, 3, 0, 0));   // -> 24x4x4   = 384
+    // model->add_layer(new ReLU<T>(384));
+    // model->add_layer(new Conv2D<T>(24, 16, 4, 4, 3, 3, 1, 1, 0, 0));     // -> 16x2x2   = 64
+    // model->add_layer(new ReLU<T>(64));
+    // model->add_layer(new Affine<T>(64, 32));
+    // model->add_layer(new ReLU<T>(32));
+    // model->add_layer(new Affine<T>(32, 10));
+    // model->add_layer(new ReLU<T>(10));
+    // model->add_layer(new Affine<T>(10, 10));
+    // model->add_layer(new Output<T>(10));
+
+    // ---- CIFAR-10 MLP 4x100 (410 neurons) -- params: cifar_relu_4_100.txt --
+    // A pure fully-connected net (no conv) matching data/params/cifar_relu_4_100
+    // EXACTLY: 338610 floats = (3072+1)*100 + 3*(100+1)*100 + (100+1)*10.
+    // Neurons = 100 + 100 + 100 + 100 + 10 = 410.  (No trailing Affine(10,10):
+    // the last layer is Affine(100,10) -> ReLU(10) -> Output(10), unlike the
+    // conv nets above -- this is what the params file encodes.)
+    //
+    // ZK cost: the first Affine sees the raw CIFAR input as SPARSE (D=0, cheap),
+    // but the symbol set then becomes dense over K=3072, so each hidden
+    // Affine(100->100) pays ~100*100*3072 ~= 31M interval-mults.
+    //   COST ~= 115M model-units  vs  840M for the 6 h conv baseline (~14%),
+    //   i.e. ~49 min/example at the conv-calibrated proportional rate.
+    // (A narrower 8x50 net at the same 410-neuron budget costs ~74M but has no
+    // matching params file, so it would need retraining.)
+    // Model<T>* model = new Model<T>();
+    // model->add_layer(new Input<T>(3072));
+    // model->add_layer(new Affine<T>(3072, 100));
+    // model->add_layer(new ReLU<T>(100));
+    // model->add_layer(new Affine<T>(100, 100));
+    // model->add_layer(new ReLU<T>(100));
+    // model->add_layer(new Affine<T>(100, 100));
+    // model->add_layer(new ReLU<T>(100));
+    // model->add_layer(new Affine<T>(100, 100));
+    // model->add_layer(new ReLU<T>(100));
+    // model->add_layer(new Affine<T>(100, 10));
+    // model->add_layer(new ReLU<T>(10));
+    // model->add_layer(new Output<T>(10));
+
+    // ---- CIFAR-10 MLP 12-layer 4x34+8x33 (410 neurons) -- pred ~17.0 min ----
+    // Tuned UP from 25x16 to hit the 17 min target.  RECALIBRATION: the 25x16
+    // net (COST 36.7M) ran in 11.0 min MEASURED, i.e. the MLP path runs at
+    // ~0.30 min/M -- about 0.70x the conv-anchored proportional rate (deep+
+    // narrow nets carry far less per-symbol overhead than the dense conv
+    // baseline that set the 840M->6h anchor).  At that measured rate a config
+    // needs COST ~= 56.7M to land on 17 min.
+    //   No UNIFORM L*w=400 net hits it (10x40->19.2, 16x25->14.2), so we use 12
+    //   hidden layers whose widths sum to EXACTLY 400 (four of width 34 then
+    //   eight of width 33) => 4*34 + 8*33 + 10 = 410 neurons exactly.
+    //   COST 56.8M  =>  ~17.0 min at the measured 11-min/36.7M anchor.
+    // TIMING RUN: reuses the OVER-SIZED cifar_relu_4_100.txt params (this arch
+    // needs (3072+1)*34 + 3*(34+1)*34 + (34+1)*33 + 7*(33+1)*33 + (33+1)*10
+    // = 117,401 floats < 338,610 available, so it reads without EOF).  The
+    // weights do NOT match -- accuracy is meaningless -- but ZK COST is purely
+    // structural, so the measured wall-clock is valid.
     Model<T>* model = new Model<T>();
     model->add_layer(new Input<T>(3072));
-    model->add_layer(new Conv2D<T>(3, 22, 32, 32, 5, 5, 2, 2, 0, 0));    // -> 22x14x14 = 4312
-    model->add_layer(new ReLU<T>(4312));
-    model->add_layer(new Conv2D<T>(22, 24, 14, 14, 3, 3, 3, 3, 0, 0));   // -> 24x4x4   = 384
-    model->add_layer(new ReLU<T>(384));
-    model->add_layer(new Conv2D<T>(24, 16, 4, 4, 3, 3, 1, 1, 0, 0));     // -> 16x2x2   = 64
-    model->add_layer(new ReLU<T>(64));
-    model->add_layer(new Affine<T>(64, 32));
-    model->add_layer(new ReLU<T>(32));
-    model->add_layer(new Affine<T>(32, 10));
+    model->add_layer(new Affine<T>(3072, 34));   // layer 1  (w=34)
+    model->add_layer(new ReLU<T>(34));
+    model->add_layer(new Affine<T>(34, 34));     // layer 2  (w=34)
+    model->add_layer(new ReLU<T>(34));
+    model->add_layer(new Affine<T>(34, 34));     // layer 3  (w=34)
+    model->add_layer(new ReLU<T>(34));
+    model->add_layer(new Affine<T>(34, 34));     // layer 4  (w=34)
+    model->add_layer(new ReLU<T>(34));
+    model->add_layer(new Affine<T>(34, 33));     // layer 5  (w=33, 34->33)
+    model->add_layer(new ReLU<T>(33));
+    model->add_layer(new Affine<T>(33, 33));     // layer 6  (w=33)
+    model->add_layer(new ReLU<T>(33));
+    model->add_layer(new Affine<T>(33, 33));     // layer 7  (w=33)
+    model->add_layer(new ReLU<T>(33));
+    model->add_layer(new Affine<T>(33, 33));     // layer 8  (w=33)
+    model->add_layer(new ReLU<T>(33));
+    model->add_layer(new Affine<T>(33, 33));     // layer 9  (w=33)
+    model->add_layer(new ReLU<T>(33));
+    model->add_layer(new Affine<T>(33, 33));     // layer 10 (w=33)
+    model->add_layer(new ReLU<T>(33));
+    model->add_layer(new Affine<T>(33, 33));     // layer 11 (w=33)
+    model->add_layer(new ReLU<T>(33));
+    model->add_layer(new Affine<T>(33, 33));     // layer 12 (w=33)
+    model->add_layer(new ReLU<T>(33));
+    model->add_layer(new Affine<T>(33, 10));     // output projection
     model->add_layer(new ReLU<T>(10));
-    model->add_layer(new Affine<T>(10, 10));
     model->add_layer(new Output<T>(10));
 
 
