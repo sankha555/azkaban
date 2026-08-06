@@ -94,6 +94,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/ContinuousSubmit.dir/DependInfo.cmake"
   "tests/CMakeFiles/test_small.dir/DependInfo.cmake"
   "tests/CMakeFiles/test_fairness.dir/DependInfo.cmake"
+  "tests/CMakeFiles/test_small_fp.dir/DependInfo.cmake"
   "tests/CMakeFiles/valgrind_test_small.dir/DependInfo.cmake"
   "tests/CMakeFiles/valgrind_test_fairness.dir/DependInfo.cmake"
   "tests/CMakeFiles/valgrind.dir/DependInfo.cmake"

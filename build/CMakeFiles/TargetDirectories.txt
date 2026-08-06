@@ -36,6 +36,7 @@
 /home/t-sankdas/emp-zono/build/CMakeFiles/install/strip.dir
 /home/t-sankdas/emp-zono/build/tests/CMakeFiles/test_small.dir
 /home/t-sankdas/emp-zono/build/tests/CMakeFiles/test_fairness.dir
+/home/t-sankdas/emp-zono/build/tests/CMakeFiles/test_small_fp.dir
 /home/t-sankdas/emp-zono/build/tests/CMakeFiles/valgrind_test_small.dir
 /home/t-sankdas/emp-zono/build/tests/CMakeFiles/valgrind_test_fairness.dir
 /home/t-sankdas/emp-zono/build/tests/CMakeFiles/valgrind.dir

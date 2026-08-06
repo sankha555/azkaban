@@ -110,6 +110,7 @@ clean: tests/clean
 # Recursive "all" directory target.
 tests/all: tests/CMakeFiles/test_small.dir/all
 tests/all: tests/CMakeFiles/test_fairness.dir/all
+tests/all: tests/CMakeFiles/test_small_fp.dir/all
 .PHONY : tests/all
 
 # Recursive "preinstall" directory target.
@@ -119,6 +120,7 @@ tests/preinstall:
 # Recursive "clean" directory target.
 tests/clean: tests/CMakeFiles/test_small.dir/clean
 tests/clean: tests/CMakeFiles/test_fairness.dir/clean
+tests/clean: tests/CMakeFiles/test_small_fp.dir/clean
 tests/clean: tests/CMakeFiles/valgrind_test_small.dir/clean
 tests/clean: tests/CMakeFiles/valgrind_test_fairness.dir/clean
 tests/clean: tests/CMakeFiles/valgrind.dir/clean
@@ -931,13 +933,39 @@ tests/CMakeFiles/test_fairness.dir/clean:
 .PHONY : tests/CMakeFiles/test_fairness.dir/clean
 
 #=============================================================================
+# Target rules for target tests/CMakeFiles/test_small_fp.dir
+
+# All Build rule for target.
+tests/CMakeFiles/test_small_fp.dir/all: CMakeFiles/emp-zono.dir/all
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small_fp.dir/build.make tests/CMakeFiles/test_small_fp.dir/depend
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small_fp.dir/build.make tests/CMakeFiles/test_small_fp.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/t-sankdas/emp-zono/build/CMakeFiles --progress-num=10,11 "Built target test_small_fp"
+.PHONY : tests/CMakeFiles/test_small_fp.dir/all
+
+# Build rule for subdir invocation for target.
+tests/CMakeFiles/test_small_fp.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/t-sankdas/emp-zono/build/CMakeFiles 7
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test_small_fp.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/t-sankdas/emp-zono/build/CMakeFiles 0
+.PHONY : tests/CMakeFiles/test_small_fp.dir/rule
+
+# Convenience name for target.
+test_small_fp: tests/CMakeFiles/test_small_fp.dir/rule
+.PHONY : test_small_fp
+
+# clean rule for target.
+tests/CMakeFiles/test_small_fp.dir/clean:
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small_fp.dir/build.make tests/CMakeFiles/test_small_fp.dir/clean
+.PHONY : tests/CMakeFiles/test_small_fp.dir/clean
+
+#=============================================================================
 # Target rules for target tests/CMakeFiles/valgrind_test_small.dir
 
 # All Build rule for target.
 tests/CMakeFiles/valgrind_test_small.dir/all: tests/CMakeFiles/test_small.dir/all
 	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind_test_small.dir/build.make tests/CMakeFiles/valgrind_test_small.dir/depend
 	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind_test_small.dir/build.make tests/CMakeFiles/valgrind_test_small.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/t-sankdas/emp-zono/build/CMakeFiles --progress-num=12 "Built target valgrind_test_small"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/t-sankdas/emp-zono/build/CMakeFiles --progress-num=14 "Built target valgrind_test_small"
 .PHONY : tests/CMakeFiles/valgrind_test_small.dir/all
 
 # Build rule for subdir invocation for target.
@@ -963,7 +991,7 @@ tests/CMakeFiles/valgrind_test_small.dir/clean:
 tests/CMakeFiles/valgrind_test_fairness.dir/all: tests/CMakeFiles/test_fairness.dir/all
 	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind_test_fairness.dir/build.make tests/CMakeFiles/valgrind_test_fairness.dir/depend
 	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind_test_fairness.dir/build.make tests/CMakeFiles/valgrind_test_fairness.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/t-sankdas/emp-zono/build/CMakeFiles --progress-num=11 "Built target valgrind_test_fairness"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/t-sankdas/emp-zono/build/CMakeFiles --progress-num=13 "Built target valgrind_test_fairness"
 .PHONY : tests/CMakeFiles/valgrind_test_fairness.dir/all
 
 # Build rule for subdir invocation for target.
@@ -990,7 +1018,7 @@ tests/CMakeFiles/valgrind.dir/all: tests/CMakeFiles/valgrind_test_small.dir/all
 tests/CMakeFiles/valgrind.dir/all: tests/CMakeFiles/valgrind_test_fairness.dir/all
 	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind.dir/build.make tests/CMakeFiles/valgrind.dir/depend
 	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind.dir/build.make tests/CMakeFiles/valgrind.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/t-sankdas/emp-zono/build/CMakeFiles --progress-num=10 "Built target valgrind"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/t-sankdas/emp-zono/build/CMakeFiles --progress-num=12 "Built target valgrind"
 .PHONY : tests/CMakeFiles/valgrind.dir/all
 
 # Build rule for subdir invocation for target.

@@ -615,3 +615,138 @@ events:
       stderr: |
       exitCode: 0
 ...
+
+---
+events:
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/usr/share/cmake-3.28/Modules/CheckCSourceRuns.cmake:52 (cmake_check_source_runs)"
+      - "/home/t-sankdas/emp-deps/cmake/enable_rdseed.cmake:9 (check_c_source_runs)"
+      - "/home/t-sankdas/emp-deps/cmake/emp-base.cmake:70 (include)"
+      - "CMakeLists.txt:13 (include)"
+    checks:
+      - "Performing Test RDSEED_RUN_RESULT"
+    directories:
+      source: "/home/t-sankdas/emp-zono/build/CMakeFiles/CMakeScratch/TryCompile-t3TV5L"
+      binary: "/home/t-sankdas/emp-zono/build/CMakeFiles/CMakeScratch/TryCompile-t3TV5L"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -pthread -Wall -funroll-loops -Wno-ignored-attributes -Wno-unused-result -march=native -maes -mrdseed"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/t-sankdas/emp-zono/cmake"
+    buildResult:
+      variable: "RDSEED_RUN_RESULT_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/t-sankdas/emp-zono/build/CMakeFiles/CMakeScratch/TryCompile-t3TV5L'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_6de63/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_6de63.dir/build.make CMakeFiles/cmTC_6de63.dir/build
+        gmake[1]: Entering directory '/home/t-sankdas/emp-zono/build/CMakeFiles/CMakeScratch/TryCompile-t3TV5L'
+        Building C object CMakeFiles/cmTC_6de63.dir/src.c.o
+        /usr/bin/cc -DRDSEED_RUN_RESULT  -pthread -Wall -funroll-loops -Wno-ignored-attributes -Wno-unused-result -march=native -maes -mrdseed -mrdseed -o CMakeFiles/cmTC_6de63.dir/src.c.o -c /home/t-sankdas/emp-zono/build/CMakeFiles/CMakeScratch/TryCompile-t3TV5L/src.c
+        Linking C executable cmTC_6de63
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6de63.dir/link.txt --verbose=1
+        /usr/bin/cc  -pthread -Wall -funroll-loops -Wno-ignored-attributes -Wno-unused-result -march=native -maes -mrdseed -mrdseed CMakeFiles/cmTC_6de63.dir/src.c.o -o cmTC_6de63 
+        gmake[1]: Leaving directory '/home/t-sankdas/emp-zono/build/CMakeFiles/CMakeScratch/TryCompile-t3TV5L'
+        
+      exitCode: 0
+    runResult:
+      variable: "RDSEED_RUN_RESULT_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/usr/share/cmake-3.28/Modules/CheckCSourceRuns.cmake:52 (cmake_check_source_runs)"
+      - "/home/t-sankdas/emp-deps/cmake/enable_rdseed.cmake:9 (check_c_source_runs)"
+      - "/home/t-sankdas/emp-deps/cmake/emp-base.cmake:70 (include)"
+      - "CMakeLists.txt:13 (include)"
+    checks:
+      - "Performing Test RDSEED_RUN_RESULT"
+    directories:
+      source: "/home/t-sankdas/emp-zono/build/CMakeFiles/CMakeScratch/TryCompile-a4FfxY"
+      binary: "/home/t-sankdas/emp-zono/build/CMakeFiles/CMakeScratch/TryCompile-a4FfxY"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -pthread -Wall -funroll-loops -Wno-ignored-attributes -Wno-unused-result -march=native -maes -mrdseed"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/t-sankdas/emp-zono/cmake"
+    buildResult:
+      variable: "RDSEED_RUN_RESULT_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/t-sankdas/emp-zono/build/CMakeFiles/CMakeScratch/TryCompile-a4FfxY'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_8c035/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_8c035.dir/build.make CMakeFiles/cmTC_8c035.dir/build
+        gmake[1]: Entering directory '/home/t-sankdas/emp-zono/build/CMakeFiles/CMakeScratch/TryCompile-a4FfxY'
+        Building C object CMakeFiles/cmTC_8c035.dir/src.c.o
+        /usr/bin/cc -DRDSEED_RUN_RESULT  -pthread -Wall -funroll-loops -Wno-ignored-attributes -Wno-unused-result -march=native -maes -mrdseed -mrdseed -o CMakeFiles/cmTC_8c035.dir/src.c.o -c /home/t-sankdas/emp-zono/build/CMakeFiles/CMakeScratch/TryCompile-a4FfxY/src.c
+        Linking C executable cmTC_8c035
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8c035.dir/link.txt --verbose=1
+        /usr/bin/cc  -pthread -Wall -funroll-loops -Wno-ignored-attributes -Wno-unused-result -march=native -maes -mrdseed -mrdseed CMakeFiles/cmTC_8c035.dir/src.c.o -o cmTC_8c035 
+        gmake[1]: Leaving directory '/home/t-sankdas/emp-zono/build/CMakeFiles/CMakeScratch/TryCompile-a4FfxY'
+        
+      exitCode: 0
+    runResult:
+      variable: "RDSEED_RUN_RESULT_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/usr/share/cmake-3.28/Modules/CheckCSourceRuns.cmake:52 (cmake_check_source_runs)"
+      - "/home/t-sankdas/emp-deps/cmake/enable_rdseed.cmake:9 (check_c_source_runs)"
+      - "/home/t-sankdas/emp-deps/cmake/emp-base.cmake:70 (include)"
+      - "CMakeLists.txt:13 (include)"
+    checks:
+      - "Performing Test RDSEED_RUN_RESULT"
+    directories:
+      source: "/home/t-sankdas/emp-zono/build/CMakeFiles/CMakeScratch/TryCompile-SmG7nh"
+      binary: "/home/t-sankdas/emp-zono/build/CMakeFiles/CMakeScratch/TryCompile-SmG7nh"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -pthread -Wall -funroll-loops -Wno-ignored-attributes -Wno-unused-result -march=native -maes -mrdseed"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/t-sankdas/emp-zono/cmake"
+    buildResult:
+      variable: "RDSEED_RUN_RESULT_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/t-sankdas/emp-zono/build/CMakeFiles/CMakeScratch/TryCompile-SmG7nh'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_702a7/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_702a7.dir/build.make CMakeFiles/cmTC_702a7.dir/build
+        gmake[1]: Entering directory '/home/t-sankdas/emp-zono/build/CMakeFiles/CMakeScratch/TryCompile-SmG7nh'
+        Building C object CMakeFiles/cmTC_702a7.dir/src.c.o
+        /usr/bin/cc -DRDSEED_RUN_RESULT  -pthread -Wall -funroll-loops -Wno-ignored-attributes -Wno-unused-result -march=native -maes -mrdseed -mrdseed -o CMakeFiles/cmTC_702a7.dir/src.c.o -c /home/t-sankdas/emp-zono/build/CMakeFiles/CMakeScratch/TryCompile-SmG7nh/src.c
+        Linking C executable cmTC_702a7
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_702a7.dir/link.txt --verbose=1
+        /usr/bin/cc  -pthread -Wall -funroll-loops -Wno-ignored-attributes -Wno-unused-result -march=native -maes -mrdseed -mrdseed CMakeFiles/cmTC_702a7.dir/src.c.o -o cmTC_702a7 
+        gmake[1]: Leaving directory '/home/t-sankdas/emp-zono/build/CMakeFiles/CMakeScratch/TryCompile-SmG7nh'
+        
+      exitCode: 0
+    runResult:
+      variable: "RDSEED_RUN_RESULT_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+...

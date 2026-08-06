@@ -575,6 +575,19 @@ test_fairness/fast:
 .PHONY : test_fairness/fast
 
 #=============================================================================
+# Target rules for targets named test_small_fp
+
+# Build rule for target.
+test_small_fp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_small_fp
+.PHONY : test_small_fp
+
+# fast build rule for target.
+test_small_fp/fast:
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small_fp.dir/build.make tests/CMakeFiles/test_small_fp.dir/build
+.PHONY : test_small_fp/fast
+
+#=============================================================================
 # Target rules for targets named valgrind_test_small
 
 # Build rule for target.
@@ -756,6 +769,7 @@ help:
 	@echo "... emp-zono"
 	@echo "... test_fairness"
 	@echo "... test_small"
+	@echo "... test_small_fp"
 	@echo "... src/emp-zk-math/ZKmath-functions.o"
 	@echo "... src/emp-zk-math/ZKmath-functions.i"
 	@echo "... src/emp-zk-math/ZKmath-functions.s"

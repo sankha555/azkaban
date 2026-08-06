@@ -200,6 +200,20 @@ test_fairness/fast:
 .PHONY : test_fairness/fast
 
 # Convenience name for target.
+tests/CMakeFiles/test_small_fp.dir/rule:
+	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test_small_fp.dir/rule
+.PHONY : tests/CMakeFiles/test_small_fp.dir/rule
+
+# Convenience name for target.
+test_small_fp: tests/CMakeFiles/test_small_fp.dir/rule
+.PHONY : test_small_fp
+
+# fast build rule for target.
+test_small_fp/fast:
+	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small_fp.dir/build.make tests/CMakeFiles/test_small_fp.dir/build
+.PHONY : test_small_fp/fast
+
+# Convenience name for target.
 tests/CMakeFiles/valgrind_test_small.dir/rule:
 	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/valgrind_test_small.dir/rule
 .PHONY : tests/CMakeFiles/valgrind_test_small.dir/rule
@@ -289,6 +303,30 @@ test_small.cpp.s:
 	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small.dir/build.make tests/CMakeFiles/test_small.dir/test_small.cpp.s
 .PHONY : test_small.cpp.s
 
+test_small_fp.o: test_small_fp.cpp.o
+.PHONY : test_small_fp.o
+
+# target to build an object file
+test_small_fp.cpp.o:
+	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small_fp.dir/build.make tests/CMakeFiles/test_small_fp.dir/test_small_fp.cpp.o
+.PHONY : test_small_fp.cpp.o
+
+test_small_fp.i: test_small_fp.cpp.i
+.PHONY : test_small_fp.i
+
+# target to preprocess a source file
+test_small_fp.cpp.i:
+	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small_fp.dir/build.make tests/CMakeFiles/test_small_fp.dir/test_small_fp.cpp.i
+.PHONY : test_small_fp.cpp.i
+
+test_small_fp.s: test_small_fp.cpp.s
+.PHONY : test_small_fp.s
+
+# target to generate assembly for a file
+test_small_fp.cpp.s:
+	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small_fp.dir/build.make tests/CMakeFiles/test_small_fp.dir/test_small_fp.cpp.s
+.PHONY : test_small_fp.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -307,12 +345,16 @@ help:
 	@echo "... valgrind_test_small"
 	@echo "... test_fairness"
 	@echo "... test_small"
+	@echo "... test_small_fp"
 	@echo "... test_fairness.o"
 	@echo "... test_fairness.i"
 	@echo "... test_fairness.s"
 	@echo "... test_small.o"
 	@echo "... test_small.i"
 	@echo "... test_small.s"
+	@echo "... test_small_fp.o"
+	@echo "... test_small_fp.i"
+	@echo "... test_small_fp.s"
 .PHONY : help
 
 
