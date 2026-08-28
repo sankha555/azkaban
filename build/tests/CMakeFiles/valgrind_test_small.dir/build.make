@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/t-sankdas/emp-zono
+CMAKE_SOURCE_DIR = /home/sankha/ccs-artifact
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/t-sankdas/emp-zono/build
+CMAKE_BINARY_DIR = /home/sankha/ccs-artifact/build
 
 # Utility rule file for valgrind_test_small.
 
@@ -67,8 +67,8 @@ include tests/CMakeFiles/valgrind_test_small.dir/compiler_depend.make
 include tests/CMakeFiles/valgrind_test_small.dir/progress.make
 
 tests/CMakeFiles/valgrind_test_small: bin/test_small
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/t-sankdas/emp-zono/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Running test_small under valgrind (both parties)"
-	cd /home/t-sankdas/emp-zono && bash /home/t-sankdas/emp-zono/tests/run_valgrind.sh /home/t-sankdas/emp-zono/build /home/t-sankdas/emp-zono/build/bin/test_small
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/sankha/ccs-artifact/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Running test_small under valgrind (both parties)"
+	cd /home/sankha/ccs-artifact && bash /home/sankha/ccs-artifact/tests/run_valgrind.sh /home/sankha/ccs-artifact/build /home/sankha/ccs-artifact/build/bin/test_small
 
 valgrind_test_small: tests/CMakeFiles/valgrind_test_small
 valgrind_test_small: tests/CMakeFiles/valgrind_test_small.dir/build.make
@@ -79,10 +79,10 @@ tests/CMakeFiles/valgrind_test_small.dir/build: valgrind_test_small
 .PHONY : tests/CMakeFiles/valgrind_test_small.dir/build
 
 tests/CMakeFiles/valgrind_test_small.dir/clean:
-	cd /home/t-sankdas/emp-zono/build/tests && $(CMAKE_COMMAND) -P CMakeFiles/valgrind_test_small.dir/cmake_clean.cmake
+	cd /home/sankha/ccs-artifact/build/tests && $(CMAKE_COMMAND) -P CMakeFiles/valgrind_test_small.dir/cmake_clean.cmake
 .PHONY : tests/CMakeFiles/valgrind_test_small.dir/clean
 
 tests/CMakeFiles/valgrind_test_small.dir/depend:
-	cd /home/t-sankdas/emp-zono/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/t-sankdas/emp-zono /home/t-sankdas/emp-zono/tests /home/t-sankdas/emp-zono/build /home/t-sankdas/emp-zono/build/tests /home/t-sankdas/emp-zono/build/tests/CMakeFiles/valgrind_test_small.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /home/sankha/ccs-artifact/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sankha/ccs-artifact /home/sankha/ccs-artifact/tests /home/sankha/ccs-artifact/build /home/sankha/ccs-artifact/build/tests /home/sankha/ccs-artifact/build/tests/CMakeFiles/valgrind_test_small.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : tests/CMakeFiles/valgrind_test_small.dir/depend
 

@@ -1,0 +1,157 @@
+{
+ "input_file": "data/inputs/cifar_test.txt",
+ "params_file": "data/params/cifar_relu_4_100_1.txt",
+ "input_features": 3072,
+ "example_index_base": 1,
+ "example_indices": [
+  1
+ ],
+ "delta": 0.0002,
+ "sensitive_attributes": [],
+ "architecture": [
+  {
+   "type": "input",
+   "size": 3072
+  },
+  {
+   "type": "affine",
+   "inputs": 3072,
+   "outputs": 29
+  },
+  {
+   "type": "relu",
+   "size": 29
+  },
+  {
+   "type": "affine",
+   "inputs": 29,
+   "outputs": 29
+  },
+  {
+   "type": "relu",
+   "size": 29
+  },
+  {
+   "type": "affine",
+   "inputs": 29,
+   "outputs": 29
+  },
+  {
+   "type": "relu",
+   "size": 29
+  },
+  {
+   "type": "affine",
+   "inputs": 29,
+   "outputs": 29
+  },
+  {
+   "type": "relu",
+   "size": 29
+  },
+  {
+   "type": "affine",
+   "inputs": 29,
+   "outputs": 29
+  },
+  {
+   "type": "relu",
+   "size": 29
+  },
+  {
+   "type": "affine",
+   "inputs": 29,
+   "outputs": 29
+  },
+  {
+   "type": "relu",
+   "size": 29
+  },
+  {
+   "type": "affine",
+   "inputs": 29,
+   "outputs": 29
+  },
+  {
+   "type": "relu",
+   "size": 29
+  },
+  {
+   "type": "affine",
+   "inputs": 29,
+   "outputs": 29
+  },
+  {
+   "type": "relu",
+   "size": 29
+  },
+  {
+   "type": "affine",
+   "inputs": 29,
+   "outputs": 28
+  },
+  {
+   "type": "relu",
+   "size": 28
+  },
+  {
+   "type": "affine",
+   "inputs": 28,
+   "outputs": 28
+  },
+  {
+   "type": "relu",
+   "size": 28
+  },
+  {
+   "type": "affine",
+   "inputs": 28,
+   "outputs": 28
+  },
+  {
+   "type": "relu",
+   "size": 28
+  },
+  {
+   "type": "affine",
+   "inputs": 28,
+   "outputs": 28
+  },
+  {
+   "type": "relu",
+   "size": 28
+  },
+  {
+   "type": "affine",
+   "inputs": 28,
+   "outputs": 28
+  },
+  {
+   "type": "relu",
+   "size": 28
+  },
+  {
+   "type": "affine",
+   "inputs": 28,
+   "outputs": 28
+  },
+  {
+   "type": "relu",
+   "size": 28
+  },
+  {
+   "type": "affine",
+   "inputs": 28,
+   "outputs": 10
+  },
+  {
+   "type": "relu",
+   "size": 10
+  },
+  {
+   "type": "output",
+   "size": 10
+  }
+ ],
+ "port": 11202
+}

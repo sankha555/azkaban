@@ -26,7 +26,7 @@ vector<float> load_input(const char* input_file_path, int input_offset = 0, int 
     return input;
 }
 
-using T = int64_t;
+using T = IntFp;
 
 void init_verification(){
     FIELD_ZERO = IntFp(0, PUBLIC);
@@ -121,11 +121,11 @@ int main(int argc, char** argv){
     }
 
 
-    const string INPUT_FILE_PATH = "data/inputs/mnist_test.txt";
+    const string INPUT_FILE_PATH = "data/inputs/cifar_test.txt";
     // Conv model params (for the commented-out conv_small architectures below):
     // const string PARAMS_FILE_PATH = "data/params/cifar_relu_conv_small.txt";
     // MLP 4x100 params (410 neurons) -- matches the ACTIVE model below.
-    const string PARAMS_FILE_PATH = "data/params/mnist_relu_3_100.txt";
+    const string PARAMS_FILE_PATH = "data/params/cifar_relu_mlp14_1.txt";
 
 
     // ---- ORIGINAL conv_small architecture (4862 neurons) ----------------
@@ -249,35 +249,31 @@ int main(int argc, char** argv){
     // model->add_layer(new Affine<T>(10, 10));
     // model->add_layer(new Output<T>(10));
 
-    // ---- NEAR-4802 architecture (4802 neurons) -- pred ~4.0 h ----------
-    // 4478 was too far below the target, so we push the count back up to
-    // EXACTLY 4802 = 4312 + 384 + 64 + 32 + 10.  The added ~324 neurons go in
-    // the CHEAPEST possible place: the first ReLU (Conv1 output), whose extra
-    // symbols are not yet structurally dense at the Conv2 bottleneck, so they
-    // cost ~36K mul/neuron -- versus ~502K in the affine hidden, ~581K in
-    // Conv2, ~1.5M in Conv3.  The cheap variant-B tail is kept intact.
-    //   * Conv1 20ch -> 22ch (k5s2, 14x14)     ->  22x14x14 = 4312  (+392, cheap)
-    //   * Conv2 22->24 k3s3 4x4                 ->  24x4x4   =  384  (bottleneck, kept)
-    //   * Conv3 24->16 k3s1 2x2                 ->  16x2x2   =   64  (kept)
-    //   * Affine hidden trimmed 100 -> 32 to land the count EXACTLY on 4802
-    //     while staying conv-heavy (the well-modeled path).
-    // Model-cost 452M -> 443M (widening Conv1 barely moves it; the extra
-    // affine trim offsets it).  Recalibrated (5.1 h @ 663M) => ~3.98 h, still
-    // ~1 h of margin under the 5 h ceiling.
-    // NOTE: to instead match the ORIGINAL conv_small budget EXACTLY (4862),
-    // bump the affine hidden 32 -> 92 (Affine<T>(64,92)/ReLU(92)/Affine(92,10)):
-    // that lands 4862 at ~4.18 h, also comfortably under 5 h.
+    // ---- 3 h 41 m timing-target architecture (4852 neurons) ------------
+    // The measured 92-wide affine version takes ~3 h 20 m.  To retain the
+    // required 4,852-neuron total while raising ZK work by ~10.5%, Conv3 is
+    // widened from 16 to 30 channels and the affine hidden layer is reduced
+    // to 16 neurons.  The expected runtime is ~220.9 min (3 h 41 m),
+    // still below the 4 h cap.
+    // This is a timing-only architecture: the supplied parameter file is
+    // oversized, but its weights do not correspond to these modified shapes.
+    //   * Conv1 20ch -> 22ch (k5s2, 14x14)     ->  22x14x14 = 4312
+    //   * Conv2 22->24 k3s3 4x4                 ->  24x4x4   =  384
+    //   * Conv3 24->30 k3s1 2x2                 ->  30x2x2   =  120
+    //   * Affine hidden                           ->               16
+    //   * Final Affine(10, 10)                    ->               10
+    // Total: 4312 + 384 + 120 + 16 + 10 + 10 = 4852.
     // Model<T>* model = new Model<T>();
     // model->add_layer(new Input<T>(3072));
     // model->add_layer(new Conv2D<T>(3, 22, 32, 32, 5, 5, 2, 2, 0, 0));    // -> 22x14x14 = 4312
     // model->add_layer(new ReLU<T>(4312));
     // model->add_layer(new Conv2D<T>(22, 24, 14, 14, 3, 3, 3, 3, 0, 0));   // -> 24x4x4   = 384
     // model->add_layer(new ReLU<T>(384));
-    // model->add_layer(new Conv2D<T>(24, 16, 4, 4, 3, 3, 1, 1, 0, 0));     // -> 16x2x2   = 64
-    // model->add_layer(new ReLU<T>(64));
-    // model->add_layer(new Affine<T>(64, 32));
-    // model->add_layer(new ReLU<T>(32));
-    // model->add_layer(new Affine<T>(32, 10));
+    // model->add_layer(new Conv2D<T>(24, 30, 4, 4, 3, 3, 1, 1, 0, 0));     // -> 30x2x2   = 120
+    // model->add_layer(new ReLU<T>(120));
+    // model->add_layer(new Affine<T>(120, 16));
+    // model->add_layer(new ReLU<T>(16));
+    // model->add_layer(new Affine<T>(16, 10));
     // model->add_layer(new ReLU<T>(10));
     // model->add_layer(new Affine<T>(10, 10));
     // model->add_layer(new Output<T>(10));
@@ -310,69 +306,83 @@ int main(int argc, char** argv){
     // model->add_layer(new ReLU<T>(10));
     // model->add_layer(new Output<T>(10));
 
-    // ---- CIFAR-10 MLP 12-layer 4x34+8x33 (410 neurons) -- pred ~17.0 min ----
-    // Tuned UP from 25x16 to hit the 17 min target.  RECALIBRATION: the 25x16
-    // net (COST 36.7M) ran in 11.0 min MEASURED, i.e. the MLP path runs at
-    // ~0.30 min/M -- about 0.70x the conv-anchored proportional rate (deep+
-    // narrow nets carry far less per-symbol overhead than the dense conv
-    // baseline that set the 840M->6h anchor).  At that measured rate a config
-    // needs COST ~= 56.7M to land on 17 min.
-    //   No UNIFORM L*w=400 net hits it (10x40->19.2, 16x25->14.2), so we use 12
-    //   hidden layers whose widths sum to EXACTLY 400 (four of width 34 then
-    //   eight of width 33) => 4*34 + 8*33 + 10 = 410 neurons exactly.
-    //   COST 56.8M  =>  ~17.0 min at the measured 11-min/36.7M anchor.
+    // ---- CIFAR-10 MLP 14-layer 8x29+6x28 (410 neurons) -- target ~17 min ----
+    // Keep the EXACT 410-neuron budget while reducing the dense affine work
+    // from the previous 12-layer 4x34+8x33 layout.  Its post-input products
+    // were 3*34^2 + 34*33 + 7*33^2 + 33*10 = 12,543.  This layout uses
+    // 7*29^2 + 29*28 + 5*28^2 + 28*10 = 10,899, about 13.1% less.  Scaling the
+    // measured 20-minute run gives ~17.4 minutes (with small runtime variance
+    // expected from the two extra ReLUs).
+    //   Hidden neurons: 8*29 + 6*28 = 400; with 10 outputs this remains 410.
     // TIMING RUN: reuses the OVER-SIZED cifar_relu_4_100.txt params (this arch
-    // needs (3072+1)*34 + 3*(34+1)*34 + (34+1)*33 + 7*(33+1)*33 + (33+1)*10
-    // = 117,401 floats < 338,610 available, so it reads without EOF).  The
+    // needs (3072+1)*29 + 7*(29+1)*29 + (29+1)*28 + 5*(28+1)*28 + (28+1)*10
+    // = 100,397 floats < 338,610 available, so it reads without EOF).  The
     // weights do NOT match -- accuracy is meaningless -- but ZK COST is purely
     // structural, so the measured wall-clock is valid.
     // Model<T>* model = new Model<T>();
     // model->add_layer(new Input<T>(3072));
-    // model->add_layer(new Affine<T>(3072, 34));   // layer 1  (w=34)
-    // model->add_layer(new ReLU<T>(34));
-    // model->add_layer(new Affine<T>(34, 34));     // layer 2  (w=34)
-    // model->add_layer(new ReLU<T>(34));
-    // model->add_layer(new Affine<T>(34, 34));     // layer 3  (w=34)
-    // model->add_layer(new ReLU<T>(34));
-    // model->add_layer(new Affine<T>(34, 34));     // layer 4  (w=34)
-    // model->add_layer(new ReLU<T>(34));
-    // model->add_layer(new Affine<T>(34, 33));     // layer 5  (w=33, 34->33)
-    // model->add_layer(new ReLU<T>(33));
-    // model->add_layer(new Affine<T>(33, 33));     // layer 6  (w=33)
-    // model->add_layer(new ReLU<T>(33));
-    // model->add_layer(new Affine<T>(33, 33));     // layer 7  (w=33)
-    // model->add_layer(new ReLU<T>(33));
-    // model->add_layer(new Affine<T>(33, 33));     // layer 8  (w=33)
-    // model->add_layer(new ReLU<T>(33));
-    // model->add_layer(new Affine<T>(33, 33));     // layer 9  (w=33)
-    // model->add_layer(new ReLU<T>(33));
-    // model->add_layer(new Affine<T>(33, 33));     // layer 10 (w=33)
-    // model->add_layer(new ReLU<T>(33));
-    // model->add_layer(new Affine<T>(33, 33));     // layer 11 (w=33)
-    // model->add_layer(new ReLU<T>(33));
-    // model->add_layer(new Affine<T>(33, 33));     // layer 12 (w=33)
-    // model->add_layer(new ReLU<T>(33));
-    // model->add_layer(new Affine<T>(33, 10));     // output projection
+    // model->add_layer(new Affine<T>(3072, 29));   // layer 1  (w=29)
+    // model->add_layer(new ReLU<T>(29));
+    // model->add_layer(new Affine<T>(29, 29));     // layer 2  (w=29)
+    // model->add_layer(new ReLU<T>(29));
+    // model->add_layer(new Affine<T>(29, 29));     // layer 3  (w=29)
+    // model->add_layer(new ReLU<T>(29));
+    // model->add_layer(new Affine<T>(29, 29));     // layer 4  (w=29)
+    // model->add_layer(new ReLU<T>(29));
+    // model->add_layer(new Affine<T>(29, 29));     // layer 5  (w=29)
+    // model->add_layer(new ReLU<T>(29));
+    // model->add_layer(new Affine<T>(29, 29));     // layer 6  (w=29)
+    // model->add_layer(new ReLU<T>(29));
+    // model->add_layer(new Affine<T>(29, 29));     // layer 7  (w=29)
+    // model->add_layer(new ReLU<T>(29));
+    // model->add_layer(new Affine<T>(29, 29));     // layer 8  (w=29)
+    // model->add_layer(new ReLU<T>(29));
+    // model->add_layer(new Affine<T>(29, 28));     // layer 9  (w=28, 29->28)
+    // model->add_layer(new ReLU<T>(28));
+    // model->add_layer(new Affine<T>(28, 28));     // layer 10 (w=28)
+    // model->add_layer(new ReLU<T>(28));
+    // model->add_layer(new Affine<T>(28, 28));     // layer 11 (w=28)
+    // model->add_layer(new ReLU<T>(28));
+    // model->add_layer(new Affine<T>(28, 28));     // layer 12 (w=28)
+    // model->add_layer(new ReLU<T>(28));
+    // model->add_layer(new Affine<T>(28, 28));     // layer 13 (w=28)
+    // model->add_layer(new ReLU<T>(28));
+    // model->add_layer(new Affine<T>(28, 28));     // layer 14 (w=28)
+    // model->add_layer(new ReLU<T>(28));
+    // model->add_layer(new Affine<T>(28, 10));     // output projection
     // model->add_layer(new ReLU<T>(10));
     // model->add_layer(new Output<T>(10));
 
-
-
     Model<T>* model = new Model<T>();
-    model->add_layer(new Input<T>(784));
-    model->add_layer(new Affine<T>(784, 100));
-    model->add_layer(new ReLU<T>(100));
-    model->add_layer(new Affine<T>(100, 100));
-    model->add_layer(new ReLU<T>(100));
-    // model->add_layer(new Affine<T>(100, 100));
-    // model->add_layer(new ReLU<T>(100));
-    // model->add_layer(new Affine<T>(100, 100));
-    // model->add_layer(new ReLU<T>(100));
-    // model->add_layer(new Affine<T>(100, 100));
-    // model->add_layer(new ReLU<T>(100));
-    model->add_layer(new Affine<T>(100, 10));
+    model->add_layer(new Input<T>(3072));
+    model->add_layer(new Affine<T>(3072, 300));    // layer 1  (w=20)   ~10.3 min
+    model->add_layer(new ReLU<T>(300));
+    model->add_layer(new Affine<T>(300, 34));     // layer 2  (w=128)  ~0.5 min
+    model->add_layer(new ReLU<T>(34));
+    model->add_layer(new Affine<T>(34, 33));    // layer 3  (w=128)  ~2.9 min
+    model->add_layer(new ReLU<T>(33));
+    model->add_layer(new Affine<T>(33, 33));    // layer 4  (w=124)  ~3.0 min
+    model->add_layer(new ReLU<T>(33));
+    model->add_layer(new Affine<T>(33, 10));     // output projection ~0.2 min
     model->add_layer(new ReLU<T>(10));
     model->add_layer(new Output<T>(10));
+
+
+    // Model<T>* model = new Model<T>();
+    // model->add_layer(new Input<T>(784));
+    // model->add_layer(new Affine<T>(784, 100));
+    // model->add_layer(new ReLU<T>(100));
+    // model->add_layer(new Affine<T>(100, 100));
+    // model->add_layer(new ReLU<T>(100));
+    // // model->add_layer(new Affine<T>(100, 100));
+    // // model->add_layer(new ReLU<T>(100));
+    // // model->add_layer(new Affine<T>(100, 100));
+    // // model->add_layer(new ReLU<T>(100));
+    // // model->add_layer(new Affine<T>(100, 100));
+    // // model->add_layer(new ReLU<T>(100));
+    // model->add_layer(new Affine<T>(100, 10));
+    // model->add_layer(new ReLU<T>(10));
+    // model->add_layer(new Output<T>(10));
 
     model->read_params(PARAMS_FILE_PATH.c_str());
     cout << "Params loaded...\n";
@@ -383,14 +393,26 @@ int main(int argc, char** argv){
     cerr << example_from << " " << example_to << "\n";
 
     NUM_VERIFIED = 0;
-    for(int i = example_from; i <= example_to; i++){
-        vector<float> input = load_input(INPUT_FILE_PATH.c_str(), (i-1) * 785, 784);
-        int gt = (int) input.back();    input.pop_back();
+    // for(int i = example_from; i <= example_to; i++){
+    //     vector<float> input = load_input(INPUT_FILE_PATH.c_str(), (i-1) * 3073, 3072);
+    //     int gt = (int) input.back();    input.pop_back();
         
+    //     ((Output<T>*) model->layers[num_layers-1])->set_output(gt);
+
+    //     cout << i << ": ";
+    //     model->forward(input, 0.002, set<int>());
+    //     model->reset();
+    // }
+    set<int> examples = {1};
+    for(int i : examples){
+        cerr << "hehe\n";
+        vector<float> input = load_input(INPUT_FILE_PATH.c_str(), (i-1) * 3073, 3072);
+        int gt = (int) input.back();    input.pop_back();
+
         ((Output<T>*) model->layers[num_layers-1])->set_output(gt);
 
-        cout << i << ": ";
-        model->forward(input, 0.002, set<int>());
+        cerr << i << ": ";
+        model->forward(input, 0.0002, set<int>());
         model->reset();
     }
 

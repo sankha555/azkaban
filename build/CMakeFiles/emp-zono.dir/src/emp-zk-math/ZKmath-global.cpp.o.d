@@ -1,13 +1,13 @@
 CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.o: \
- /home/t-sankdas/emp-zono/src/emp-zk-math/ZKmath-global.cpp \
+ /home/sankha/ccs-artifact/src/emp-zk-math/ZKmath-global.cpp \
  /usr/include/stdc-predef.h \
- /home/t-sankdas/emp-zono/src/emp-zk-math/ZKmath-global.h \
- /home/t-sankdas/emp-zono/src/emp-zk-math/LUT-range.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-arith/zk_fp_exec.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-vole/emp-vole.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-vole/spfss_sender.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-vole/utility.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/emp-tool.h \
+ /home/sankha/ccs-artifact/src/emp-zk-math/ZKmath-global.h \
+ /home/sankha/ccs-artifact/src/emp-zk-math/LUT-range.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-arith/zk_fp_exec.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-vole/emp-vole.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-vole/spfss_sender.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-vole/utility.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/emp-tool.h \
  /usr/include/c++/13/thread /usr/include/c++/13/bits/requires_hosted.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
@@ -96,7 +96,7 @@ CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.o: \
  /usr/include/linux/errno.h /usr/include/x86_64-linux-gnu/asm/errno.h \
  /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
  /usr/include/x86_64-linux-gnu/bits/types/error_t.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/io/file_io_channel.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/io/file_io_channel.h \
  /usr/include/c++/13/iostream /usr/include/c++/13/ostream \
  /usr/include/c++/13/ios /usr/include/c++/13/exception \
  /usr/include/c++/13/bits/exception.h \
@@ -178,8 +178,8 @@ CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.o: \
  /usr/include/c++/13/bits/basic_ios.tcc \
  /usr/include/c++/13/bits/ostream.tcc /usr/include/c++/13/istream \
  /usr/include/c++/13/bits/istream.tcc \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/io/io_channel.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/utils/block.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/io/io_channel.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/utils/block.h \
  /usr/lib/gcc/x86_64-linux-gnu/13/include/immintrin.h \
  /usr/lib/gcc/x86_64-linux-gnu/13/include/x86gprintrin.h \
  /usr/lib/gcc/x86_64-linux-gnu/13/include/ia32intrin.h \
@@ -288,12 +288,12 @@ CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.o: \
  /usr/include/c++/13/bits/locale_conv.h \
  /usr/include/c++/13/bits/quoted_string.h /usr/include/c++/13/sstream \
  /usr/include/c++/13/bits/sstream.tcc \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/utils/prg.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/utils/aes.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/utils/utils.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/utils/constants.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/utils/prg.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/utils/aes.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/utils/utils.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/utils/constants.h \
  /usr/include/c++/13/chrono \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/utils/utils.hpp \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/utils/utils.hpp \
  /usr/include/c++/13/climits \
  /usr/lib/gcc/x86_64-linux-gnu/13/include/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/13/include/syslimits.h \
@@ -348,7 +348,7 @@ CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.o: \
  /usr/include/c++/13/bits/random.tcc /usr/include/c++/13/numeric \
  /usr/include/c++/13/bits/stl_numeric.h \
  /usr/include/c++/13/pstl/glue_numeric_defs.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/utils/group.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/utils/group.h \
  /usr/include/openssl/ec.h /usr/include/openssl/macros.h \
  /usr/include/x86_64-linux-gnu/openssl/opensslconf.h \
  /usr/include/x86_64-linux-gnu/openssl/configuration.h \
@@ -362,10 +362,10 @@ CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.o: \
  /usr/include/openssl/bn.h /usr/include/openssl/bnerr.h \
  /usr/include/openssl/ecerr.h /usr/include/openssl/params.h \
  /usr/include/openssl/obj_mac.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/utils/group_openssl.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/utils/group_openssl.h \
  /usr/include/c++/13/cassert \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/io/mem_io_channel.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/io/net_io_channel.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/io/mem_io_channel.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/io/net_io_channel.h \
  /usr/include/unistd.h /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
  /usr/include/x86_64-linux-gnu/bits/confname.h \
@@ -393,41 +393,41 @@ CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
  /usr/include/x86_64-linux-gnu/bits/socket2.h \
  /usr/include/x86_64-linux-gnu/bits/in.h /usr/include/netinet/tcp.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/io/highspeed_net_io_channel.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/circuits/bit.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/execution/circuit_execution.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/execution/protocol_execution.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/circuits/swappable.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/circuits/bit.hpp \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/circuits/circuit_file.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/io/highspeed_net_io_channel.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/circuits/bit.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/execution/circuit_execution.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/execution/protocol_execution.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/circuits/swappable.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/circuits/bit.hpp \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/circuits/circuit_file.h \
  /usr/include/c++/13/fstream \
  /usr/include/x86_64-linux-gnu/c++/13/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++io.h \
  /usr/include/c++/13/bits/fstream.tcc \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/circuits/comparable.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/circuits/float32.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/circuits/integer.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/circuits/number.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/circuits/comparable.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/circuits/float32.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/circuits/integer.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/circuits/number.h \
  /usr/include/c++/13/bitset /usr/include/c++/13/algorithm \
  /usr/include/c++/13/bits/stl_algo.h \
  /usr/include/c++/13/bits/algorithmfwd.h \
  /usr/include/c++/13/bits/stl_heap.h \
  /usr/include/c++/13/pstl/glue_algorithm_defs.h \
  /usr/include/c++/13/math.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/circuits/integer.hpp \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/circuits/integer.hpp \
  /usr/include/c++/13/array /usr/include/c++/13/compare \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/circuits/float32.hpp \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/circuits/sha3_256.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/circuits/float32.hpp \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/circuits/sha3_256.h \
  /usr/include/openssl/evp.h /usr/include/openssl/core_dispatch.h \
  /usr/include/openssl/evperr.h /usr/include/openssl/objects.h \
  /usr/include/openssl/objectserr.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/circuits/aes_128_ctr.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/utils/hash.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/utils/prp.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/utils/crh.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/utils/ccrh.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/utils/tccrh.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/utils/ThreadPool.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/circuits/aes_128_ctr.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/utils/hash.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/utils/prp.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/utils/crh.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/utils/ccrh.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/utils/tccrh.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/utils/ThreadPool.h \
  /usr/include/c++/13/queue /usr/include/c++/13/deque \
  /usr/include/c++/13/bits/stl_deque.h /usr/include/c++/13/bits/deque.tcc \
  /usr/include/c++/13/bits/stl_queue.h /usr/include/c++/13/mutex \
@@ -443,61 +443,61 @@ CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.o: \
  /usr/include/c++/13/bits/enable_special_members.h \
  /usr/include/c++/13/bits/node_handle.h \
  /usr/include/c++/13/bits/erase_if.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/utils/mitccrh.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/utils/aes_opt.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/utils/f2k.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/gc/halfgate_eva.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/gc/halfgate_gen.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/gc/privacy_free_eva.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/gc/privacy_free_gen.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/execution/plain_circ.h \
- /home/t-sankdas/emp-zono/src/emp-tool/emp-tool/execution/plain_prot.h \
- /home/t-sankdas/emp-zono/src/emp-ot/emp-ot/emp-ot.h \
- /home/t-sankdas/emp-zono/src/emp-ot/emp-ot/ot.h \
- /home/t-sankdas/emp-zono/src/emp-ot/emp-ot/ideal.h \
- /home/t-sankdas/emp-zono/src/emp-ot/emp-ot/cot.h \
- /home/t-sankdas/emp-zono/src/emp-ot/emp-ot/co.h \
- /home/t-sankdas/emp-zono/src/emp-ot/emp-ot/np.h \
- /home/t-sankdas/emp-zono/src/emp-ot/emp-ot/iknp.h \
- /home/t-sankdas/emp-zono/src/emp-ot/emp-ot/ferret/ferret_cot.h \
- /home/t-sankdas/emp-zono/src/emp-ot/emp-ot/ferret/mpcot_reg.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/utils/mitccrh.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/utils/aes_opt.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/utils/f2k.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/gc/halfgate_eva.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/gc/halfgate_gen.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/gc/privacy_free_eva.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/gc/privacy_free_gen.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/execution/plain_circ.h \
+ /home/sankha/ccs-artifact/src/emp-tool/emp-tool/execution/plain_prot.h \
+ /home/sankha/ccs-artifact/src/emp-ot/emp-ot/emp-ot.h \
+ /home/sankha/ccs-artifact/src/emp-ot/emp-ot/ot.h \
+ /home/sankha/ccs-artifact/src/emp-ot/emp-ot/ideal.h \
+ /home/sankha/ccs-artifact/src/emp-ot/emp-ot/cot.h \
+ /home/sankha/ccs-artifact/src/emp-ot/emp-ot/co.h \
+ /home/sankha/ccs-artifact/src/emp-ot/emp-ot/np.h \
+ /home/sankha/ccs-artifact/src/emp-ot/emp-ot/iknp.h \
+ /home/sankha/ccs-artifact/src/emp-ot/emp-ot/ferret/ferret_cot.h \
+ /home/sankha/ccs-artifact/src/emp-ot/emp-ot/ferret/mpcot_reg.h \
  /usr/include/c++/13/set /usr/include/c++/13/bits/stl_tree.h \
  /usr/include/c++/13/bits/stl_set.h \
  /usr/include/c++/13/bits/stl_multiset.h \
- /home/t-sankdas/emp-zono/src/emp-ot/emp-ot/ferret/spcot_sender.h \
- /home/t-sankdas/emp-zono/src/emp-ot/emp-ot/ferret/twokeyprp.h \
- /home/t-sankdas/emp-zono/src/emp-ot/emp-ot/ferret/spcot_recver.h \
- /home/t-sankdas/emp-zono/src/emp-ot/emp-ot/ferret/preot.h \
- /home/t-sankdas/emp-zono/src/emp-ot/emp-ot/ferret/base_cot.h \
- /home/t-sankdas/emp-zono/src/emp-ot/emp-ot/ferret/lpn_f2.h \
- /home/t-sankdas/emp-zono/src/emp-ot/emp-ot/ferret/constants.h \
- /home/t-sankdas/emp-zono/src/emp-ot/emp-ot/ferret/ferret_cot.hpp \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-vole/spfss_recver.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-vole/preot.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-vole/mpfss_reg.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-vole/vole_triple.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-vole/base_svole.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-vole/cope.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-vole/lpn.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-arith/ostriple.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-arith/triple_auth.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/edabit/edabits.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/edabit/auth_helper.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-bool/cheat_record.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-bool/ostriple.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-bool/bool_io.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-bool/triple_auth.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-bool/polynomial.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-bool/zk_bool_circuit_exec.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-bool/zk_prover.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-bool/zk_verifier.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-arith/zk_fp_exec_prover.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-arith/zk_fp_exec_verifier.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-arith/int_fp.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-arith/polynomial.h \
- /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-arith/conversion.h \
- /home/t-sankdas/emp-zono/src/emp-zk-math/LUT.h \
- /home/t-sankdas/emp-zono/src/emp-zk-math/LUT-twoValue.h \
+ /home/sankha/ccs-artifact/src/emp-ot/emp-ot/ferret/spcot_sender.h \
+ /home/sankha/ccs-artifact/src/emp-ot/emp-ot/ferret/twokeyprp.h \
+ /home/sankha/ccs-artifact/src/emp-ot/emp-ot/ferret/spcot_recver.h \
+ /home/sankha/ccs-artifact/src/emp-ot/emp-ot/ferret/preot.h \
+ /home/sankha/ccs-artifact/src/emp-ot/emp-ot/ferret/base_cot.h \
+ /home/sankha/ccs-artifact/src/emp-ot/emp-ot/ferret/lpn_f2.h \
+ /home/sankha/ccs-artifact/src/emp-ot/emp-ot/ferret/constants.h \
+ /home/sankha/ccs-artifact/src/emp-ot/emp-ot/ferret/ferret_cot.hpp \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-vole/spfss_recver.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-vole/preot.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-vole/mpfss_reg.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-vole/vole_triple.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-vole/base_svole.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-vole/cope.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-vole/lpn.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-arith/ostriple.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-arith/triple_auth.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/edabit/edabits.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/edabit/auth_helper.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-bool/cheat_record.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-bool/ostriple.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-bool/bool_io.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-bool/triple_auth.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-bool/polynomial.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-bool/zk_bool_circuit_exec.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-bool/zk_prover.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-bool/zk_verifier.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-arith/zk_fp_exec_prover.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-arith/zk_fp_exec_verifier.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-arith/int_fp.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-arith/polynomial.h \
+ /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-arith/conversion.h \
+ /home/sankha/ccs-artifact/src/emp-zk-math/LUT.h \
+ /home/sankha/ccs-artifact/src/emp-zk-math/LUT-twoValue.h \
  /usr/include/c++/13/fenv.h /usr/include/fenv.h \
  /usr/include/x86_64-linux-gnu/bits/fenv.h

@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/t-sankdas/emp-zono
+CMAKE_SOURCE_DIR = /home/sankha/ccs-artifact
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/t-sankdas/emp-zono/build
+CMAKE_BINARY_DIR = /home/sankha/ccs-artifact/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -142,14 +142,14 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/t-sankdas/emp-zono/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/t-sankdas/emp-zono/build/CMakeFiles /home/t-sankdas/emp-zono/build/tests//CMakeFiles/progress.marks
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t-sankdas/emp-zono/build/CMakeFiles 0
+	cd /home/sankha/ccs-artifact/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/sankha/ccs-artifact/build/CMakeFiles /home/sankha/ccs-artifact/build/tests//CMakeFiles/progress.marks
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sankha/ccs-artifact/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/clean
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/clean
 .PHONY : clean
 
 # The main clean target
@@ -158,22 +158,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/preinstall
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/preinstall
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/t-sankdas/emp-zono/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/sankha/ccs-artifact/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 tests/CMakeFiles/test_small.dir/rule:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test_small.dir/rule
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test_small.dir/rule
 .PHONY : tests/CMakeFiles/test_small.dir/rule
 
 # Convenience name for target.
@@ -182,12 +182,12 @@ test_small: tests/CMakeFiles/test_small.dir/rule
 
 # fast build rule for target.
 test_small/fast:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small.dir/build.make tests/CMakeFiles/test_small.dir/build
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small.dir/build.make tests/CMakeFiles/test_small.dir/build
 .PHONY : test_small/fast
 
 # Convenience name for target.
 tests/CMakeFiles/test_fairness.dir/rule:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test_fairness.dir/rule
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test_fairness.dir/rule
 .PHONY : tests/CMakeFiles/test_fairness.dir/rule
 
 # Convenience name for target.
@@ -196,12 +196,12 @@ test_fairness: tests/CMakeFiles/test_fairness.dir/rule
 
 # fast build rule for target.
 test_fairness/fast:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_fairness.dir/build.make tests/CMakeFiles/test_fairness.dir/build
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_fairness.dir/build.make tests/CMakeFiles/test_fairness.dir/build
 .PHONY : test_fairness/fast
 
 # Convenience name for target.
 tests/CMakeFiles/test_small_fp.dir/rule:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test_small_fp.dir/rule
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test_small_fp.dir/rule
 .PHONY : tests/CMakeFiles/test_small_fp.dir/rule
 
 # Convenience name for target.
@@ -210,12 +210,40 @@ test_small_fp: tests/CMakeFiles/test_small_fp.dir/rule
 
 # fast build rule for target.
 test_small_fp/fast:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small_fp.dir/build.make tests/CMakeFiles/test_small_fp.dir/build
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small_fp.dir/build.make tests/CMakeFiles/test_small_fp.dir/build
 .PHONY : test_small_fp/fast
 
 # Convenience name for target.
+tests/CMakeFiles/test_configurable.dir/rule:
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test_configurable.dir/rule
+.PHONY : tests/CMakeFiles/test_configurable.dir/rule
+
+# Convenience name for target.
+test_configurable: tests/CMakeFiles/test_configurable.dir/rule
+.PHONY : test_configurable
+
+# fast build rule for target.
+test_configurable/fast:
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_configurable.dir/build.make tests/CMakeFiles/test_configurable.dir/build
+.PHONY : test_configurable/fast
+
+# Convenience name for target.
+tests/CMakeFiles/test_fairness_configurable.dir/rule:
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test_fairness_configurable.dir/rule
+.PHONY : tests/CMakeFiles/test_fairness_configurable.dir/rule
+
+# Convenience name for target.
+test_fairness_configurable: tests/CMakeFiles/test_fairness_configurable.dir/rule
+.PHONY : test_fairness_configurable
+
+# fast build rule for target.
+test_fairness_configurable/fast:
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_fairness_configurable.dir/build.make tests/CMakeFiles/test_fairness_configurable.dir/build
+.PHONY : test_fairness_configurable/fast
+
+# Convenience name for target.
 tests/CMakeFiles/valgrind_test_small.dir/rule:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/valgrind_test_small.dir/rule
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/valgrind_test_small.dir/rule
 .PHONY : tests/CMakeFiles/valgrind_test_small.dir/rule
 
 # Convenience name for target.
@@ -224,12 +252,12 @@ valgrind_test_small: tests/CMakeFiles/valgrind_test_small.dir/rule
 
 # fast build rule for target.
 valgrind_test_small/fast:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind_test_small.dir/build.make tests/CMakeFiles/valgrind_test_small.dir/build
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind_test_small.dir/build.make tests/CMakeFiles/valgrind_test_small.dir/build
 .PHONY : valgrind_test_small/fast
 
 # Convenience name for target.
 tests/CMakeFiles/valgrind_test_fairness.dir/rule:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/valgrind_test_fairness.dir/rule
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/valgrind_test_fairness.dir/rule
 .PHONY : tests/CMakeFiles/valgrind_test_fairness.dir/rule
 
 # Convenience name for target.
@@ -238,12 +266,12 @@ valgrind_test_fairness: tests/CMakeFiles/valgrind_test_fairness.dir/rule
 
 # fast build rule for target.
 valgrind_test_fairness/fast:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind_test_fairness.dir/build.make tests/CMakeFiles/valgrind_test_fairness.dir/build
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind_test_fairness.dir/build.make tests/CMakeFiles/valgrind_test_fairness.dir/build
 .PHONY : valgrind_test_fairness/fast
 
 # Convenience name for target.
 tests/CMakeFiles/valgrind.dir/rule:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/valgrind.dir/rule
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/valgrind.dir/rule
 .PHONY : tests/CMakeFiles/valgrind.dir/rule
 
 # Convenience name for target.
@@ -252,15 +280,39 @@ valgrind: tests/CMakeFiles/valgrind.dir/rule
 
 # fast build rule for target.
 valgrind/fast:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind.dir/build.make tests/CMakeFiles/valgrind.dir/build
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind.dir/build.make tests/CMakeFiles/valgrind.dir/build
 .PHONY : valgrind/fast
+
+test_configurable.o: test_configurable.cpp.o
+.PHONY : test_configurable.o
+
+# target to build an object file
+test_configurable.cpp.o:
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_configurable.dir/build.make tests/CMakeFiles/test_configurable.dir/test_configurable.cpp.o
+.PHONY : test_configurable.cpp.o
+
+test_configurable.i: test_configurable.cpp.i
+.PHONY : test_configurable.i
+
+# target to preprocess a source file
+test_configurable.cpp.i:
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_configurable.dir/build.make tests/CMakeFiles/test_configurable.dir/test_configurable.cpp.i
+.PHONY : test_configurable.cpp.i
+
+test_configurable.s: test_configurable.cpp.s
+.PHONY : test_configurable.s
+
+# target to generate assembly for a file
+test_configurable.cpp.s:
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_configurable.dir/build.make tests/CMakeFiles/test_configurable.dir/test_configurable.cpp.s
+.PHONY : test_configurable.cpp.s
 
 test_fairness.o: test_fairness.cpp.o
 .PHONY : test_fairness.o
 
 # target to build an object file
 test_fairness.cpp.o:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_fairness.dir/build.make tests/CMakeFiles/test_fairness.dir/test_fairness.cpp.o
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_fairness.dir/build.make tests/CMakeFiles/test_fairness.dir/test_fairness.cpp.o
 .PHONY : test_fairness.cpp.o
 
 test_fairness.i: test_fairness.cpp.i
@@ -268,7 +320,7 @@ test_fairness.i: test_fairness.cpp.i
 
 # target to preprocess a source file
 test_fairness.cpp.i:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_fairness.dir/build.make tests/CMakeFiles/test_fairness.dir/test_fairness.cpp.i
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_fairness.dir/build.make tests/CMakeFiles/test_fairness.dir/test_fairness.cpp.i
 .PHONY : test_fairness.cpp.i
 
 test_fairness.s: test_fairness.cpp.s
@@ -276,15 +328,39 @@ test_fairness.s: test_fairness.cpp.s
 
 # target to generate assembly for a file
 test_fairness.cpp.s:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_fairness.dir/build.make tests/CMakeFiles/test_fairness.dir/test_fairness.cpp.s
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_fairness.dir/build.make tests/CMakeFiles/test_fairness.dir/test_fairness.cpp.s
 .PHONY : test_fairness.cpp.s
+
+test_fairness_configurable.o: test_fairness_configurable.cpp.o
+.PHONY : test_fairness_configurable.o
+
+# target to build an object file
+test_fairness_configurable.cpp.o:
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_fairness_configurable.dir/build.make tests/CMakeFiles/test_fairness_configurable.dir/test_fairness_configurable.cpp.o
+.PHONY : test_fairness_configurable.cpp.o
+
+test_fairness_configurable.i: test_fairness_configurable.cpp.i
+.PHONY : test_fairness_configurable.i
+
+# target to preprocess a source file
+test_fairness_configurable.cpp.i:
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_fairness_configurable.dir/build.make tests/CMakeFiles/test_fairness_configurable.dir/test_fairness_configurable.cpp.i
+.PHONY : test_fairness_configurable.cpp.i
+
+test_fairness_configurable.s: test_fairness_configurable.cpp.s
+.PHONY : test_fairness_configurable.s
+
+# target to generate assembly for a file
+test_fairness_configurable.cpp.s:
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_fairness_configurable.dir/build.make tests/CMakeFiles/test_fairness_configurable.dir/test_fairness_configurable.cpp.s
+.PHONY : test_fairness_configurable.cpp.s
 
 test_small.o: test_small.cpp.o
 .PHONY : test_small.o
 
 # target to build an object file
 test_small.cpp.o:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small.dir/build.make tests/CMakeFiles/test_small.dir/test_small.cpp.o
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small.dir/build.make tests/CMakeFiles/test_small.dir/test_small.cpp.o
 .PHONY : test_small.cpp.o
 
 test_small.i: test_small.cpp.i
@@ -292,7 +368,7 @@ test_small.i: test_small.cpp.i
 
 # target to preprocess a source file
 test_small.cpp.i:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small.dir/build.make tests/CMakeFiles/test_small.dir/test_small.cpp.i
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small.dir/build.make tests/CMakeFiles/test_small.dir/test_small.cpp.i
 .PHONY : test_small.cpp.i
 
 test_small.s: test_small.cpp.s
@@ -300,7 +376,7 @@ test_small.s: test_small.cpp.s
 
 # target to generate assembly for a file
 test_small.cpp.s:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small.dir/build.make tests/CMakeFiles/test_small.dir/test_small.cpp.s
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small.dir/build.make tests/CMakeFiles/test_small.dir/test_small.cpp.s
 .PHONY : test_small.cpp.s
 
 test_small_fp.o: test_small_fp.cpp.o
@@ -308,7 +384,7 @@ test_small_fp.o: test_small_fp.cpp.o
 
 # target to build an object file
 test_small_fp.cpp.o:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small_fp.dir/build.make tests/CMakeFiles/test_small_fp.dir/test_small_fp.cpp.o
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small_fp.dir/build.make tests/CMakeFiles/test_small_fp.dir/test_small_fp.cpp.o
 .PHONY : test_small_fp.cpp.o
 
 test_small_fp.i: test_small_fp.cpp.i
@@ -316,7 +392,7 @@ test_small_fp.i: test_small_fp.cpp.i
 
 # target to preprocess a source file
 test_small_fp.cpp.i:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small_fp.dir/build.make tests/CMakeFiles/test_small_fp.dir/test_small_fp.cpp.i
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small_fp.dir/build.make tests/CMakeFiles/test_small_fp.dir/test_small_fp.cpp.i
 .PHONY : test_small_fp.cpp.i
 
 test_small_fp.s: test_small_fp.cpp.s
@@ -324,7 +400,7 @@ test_small_fp.s: test_small_fp.cpp.s
 
 # target to generate assembly for a file
 test_small_fp.cpp.s:
-	cd /home/t-sankdas/emp-zono/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small_fp.dir/build.make tests/CMakeFiles/test_small_fp.dir/test_small_fp.cpp.s
+	cd /home/sankha/ccs-artifact/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small_fp.dir/build.make tests/CMakeFiles/test_small_fp.dir/test_small_fp.cpp.s
 .PHONY : test_small_fp.cpp.s
 
 # Help Target
@@ -343,12 +419,20 @@ help:
 	@echo "... valgrind"
 	@echo "... valgrind_test_fairness"
 	@echo "... valgrind_test_small"
+	@echo "... test_configurable"
 	@echo "... test_fairness"
+	@echo "... test_fairness_configurable"
 	@echo "... test_small"
 	@echo "... test_small_fp"
+	@echo "... test_configurable.o"
+	@echo "... test_configurable.i"
+	@echo "... test_configurable.s"
 	@echo "... test_fairness.o"
 	@echo "... test_fairness.i"
 	@echo "... test_fairness.s"
+	@echo "... test_fairness_configurable.o"
+	@echo "... test_fairness_configurable.i"
+	@echo "... test_fairness_configurable.s"
 	@echo "... test_small.o"
 	@echo "... test_small.i"
 	@echo "... test_small.s"
@@ -366,6 +450,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/t-sankdas/emp-zono/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/sankha/ccs-artifact/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

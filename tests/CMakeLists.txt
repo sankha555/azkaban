@@ -1,6 +1,8 @@
 add_executable(test_small test_small.cpp)
 add_executable(test_fairness test_fairness.cpp)
 add_executable(test_small_fp test_small_fp.cpp)
+add_executable(test_configurable test_configurable.cpp)
+add_executable(test_fairness_configurable test_fairness_configurable.cpp)
 
 set(COMMON_INCLUDES
     ${CMAKE_CURRENT_SOURCE_DIR}/..
@@ -26,13 +28,17 @@ set(COMMON_LIBS
 target_include_directories(test_small PRIVATE ${COMMON_INCLUDES})
 target_include_directories(test_fairness PRIVATE ${COMMON_INCLUDES})
 target_include_directories(test_small_fp PRIVATE ${COMMON_INCLUDES})
+target_include_directories(test_configurable PRIVATE ${COMMON_INCLUDES})
+target_include_directories(test_fairness_configurable PRIVATE ${COMMON_INCLUDES})
 
 target_link_libraries(test_small PRIVATE ${COMMON_LIBS})
 target_link_libraries(test_fairness PRIVATE ${COMMON_LIBS})
 target_link_libraries(test_small_fp PRIVATE ${COMMON_LIBS})
+target_link_libraries(test_configurable PRIVATE ${COMMON_LIBS})
+target_link_libraries(test_fairness_configurable PRIVATE ${COMMON_LIBS})
 
 
-set_target_properties(test_small test_fairness test_small_fp PROPERTIES
+set_target_properties(test_small test_fairness test_small_fp test_configurable test_fairness_configurable PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
 

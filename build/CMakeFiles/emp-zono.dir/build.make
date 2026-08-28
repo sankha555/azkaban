@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/t-sankdas/emp-zono
+CMAKE_SOURCE_DIR = /home/sankha/ccs-artifact
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/t-sankdas/emp-zono/build
+CMAKE_BINARY_DIR = /home/sankha/ccs-artifact/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/emp-zono.dir/depend.make
@@ -70,60 +70,60 @@ include CMakeFiles/emp-zono.dir/progress.make
 include CMakeFiles/emp-zono.dir/flags.make
 
 CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp.o: CMakeFiles/emp-zono.dir/flags.make
-CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp.o: /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp
+CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp.o: /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp
 CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp.o: CMakeFiles/emp-zono.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/t-sankdas/emp-zono/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp.o -MF CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp.o.d -o CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp.o -c /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/sankha/ccs-artifact/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp.o -MF CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp.o.d -o CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp.o -c /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp
 
 CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp > CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp > CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp.i
 
 CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp -o CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp -o CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-bool/emp-zk-bool.cpp.s
 
 CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp.o: CMakeFiles/emp-zono.dir/flags.make
-CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp.o: /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp
+CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp.o: /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp
 CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp.o: CMakeFiles/emp-zono.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/t-sankdas/emp-zono/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp.o -MF CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp.o.d -o CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp.o -c /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/sankha/ccs-artifact/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp.o -MF CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp.o.d -o CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp.o -c /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp
 
 CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp > CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp > CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp.i
 
 CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/t-sankdas/emp-zono/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp -o CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sankha/ccs-artifact/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp -o CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-arith.cpp.s
 
 CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.o: CMakeFiles/emp-zono.dir/flags.make
-CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.o: /home/t-sankdas/emp-zono/src/emp-zk-math/ZKmath-global.cpp
+CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.o: /home/sankha/ccs-artifact/src/emp-zk-math/ZKmath-global.cpp
 CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.o: CMakeFiles/emp-zono.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/t-sankdas/emp-zono/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.o -MF CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.o.d -o CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.o -c /home/t-sankdas/emp-zono/src/emp-zk-math/ZKmath-global.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/sankha/ccs-artifact/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.o -MF CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.o.d -o CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.o -c /home/sankha/ccs-artifact/src/emp-zk-math/ZKmath-global.cpp
 
 CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/t-sankdas/emp-zono/src/emp-zk-math/ZKmath-global.cpp > CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sankha/ccs-artifact/src/emp-zk-math/ZKmath-global.cpp > CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.i
 
 CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/t-sankdas/emp-zono/src/emp-zk-math/ZKmath-global.cpp -o CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sankha/ccs-artifact/src/emp-zk-math/ZKmath-global.cpp -o CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.s
 
 CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-functions.cpp.o: CMakeFiles/emp-zono.dir/flags.make
-CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-functions.cpp.o: /home/t-sankdas/emp-zono/src/emp-zk-math/ZKmath-functions.cpp
+CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-functions.cpp.o: /home/sankha/ccs-artifact/src/emp-zk-math/ZKmath-functions.cpp
 CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-functions.cpp.o: CMakeFiles/emp-zono.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/t-sankdas/emp-zono/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-functions.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-functions.cpp.o -MF CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-functions.cpp.o.d -o CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-functions.cpp.o -c /home/t-sankdas/emp-zono/src/emp-zk-math/ZKmath-functions.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/sankha/ccs-artifact/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-functions.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-functions.cpp.o -MF CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-functions.cpp.o.d -o CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-functions.cpp.o -c /home/sankha/ccs-artifact/src/emp-zk-math/ZKmath-functions.cpp
 
 CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-functions.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-functions.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/t-sankdas/emp-zono/src/emp-zk-math/ZKmath-functions.cpp > CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-functions.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sankha/ccs-artifact/src/emp-zk-math/ZKmath-functions.cpp > CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-functions.cpp.i
 
 CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-functions.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-functions.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/t-sankdas/emp-zono/src/emp-zk-math/ZKmath-functions.cpp -o CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-functions.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sankha/ccs-artifact/src/emp-zk-math/ZKmath-functions.cpp -o CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-functions.cpp.s
 
 # Object files for target emp-zono
 emp__zono_OBJECTS = \
@@ -140,13 +140,13 @@ libemp-zono.so: CMakeFiles/emp-zono.dir/src/emp-zk/emp-zk/emp-zk-arith/emp-zk-ar
 libemp-zono.so: CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-global.cpp.o
 libemp-zono.so: CMakeFiles/emp-zono.dir/src/emp-zk-math/ZKmath-functions.cpp.o
 libemp-zono.so: CMakeFiles/emp-zono.dir/build.make
-libemp-zono.so: /home/t-sankdas/emp-deps/lib/libemp-tool.so
+libemp-zono.so: /usr/local/lib/libemp-tool.so
 libemp-zono.so: /usr/lib/x86_64-linux-gnu/libssl.so
 libemp-zono.so: /usr/lib/x86_64-linux-gnu/libcrypto.so
 libemp-zono.so: /usr/lib/x86_64-linux-gnu/libcrypto.so
 libemp-zono.so: /usr/lib/x86_64-linux-gnu/libssl.so
 libemp-zono.so: CMakeFiles/emp-zono.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/t-sankdas/emp-zono/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX shared library libemp-zono.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/sankha/ccs-artifact/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX shared library libemp-zono.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/emp-zono.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -158,6 +158,6 @@ CMakeFiles/emp-zono.dir/clean:
 .PHONY : CMakeFiles/emp-zono.dir/clean
 
 CMakeFiles/emp-zono.dir/depend:
-	cd /home/t-sankdas/emp-zono/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/t-sankdas/emp-zono /home/t-sankdas/emp-zono /home/t-sankdas/emp-zono/build /home/t-sankdas/emp-zono/build /home/t-sankdas/emp-zono/build/CMakeFiles/emp-zono.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /home/sankha/ccs-artifact/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sankha/ccs-artifact /home/sankha/ccs-artifact /home/sankha/ccs-artifact/build /home/sankha/ccs-artifact/build /home/sankha/ccs-artifact/build/CMakeFiles/emp-zono.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/emp-zono.dir/depend
 

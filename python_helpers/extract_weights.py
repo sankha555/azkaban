@@ -28,6 +28,7 @@ output_path = f"data/params/{model_name}_1.txt"
 model, is_conv = read_onnx_net(model_path)
 params = get_onnx_parameters_as_arrays(model)
 
+# is_conv = False
 graph = model.graph
 
 with open(output_path, "w") as file:

@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/t-sankdas/emp-zono
+CMAKE_SOURCE_DIR = /home/sankha/ccs-artifact
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/t-sankdas/emp-zono/build
+CMAKE_BINARY_DIR = /home/sankha/ccs-artifact/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -142,9 +142,9 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t-sankdas/emp-zono/build/CMakeFiles /home/t-sankdas/emp-zono/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sankha/ccs-artifact/build/CMakeFiles /home/sankha/ccs-artifact/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/t-sankdas/emp-zono/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sankha/ccs-artifact/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -588,6 +588,32 @@ test_small_fp/fast:
 .PHONY : test_small_fp/fast
 
 #=============================================================================
+# Target rules for targets named test_configurable
+
+# Build rule for target.
+test_configurable: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_configurable
+.PHONY : test_configurable
+
+# fast build rule for target.
+test_configurable/fast:
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_configurable.dir/build.make tests/CMakeFiles/test_configurable.dir/build
+.PHONY : test_configurable/fast
+
+#=============================================================================
+# Target rules for targets named test_fairness_configurable
+
+# Build rule for target.
+test_fairness_configurable: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_fairness_configurable
+.PHONY : test_fairness_configurable
+
+# fast build rule for target.
+test_fairness_configurable/fast:
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_fairness_configurable.dir/build.make tests/CMakeFiles/test_fairness_configurable.dir/build
+.PHONY : test_fairness_configurable/fast
+
+#=============================================================================
 # Target rules for targets named valgrind_test_small
 
 # Build rule for target.
@@ -767,7 +793,9 @@ help:
 	@echo "... valgrind_test_fairness"
 	@echo "... valgrind_test_small"
 	@echo "... emp-zono"
+	@echo "... test_configurable"
 	@echo "... test_fairness"
+	@echo "... test_fairness_configurable"
 	@echo "... test_small"
 	@echo "... test_small_fp"
 	@echo "... src/emp-zk-math/ZKmath-functions.o"

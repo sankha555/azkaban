@@ -23,18 +23,20 @@ class Output : public Layer<T> {
     void forward(Layer<T>* prev_layer){
         vector<T> lbs, ubs;
 
-        cout << setprecision(6) << "\n-- OUTPUT --\n";
+        // cout << setprecision(6) << "\n-- OUTPUT --\n";
         for(size_t i = 0; i < this->input_size; i++){
             Interval<T> bounds = prev_layer->expressions[i]->concrete();
 
-            if constexpr (TYPE_EQ(T, float)){
-                cout << "[" << bounds.inf << ", " << bounds.sup << "]\n";
-            } else if constexpr (TYPE_EQ(T, int64_t)){
-                cout << "[" << (bounds.inf * 1.0) / (1 << FXPSCALE) << ", " << (bounds.sup * 1.0) / (1 << FXPSCALE) << "]\n";
-            } else if constexpr (TYPE_EQ(T, IntFp)){
-                cout << "[" << CLT(bounds.inf) << ", " << CLT(bounds.sup) << "]\n"; 
+            if (DEBUG){
+                if constexpr (TYPE_EQ(T, float)){
+                    cout << "[" << bounds.inf << ", " << bounds.sup << "]\n";
+                } else if constexpr (TYPE_EQ(T, int64_t)){
+                    cout << "[" << (bounds.inf * 1.0) / (1 << FXPSCALE) << ", " << (bounds.sup * 1.0) / (1 << FXPSCALE) << "]\n";
+                } else if constexpr (TYPE_EQ(T, IntFp)){
+                    cout << "[" << CLT(bounds.inf) << ", " << CLT(bounds.sup) << "]\n"; 
+                }
             }
-
+            
             lbs.push_back(bounds.inf);
             ubs.push_back(bounds.sup);
         }
@@ -44,14 +46,14 @@ class Output : public Layer<T> {
         this->compute_differences(prev_layer);
         if(this->verified){
             NUM_VERIFIED++;
-            cout << "YES\n";
+            cout << "Safe: YES\n";
         } else {
-            cout << "NO\n";
+            cout << "Safe: NO\n";
         }
 
         auto now = std::chrono::system_clock::now();
         std::time_t now_c = std::chrono::system_clock::to_time_t(now);
-        std::cout << "Finish time: " << std::ctime(&now_c);
+        if(DEBUG) std::cout << "Finish time: " << std::ctime(&now_c);
     }
 
     void compute_differences(Layer<T>* prev_layer){
@@ -112,7 +114,7 @@ class Output : public Layer<T> {
                     continue;
                 }
                 
-                if(lbs[i] > lbs[this->gt]){
+                if(lbs[i] >= lbs[this->gt]){
                     return false;
                 }
             }

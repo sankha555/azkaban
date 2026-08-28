@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/t-sankdas/emp-zono
+CMAKE_SOURCE_DIR = /home/sankha/ccs-artifact
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/t-sankdas/emp-zono/build
+CMAKE_BINARY_DIR = /home/sankha/ccs-artifact/build
 
 # Utility rule file for ContinuousStart.
 
@@ -82,6 +82,6 @@ CMakeFiles/ContinuousStart.dir/clean:
 .PHONY : CMakeFiles/ContinuousStart.dir/clean
 
 CMakeFiles/ContinuousStart.dir/depend:
-	cd /home/t-sankdas/emp-zono/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/t-sankdas/emp-zono /home/t-sankdas/emp-zono /home/t-sankdas/emp-zono/build /home/t-sankdas/emp-zono/build /home/t-sankdas/emp-zono/build/CMakeFiles/ContinuousStart.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /home/sankha/ccs-artifact/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sankha/ccs-artifact /home/sankha/ccs-artifact /home/sankha/ccs-artifact/build /home/sankha/ccs-artifact/build /home/sankha/ccs-artifact/build/CMakeFiles/ContinuousStart.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/ContinuousStart.dir/depend
 

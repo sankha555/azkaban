@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/t-sankdas/emp-zono/tests/test_fairness.cpp" "tests/CMakeFiles/test_fairness.dir/test_fairness.cpp.o" "gcc" "tests/CMakeFiles/test_fairness.dir/test_fairness.cpp.o.d"
+  "/home/sankha/ccs-artifact/tests/test_fairness.cpp" "tests/CMakeFiles/test_fairness.dir/test_fairness.cpp.o" "gcc" "tests/CMakeFiles/test_fairness.dir/test_fairness.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

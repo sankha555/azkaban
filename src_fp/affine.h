@@ -81,8 +81,10 @@ class Affine : public Layer<T> {
             new_zono = new Zonotope<T>(new_center, new_noise_symbols);
 
             this->expressions.push_back(new_zono);
-        }
 
+            // cout << new_zono->concrete().to_string() << "\n";
+        }
+        // cout << "\n\n";
     }
 };
 

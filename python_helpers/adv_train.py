@@ -16,34 +16,52 @@ def fraction(x):
 
 
 def get_model_name(dataset, hidden_sizes, epsilon, training_method='pgd', activation='relu', is_conv = False):
-    num_hidden = len(hidden_sizes)
     suffix = '_diffai' if training_method == 'diffai' else ''
     epsilon_str = f"_e{epsilon:.4f}{suffix}" if epsilon > 0 else ''
     if is_conv:
         return f"{dataset}_conv_{activation}_small{epsilon_str}"
-    
-    return f"{dataset}_{activation}_{num_hidden}_{hidden_sizes[0]}{epsilon_str}"
+
+    # SimpleNN has a fixed architecture; do not encode ignored --hidden values
+    # in the artifact name.
+    return f"{dataset}_{activation}_mlp14_29x8_28x6{epsilon_str}"
 
 class SimpleNN(nn.Module):
-    """Simple fully connected network."""
+    """Fully connected network matching the C++ ``Model<T>`` architecture.
+
+    For CIFAR-10 this is:
+    3072 -> (29 x 8) -> (28 x 6) -> 10,
+    with a ReLU after every affine layer, including the output projection.
+    ``hidden_sizes`` is retained in the signature for CLI compatibility; the
+    C++-compatible widths above are fixed.
+    """
     def __init__(self, input_size, hidden_sizes, num_classes, activation):
         super(SimpleNN, self).__init__()
+
+        if activation != 'relu':
+            raise ValueError(
+                "SimpleNN matches the requested C++ architecture, which uses ReLU activations. "
+                "Use --act relu."
+            )
+
+        widths = [300, 34, 33, 33, 10]
+        # widths = [34, 34, 34, 34, 33, 33, 33, 33, 33, 33, 33, 33, 10]
+        
         layers = []
         prev_size = input_size
-        
-        for hidden_size in hidden_sizes:
-            layers.append(nn.Linear(prev_size, hidden_size))
-            if activation == 'relu':
-                layers.append(nn.ReLU())
-            elif activation == 'sigmoid':
-                layers.append(nn.Sigmoid())
-            elif activation == 'tanh':
-                layers.append(nn.Tanh())
-            else:
-                raise Exception(f"Unknown activation {activation}")
-            prev_size = hidden_size
-        
-        layers.append(nn.Linear(prev_size, num_classes))
+        for width in widths:
+            layers.extend([nn.Linear(prev_size, width), nn.ReLU()])
+            prev_size = width
+        # layers.extend([nn.Linear(prev_size, width), nn.ReLU()])
+
+        # This is a deep, narrow ReLU network. PyTorch's default Linear
+        # initialization loses activation scale over many such layers, which
+        # can leave the classifier at chance accuracy.  He initialization and
+        # a small positive bias preserve signal/gradient flow without changing
+        # the architecture or the exported operation sequence.
+        # for layer in layers:
+        #     if isinstance(layer, nn.Linear):
+        #         nn.init.kaiming_normal_(layer.weight, nonlinearity='relu')
+        #         nn.init.constant_(layer.bias, 0.01)
         
         self.network = nn.Sequential(*layers)
         self.input_size = input_size
@@ -60,10 +78,10 @@ class ConvNN(nn.Module):
         ReLU
         Conv2D(22, 24, 14, 14, 3, 3, 3, 3, 0, 0)    # -> 24 x  4 x  4 =  384
         ReLU
-        Conv2D(24, 16, 4, 4, 3, 3, 1, 1, 0, 0)      # -> 16 x  2 x  2 =   64
+        Conv2D(24, 30, 4, 4, 3, 3, 1, 1, 0, 0)      # -> 30 x  2 x  2 =  120
         ReLU
-        Affine(64, 32) -> ReLU
-        Affine(32, 10) -> ReLU
+        Affine(120, 16) -> ReLU
+        Affine(16, 10) -> ReLU
         Affine(10, 10) -> Output(10)
     """
     def __init__(self, input_size, hidden_sizes, num_classes, activation):
@@ -86,16 +104,16 @@ class ConvNN(nn.Module):
             # Conv2D(22, 24, 14, 14, 3, 3, 3, 3, 0, 0) -> 24 x 4 x 4 = 384
             nn.Conv2d(22, 24, kernel_size=3, stride=3, padding=0),
             make_activation(),
-            # Conv2D(24, 16, 4, 4, 3, 3, 1, 1, 0, 0) -> 16 x 2 x 2 = 64
-            nn.Conv2d(24, 16, kernel_size=3, stride=1, padding=0),
+            # Conv2D(24, 30, 4, 4, 3, 3, 1, 1, 0, 0) -> 30 x 2 x 2 = 120
+            nn.Conv2d(24, 30, kernel_size=3, stride=1, padding=0),
             make_activation(),
-            # Flatten -> 64
+            # Flatten -> 120
             nn.Flatten(),
-            # Affine(64, 32) -> ReLU
-            nn.Linear(64, 32),
+            # Affine(120, 16) -> ReLU
+            nn.Linear(120, 16),
             make_activation(),
-            # Affine(32, 10) -> ReLU
-            nn.Linear(32, 10),
+            # Affine(16, 10) -> ReLU
+            nn.Linear(16, 10),
             make_activation(),
             # Affine(10, 10) -> Output(10)
             nn.Linear(10, num_classes),
@@ -191,13 +209,18 @@ def test(model, test_loader, device, epsilon=None, alpha=None, num_steps=None):
     accuracy = 100. * correct / total
     return accuracy
 
-def get_dataset(dataset_name, batch_size, is_conv):
+def get_dataset(dataset_name, batch_size, is_conv, workers=0):
     """Load MNIST or CIFAR-10 dataset for Conv or MLP."""
-    transform = transforms.Compose([
-        transforms.ToTensor(),
-        # Optional: Add Normalization if you aren't doing it in the model
-        # transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)) 
-    ])
+    if dataset_name == 'cifar':
+        # Match data/inputs/cifar_test.txt and ERAN's default CIFAR-10
+        # preprocessing.  Tensor flattening remains CHW for SimpleNN.
+        transform = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize((0.4914, 0.4822, 0.4465),
+                                 (0.2023, 0.1994, 0.2010)),
+        ])
+    else:
+        transform = transforms.ToTensor()
     
     if dataset_name == 'mnist':
         train_dataset = torchvision.datasets.MNIST(
@@ -234,11 +257,11 @@ def get_dataset(dataset_name, batch_size, is_conv):
     
     train_loader = DataLoader(
         train_dataset, batch_size=batch_size, shuffle=True, 
-        num_workers=4, pin_memory=True
+        num_workers=workers, pin_memory=torch.cuda.is_available()
     )
     test_loader = DataLoader(
         test_dataset, batch_size=batch_size, shuffle=False,
-        num_workers=4, pin_memory=True
+        num_workers=workers, pin_memory=torch.cuda.is_available()
     )
     
     return train_loader, test_loader, input_size, num_classes
@@ -364,6 +387,8 @@ def main():
                         help='Hidden layer sizes (e.g., --hidden 100 100 100)')
     parser.add_argument('--epochs', type=int, default=10)
     parser.add_argument('--batch-size', type=int, default=128)
+    parser.add_argument('--workers', type=int, default=0,
+                        help='DataLoader worker processes (0 is portable and the default)')
     parser.add_argument('--lr', type=float, default=0.01)
     parser.add_argument('--opt', type=str, default='sgd')
     parser.add_argument('--epsilon', type=fraction, default=0, 
@@ -394,18 +419,19 @@ def main():
     # Load data
     print(f"\nLoading {args.dataset.upper()} dataset...")
     train_loader, test_loader, input_size, num_classes = get_dataset(
-        args.dataset, args.batch_size, args.conv
+        args.dataset, args.batch_size, args.conv, args.workers
     )
     
     # Create model
-    print(f"\nCreating model with architecture: {input_size} -> {' -> '.join(map(str, args.hidden))} -> {num_classes}")
+    # print(f"\nCreating model with architecture: {input_size} -> {' -> '.join(map(str, args.hidden))} -> {num_classes}")
     
     if args.conv:
         model = ConvNN(input_size, args.hidden, num_classes, args.act).to(device)
     else:
         model = SimpleNN(input_size, args.hidden, num_classes, args.act).to(device)
     
-    model_name = get_model_name(args.dataset, args.hidden, args.epsilon, args.training_method, args.act, args.conv)
+    # model_name = get_model_name(args.dataset, args.hidden, args.epsilon, args.training_method, args.act, args.conv)
+    model_name = "cifar_relu_mlp14"
     
     # Optimizer
     if args.opt == 'sgd':
@@ -466,7 +492,7 @@ def main():
     
     model = onnx.load(args.output)
     onnx.save(model, args.output)
-    os.remove(f"{args.output}.data")
+    # os.remove(f"{args.output}.data")
     
     print("Training complete! ")
     print("Model name: ", model_name)

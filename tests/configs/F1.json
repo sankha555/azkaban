@@ -1,0 +1,19 @@
+{
+  "input_file": "data/inputs/adult_test.txt",
+  "params_file": "data/params/adult_relu_8_2.txt",
+  "input_features": 14,
+  "example_index_base": 1,
+  "example_indices": [1],
+  "delta": 0.05,
+  "sensitive_attribute": 9,
+  "sensitive_attribute_values": [0.0, 1.0],
+  "port": 10000,
+  "architecture": [
+    {"type": "input", "size": 14},
+    {"type": "affine", "inputs": 14, "outputs": 8},
+    {"type": "relu", "size": 8},
+    {"type": "affine", "inputs": 8, "outputs": 2},
+    {"type": "relu", "size": 2},
+    {"type": "output", "size": 2}
+  ]
+}
