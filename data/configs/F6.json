@@ -1,0 +1,20 @@
+{
+  "input_file": "data/inputs/german_test.txt",
+  "params_file": "data/params/F6.txt",
+  "input_features": 20,
+  "example_index_base": 1,
+  "example_indices": [1],
+  "delta": 0.05,
+  "sensitive_attribute": 19,
+  "sensitive_attribute_values": [-0.19307291, 5.1793906],
+  "port": 10000,
+  "architecture": [
+    {"type": "input", "size": 20},
+    {"type": "affine", "inputs": 20, "outputs": 50},
+    {"type": "relu", "size": 50},
+    {"type": "affine", "inputs": 50, "outputs": 50},
+    {"type": "relu", "size": 50},
+    {"type": "affine", "inputs": 50, "outputs": 2},
+    {"type": "output", "size": 2}
+  ]
+}

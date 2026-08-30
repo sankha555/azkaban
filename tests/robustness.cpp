@@ -1,0 +1,219 @@
+#include "src/model.h"
+
+#include <chrono>
+#include <ctime>
+#include <fstream>
+#include <iomanip>
+#include <memory>
+#include <stdexcept>
+
+int threads = 1;
+int port = 10000;
+
+using T = IntFp;
+using json = nlohmann::json;
+
+namespace {
+
+void init_verification() {
+    FIELD_ZERO = IntFp(0, PUBLIC);
+    FIELD_ONE = IntFp(1, PUBLIC);
+    FIELD_SCALED_ONE = IntFp(1ULL << FXPSCALE, PUBLIC);
+    FIELD_MINUS_ONE = IntFp(PR - 1, PUBLIC);
+}
+
+json read_config(std::string config_name) {
+    std::string path = "data/configs/" + config_name + ".json";
+    std::ifstream file(path.c_str());
+    if (!file) throw std::runtime_error("Cannot open config: " + std::string(path));
+    json config;
+    file >> config;
+    return config;
+}
+
+std::string timestamp() {
+    const std::time_t now = std::time(nullptr);
+    std::tm local_time{};
+    localtime_r(&now, &local_time);
+    std::ostringstream result;
+    result << std::put_time(&local_time, "%Y-%m-%d %H:%M:%S %Z");
+    return result.str();
+}
+
+vector<float> load_input(const std::string& path, size_t example_index,
+                         size_t example_index_base, size_t feature_count) {
+    if (example_index < example_index_base) {
+        throw std::runtime_error("Example index is below example_index_base");
+    }
+
+    const size_t record_size = feature_count + 1;  // ground-truth label + features
+    const size_t offset = (example_index - example_index_base) * record_size;
+
+    float ground_truth = 0;
+    read_next_elements(1, &ground_truth, offset, path.c_str());
+    vector<float> input(feature_count);
+    read_next_elements(feature_count, input.data(), offset + 1, path.c_str());
+    input.push_back(ground_truth);
+    return input;
+}
+
+std::string dataset_name(const std::string& input_file_path) {
+    const size_t slash = input_file_path.find_last_of('/');
+    const size_t start = (slash == std::string::npos) ? 0 : slash + 1;
+    size_t end = input_file_path.find_last_of('.');
+    if (end == std::string::npos || end < start) end = input_file_path.size();
+
+    std::string name = input_file_path.substr(start, end - start);
+
+    for (const std::string& suffix : {"_test", "_train", "_val"}) {
+        if (name.size() > suffix.size() &&
+            name.compare(name.size() - suffix.size(), suffix.size(), suffix) == 0) {
+            name.erase(name.size() - suffix.size());
+            break;
+        }
+    }
+    return name;
+}
+
+struct NeuronCounts {
+    size_t hidden = 0;
+    size_t output = 0;
+    size_t total() const { return hidden + output; }
+};
+
+size_t count_neurons(const json& layers) {
+    size_t neurons = 0;
+    for (const auto& spec : layers) {
+        const std::string type = spec.at("type").get<std::string>();
+        if (type == "affine") {
+            neurons += spec.at("outputs").get<size_t>();
+        } else if (type == "conv2d") {
+            neurons += spec.at("out_channels").get<size_t>() * (((spec.at("image_height").get<size_t>() - spec.at("kernel_height").get<size_t>())/spec.at("stride_height").get<size_t>())+1);
+        }
+    }
+    return neurons;
+}
+
+Model<T> build_model(const json& layers) {
+    if (!layers.is_array() || layers.empty()) {
+        throw std::runtime_error("architecture must be a non-empty array");
+    }
+
+    Model<T> model;
+    for (const auto& spec : layers) {
+        const std::string type = spec.at("type").get<std::string>();
+        if (type == "input") {
+            model.add_layer(new Input<T>(spec.at("size").get<size_t>()));
+        } else if (type == "affine") {
+            model.add_layer(new Affine<T>(spec.at("inputs").get<size_t>(),
+                                          spec.at("outputs").get<size_t>()));
+        } else if (type == "relu") {
+            model.add_layer(new ReLU<T>(spec.at("size").get<size_t>()));
+        } else if (type == "conv2d") {
+            model.add_layer(new Conv2D<T>(
+                spec.at("in_channels").get<int>(), spec.at("out_channels").get<int>(),
+                spec.at("image_height").get<int>(), spec.at("image_width").get<int>(),
+                spec.at("kernel_height").get<int>(), spec.at("kernel_width").get<int>(),
+                spec.at("stride_height").get<int>(), spec.at("stride_width").get<int>(),
+                spec.value("padding_height", 0), spec.value("padding_width", 0)));
+        } else if (type == "output") {
+            model.add_layer(new Output<T>(spec.at("size").get<size_t>()));
+        } else {
+            throw std::runtime_error("Unknown layer type: " + type);
+        }
+    }
+
+    if (model.layers.front()->type != LAYER_TYPES::INPUT ||
+        model.layers.back()->type != LAYER_TYPES::OUTPUT) {
+        throw std::runtime_error("architecture must start with input and end with output");
+    }
+    return model;
+}
+
+}  
+
+int main(int argc, char** argv) {
+    if (argc != 3) {
+        std::cerr << "usage: " << argv[0] << " <party: 1|2> <experiment.json>\n";
+        return 1;
+    }
+
+    std::chrono::_V2::steady_clock::time_point wall_start;
+
+    try {
+        party = std::stoi(argv[1]);
+        if (party != ALICE && party != BOB) {
+            throw std::runtime_error("party must be ALICE (1) or BOB (2)");
+        }
+
+        const json config = read_config(argv[2]);
+        threads = config.value("threads", 1);
+        port = config.value("port", 10000);
+
+        const std::string input_file = config.at("input_file").get<std::string>();
+        const std::string params_file = config.at("params_file").get<std::string>();
+        const float delta = config.at("delta").get<float>();
+        const size_t feature_count = config.at("input_features").get<size_t>();
+        const size_t example_index_base = config.value("example_index_base", 1U);
+        const auto examples = config.at("example_indices").get<vector<size_t>>();
+        const auto sensitive_values = config.value("sensitive_attributes", vector<int>{});
+        const set<int> sensitive_attributes(sensitive_values.begin(), sensitive_values.end());
+        const size_t neurons = count_neurons(config.at("architecture"));
+
+        std::cout << "---------------------- Robustness Proof ------------------------\n";
+        std::cout << "Dataset: " << dataset_name(input_file) << '\n';
+        std::cout << "Model: " << argv[2] << '\n';
+        std::cout << "Neurons: " << neurons << "\n";
+        std::cout << "Delta:" << delta << std::endl;
+
+        BoolIO<NetIO>* ios[1];
+        ios[0] = new BoolIO<NetIO>(new NetIO(party == ALICE ? nullptr : "127.0.0.1", port), party == ALICE);
+
+        wall_start = std::chrono::steady_clock::now();
+        std::cout << "Proof start time: " << timestamp() << '\n';
+
+        setup_plain_prot(false, "");
+        setup_zk_arith<BoolIO<NetIO>>(ios, threads, party);
+        init_verification();
+        startComputation(party);
+
+        Model<T> model = build_model(config.at("architecture"));
+        model.read_params(params_file.c_str());
+        std::cout << "Parameters loaded from " << params_file << '\n';
+
+        NUM_VERIFIED = 0;
+        auto* output = static_cast<Output<T>*>(model.layers.back());
+        for (const size_t index : examples) {
+            vector<float> record = load_input(input_file, index, example_index_base, feature_count);
+            const int ground_truth = static_cast<int>(record.back());
+            record.pop_back();
+
+            output->set_output(ground_truth);
+            model.forward(record, delta, sensitive_attributes);
+            model.reset();
+        }
+
+        endComputation(party);
+        const bool cheated = finalize_zk_arith<BoolIO<NetIO>>();
+        if (party == BOB) {
+            std::cout << "\n" << (cheated ? "\033[31mVerification failed!" : "\033[32mVerification successful!") << "\033[0m\n";
+        }
+
+        const std::chrono::_V2::steady_clock::time_point wall_end = std::chrono::steady_clock::now();
+        const std::chrono::duration<double> elapsed = wall_end - wall_start;
+
+        std::cout << "Proof end time: " << timestamp() << '\n';
+        std::cout << "Certification Accuracy: " << NUM_VERIFIED*100.0/examples.size() << "% \n";
+        std::cout << "End-to-End Proof Time: " << std::fixed << std::setprecision(3) << elapsed.count() << " seconds\n";
+
+        NetIO* net = ios[0]->io;
+        delete ios[0];
+        delete net;
+    } catch (const std::exception& error) {
+        std::cerr << "Experiment failed: " << error.what() << '\n';
+        return 1;
+    }
+
+    
+    return 0;
+}

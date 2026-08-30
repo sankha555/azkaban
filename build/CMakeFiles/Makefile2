@@ -108,11 +108,9 @@ clean: tests/clean
 # Directory level rules for directory tests
 
 # Recursive "all" directory target.
-tests/all: tests/CMakeFiles/test_small.dir/all
-tests/all: tests/CMakeFiles/test_fairness.dir/all
-tests/all: tests/CMakeFiles/test_small_fp.dir/all
-tests/all: tests/CMakeFiles/test_configurable.dir/all
-tests/all: tests/CMakeFiles/test_fairness_configurable.dir/all
+tests/all: tests/CMakeFiles/robustness.dir/all
+tests/all: tests/CMakeFiles/fairness.dir/all
+tests/all: tests/CMakeFiles/cleartext_accuracy.dir/all
 .PHONY : tests/all
 
 # Recursive "preinstall" directory target.
@@ -120,14 +118,9 @@ tests/preinstall:
 .PHONY : tests/preinstall
 
 # Recursive "clean" directory target.
-tests/clean: tests/CMakeFiles/test_small.dir/clean
-tests/clean: tests/CMakeFiles/test_fairness.dir/clean
-tests/clean: tests/CMakeFiles/test_small_fp.dir/clean
-tests/clean: tests/CMakeFiles/test_configurable.dir/clean
-tests/clean: tests/CMakeFiles/test_fairness_configurable.dir/clean
-tests/clean: tests/CMakeFiles/valgrind_test_small.dir/clean
-tests/clean: tests/CMakeFiles/valgrind_test_fairness.dir/clean
-tests/clean: tests/CMakeFiles/valgrind.dir/clean
+tests/clean: tests/CMakeFiles/robustness.dir/clean
+tests/clean: tests/CMakeFiles/fairness.dir/clean
+tests/clean: tests/CMakeFiles/cleartext_accuracy.dir/clean
 .PHONY : tests/clean
 
 #=============================================================================
@@ -137,7 +130,7 @@ tests/clean: tests/CMakeFiles/valgrind.dir/clean
 CMakeFiles/emp-zono.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/emp-zono.dir/build.make CMakeFiles/emp-zono.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/emp-zono.dir/build.make CMakeFiles/emp-zono.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/sankha/ccs-artifact/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target emp-zono"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/sankha/ccs-artifact/build/CMakeFiles --progress-num=3,4,5,6,7 "Built target emp-zono"
 .PHONY : CMakeFiles/emp-zono.dir/all
 
 # Build rule for subdir invocation for target.
@@ -885,213 +878,82 @@ CMakeFiles/ContinuousSubmit.dir/clean:
 .PHONY : CMakeFiles/ContinuousSubmit.dir/clean
 
 #=============================================================================
-# Target rules for target tests/CMakeFiles/test_small.dir
+# Target rules for target tests/CMakeFiles/robustness.dir
 
 # All Build rule for target.
-tests/CMakeFiles/test_small.dir/all: CMakeFiles/emp-zono.dir/all
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small.dir/build.make tests/CMakeFiles/test_small.dir/depend
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small.dir/build.make tests/CMakeFiles/test_small.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/sankha/ccs-artifact/build/CMakeFiles --progress-num=12,13 "Built target test_small"
-.PHONY : tests/CMakeFiles/test_small.dir/all
+tests/CMakeFiles/robustness.dir/all: CMakeFiles/emp-zono.dir/all
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/robustness.dir/build.make tests/CMakeFiles/robustness.dir/depend
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/robustness.dir/build.make tests/CMakeFiles/robustness.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/sankha/ccs-artifact/build/CMakeFiles --progress-num=10,11 "Built target robustness"
+.PHONY : tests/CMakeFiles/robustness.dir/all
 
 # Build rule for subdir invocation for target.
-tests/CMakeFiles/test_small.dir/rule: cmake_check_build_system
+tests/CMakeFiles/robustness.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/sankha/ccs-artifact/build/CMakeFiles 7
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test_small.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/robustness.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/sankha/ccs-artifact/build/CMakeFiles 0
-.PHONY : tests/CMakeFiles/test_small.dir/rule
+.PHONY : tests/CMakeFiles/robustness.dir/rule
 
 # Convenience name for target.
-test_small: tests/CMakeFiles/test_small.dir/rule
-.PHONY : test_small
+robustness: tests/CMakeFiles/robustness.dir/rule
+.PHONY : robustness
 
 # clean rule for target.
-tests/CMakeFiles/test_small.dir/clean:
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small.dir/build.make tests/CMakeFiles/test_small.dir/clean
-.PHONY : tests/CMakeFiles/test_small.dir/clean
+tests/CMakeFiles/robustness.dir/clean:
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/robustness.dir/build.make tests/CMakeFiles/robustness.dir/clean
+.PHONY : tests/CMakeFiles/robustness.dir/clean
 
 #=============================================================================
-# Target rules for target tests/CMakeFiles/test_fairness.dir
+# Target rules for target tests/CMakeFiles/fairness.dir
 
 # All Build rule for target.
-tests/CMakeFiles/test_fairness.dir/all: CMakeFiles/emp-zono.dir/all
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_fairness.dir/build.make tests/CMakeFiles/test_fairness.dir/depend
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_fairness.dir/build.make tests/CMakeFiles/test_fairness.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/sankha/ccs-artifact/build/CMakeFiles --progress-num=8,9 "Built target test_fairness"
-.PHONY : tests/CMakeFiles/test_fairness.dir/all
+tests/CMakeFiles/fairness.dir/all: CMakeFiles/emp-zono.dir/all
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/fairness.dir/build.make tests/CMakeFiles/fairness.dir/depend
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/fairness.dir/build.make tests/CMakeFiles/fairness.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/sankha/ccs-artifact/build/CMakeFiles --progress-num=8,9 "Built target fairness"
+.PHONY : tests/CMakeFiles/fairness.dir/all
 
 # Build rule for subdir invocation for target.
-tests/CMakeFiles/test_fairness.dir/rule: cmake_check_build_system
+tests/CMakeFiles/fairness.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/sankha/ccs-artifact/build/CMakeFiles 7
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test_fairness.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/fairness.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/sankha/ccs-artifact/build/CMakeFiles 0
-.PHONY : tests/CMakeFiles/test_fairness.dir/rule
+.PHONY : tests/CMakeFiles/fairness.dir/rule
 
 # Convenience name for target.
-test_fairness: tests/CMakeFiles/test_fairness.dir/rule
-.PHONY : test_fairness
+fairness: tests/CMakeFiles/fairness.dir/rule
+.PHONY : fairness
 
 # clean rule for target.
-tests/CMakeFiles/test_fairness.dir/clean:
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_fairness.dir/build.make tests/CMakeFiles/test_fairness.dir/clean
-.PHONY : tests/CMakeFiles/test_fairness.dir/clean
+tests/CMakeFiles/fairness.dir/clean:
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/fairness.dir/build.make tests/CMakeFiles/fairness.dir/clean
+.PHONY : tests/CMakeFiles/fairness.dir/clean
 
 #=============================================================================
-# Target rules for target tests/CMakeFiles/test_small_fp.dir
+# Target rules for target tests/CMakeFiles/cleartext_accuracy.dir
 
 # All Build rule for target.
-tests/CMakeFiles/test_small_fp.dir/all: CMakeFiles/emp-zono.dir/all
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small_fp.dir/build.make tests/CMakeFiles/test_small_fp.dir/depend
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small_fp.dir/build.make tests/CMakeFiles/test_small_fp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/sankha/ccs-artifact/build/CMakeFiles --progress-num=14,15 "Built target test_small_fp"
-.PHONY : tests/CMakeFiles/test_small_fp.dir/all
+tests/CMakeFiles/cleartext_accuracy.dir/all: CMakeFiles/emp-zono.dir/all
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/cleartext_accuracy.dir/build.make tests/CMakeFiles/cleartext_accuracy.dir/depend
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/cleartext_accuracy.dir/build.make tests/CMakeFiles/cleartext_accuracy.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/sankha/ccs-artifact/build/CMakeFiles --progress-num=1,2 "Built target cleartext_accuracy"
+.PHONY : tests/CMakeFiles/cleartext_accuracy.dir/all
 
 # Build rule for subdir invocation for target.
-tests/CMakeFiles/test_small_fp.dir/rule: cmake_check_build_system
+tests/CMakeFiles/cleartext_accuracy.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/sankha/ccs-artifact/build/CMakeFiles 7
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test_small_fp.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/cleartext_accuracy.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/sankha/ccs-artifact/build/CMakeFiles 0
-.PHONY : tests/CMakeFiles/test_small_fp.dir/rule
+.PHONY : tests/CMakeFiles/cleartext_accuracy.dir/rule
 
 # Convenience name for target.
-test_small_fp: tests/CMakeFiles/test_small_fp.dir/rule
-.PHONY : test_small_fp
+cleartext_accuracy: tests/CMakeFiles/cleartext_accuracy.dir/rule
+.PHONY : cleartext_accuracy
 
 # clean rule for target.
-tests/CMakeFiles/test_small_fp.dir/clean:
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small_fp.dir/build.make tests/CMakeFiles/test_small_fp.dir/clean
-.PHONY : tests/CMakeFiles/test_small_fp.dir/clean
-
-#=============================================================================
-# Target rules for target tests/CMakeFiles/test_configurable.dir
-
-# All Build rule for target.
-tests/CMakeFiles/test_configurable.dir/all: CMakeFiles/emp-zono.dir/all
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_configurable.dir/build.make tests/CMakeFiles/test_configurable.dir/depend
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_configurable.dir/build.make tests/CMakeFiles/test_configurable.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/sankha/ccs-artifact/build/CMakeFiles --progress-num=6,7 "Built target test_configurable"
-.PHONY : tests/CMakeFiles/test_configurable.dir/all
-
-# Build rule for subdir invocation for target.
-tests/CMakeFiles/test_configurable.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sankha/ccs-artifact/build/CMakeFiles 7
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test_configurable.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sankha/ccs-artifact/build/CMakeFiles 0
-.PHONY : tests/CMakeFiles/test_configurable.dir/rule
-
-# Convenience name for target.
-test_configurable: tests/CMakeFiles/test_configurable.dir/rule
-.PHONY : test_configurable
-
-# clean rule for target.
-tests/CMakeFiles/test_configurable.dir/clean:
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_configurable.dir/build.make tests/CMakeFiles/test_configurable.dir/clean
-.PHONY : tests/CMakeFiles/test_configurable.dir/clean
-
-#=============================================================================
-# Target rules for target tests/CMakeFiles/test_fairness_configurable.dir
-
-# All Build rule for target.
-tests/CMakeFiles/test_fairness_configurable.dir/all: CMakeFiles/emp-zono.dir/all
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_fairness_configurable.dir/build.make tests/CMakeFiles/test_fairness_configurable.dir/depend
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_fairness_configurable.dir/build.make tests/CMakeFiles/test_fairness_configurable.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/sankha/ccs-artifact/build/CMakeFiles --progress-num=10,11 "Built target test_fairness_configurable"
-.PHONY : tests/CMakeFiles/test_fairness_configurable.dir/all
-
-# Build rule for subdir invocation for target.
-tests/CMakeFiles/test_fairness_configurable.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sankha/ccs-artifact/build/CMakeFiles 7
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test_fairness_configurable.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sankha/ccs-artifact/build/CMakeFiles 0
-.PHONY : tests/CMakeFiles/test_fairness_configurable.dir/rule
-
-# Convenience name for target.
-test_fairness_configurable: tests/CMakeFiles/test_fairness_configurable.dir/rule
-.PHONY : test_fairness_configurable
-
-# clean rule for target.
-tests/CMakeFiles/test_fairness_configurable.dir/clean:
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_fairness_configurable.dir/build.make tests/CMakeFiles/test_fairness_configurable.dir/clean
-.PHONY : tests/CMakeFiles/test_fairness_configurable.dir/clean
-
-#=============================================================================
-# Target rules for target tests/CMakeFiles/valgrind_test_small.dir
-
-# All Build rule for target.
-tests/CMakeFiles/valgrind_test_small.dir/all: tests/CMakeFiles/test_small.dir/all
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind_test_small.dir/build.make tests/CMakeFiles/valgrind_test_small.dir/depend
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind_test_small.dir/build.make tests/CMakeFiles/valgrind_test_small.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/sankha/ccs-artifact/build/CMakeFiles --progress-num=18 "Built target valgrind_test_small"
-.PHONY : tests/CMakeFiles/valgrind_test_small.dir/all
-
-# Build rule for subdir invocation for target.
-tests/CMakeFiles/valgrind_test_small.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sankha/ccs-artifact/build/CMakeFiles 8
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/valgrind_test_small.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sankha/ccs-artifact/build/CMakeFiles 0
-.PHONY : tests/CMakeFiles/valgrind_test_small.dir/rule
-
-# Convenience name for target.
-valgrind_test_small: tests/CMakeFiles/valgrind_test_small.dir/rule
-.PHONY : valgrind_test_small
-
-# clean rule for target.
-tests/CMakeFiles/valgrind_test_small.dir/clean:
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind_test_small.dir/build.make tests/CMakeFiles/valgrind_test_small.dir/clean
-.PHONY : tests/CMakeFiles/valgrind_test_small.dir/clean
-
-#=============================================================================
-# Target rules for target tests/CMakeFiles/valgrind_test_fairness.dir
-
-# All Build rule for target.
-tests/CMakeFiles/valgrind_test_fairness.dir/all: tests/CMakeFiles/test_fairness.dir/all
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind_test_fairness.dir/build.make tests/CMakeFiles/valgrind_test_fairness.dir/depend
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind_test_fairness.dir/build.make tests/CMakeFiles/valgrind_test_fairness.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/sankha/ccs-artifact/build/CMakeFiles --progress-num=17 "Built target valgrind_test_fairness"
-.PHONY : tests/CMakeFiles/valgrind_test_fairness.dir/all
-
-# Build rule for subdir invocation for target.
-tests/CMakeFiles/valgrind_test_fairness.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sankha/ccs-artifact/build/CMakeFiles 8
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/valgrind_test_fairness.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sankha/ccs-artifact/build/CMakeFiles 0
-.PHONY : tests/CMakeFiles/valgrind_test_fairness.dir/rule
-
-# Convenience name for target.
-valgrind_test_fairness: tests/CMakeFiles/valgrind_test_fairness.dir/rule
-.PHONY : valgrind_test_fairness
-
-# clean rule for target.
-tests/CMakeFiles/valgrind_test_fairness.dir/clean:
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind_test_fairness.dir/build.make tests/CMakeFiles/valgrind_test_fairness.dir/clean
-.PHONY : tests/CMakeFiles/valgrind_test_fairness.dir/clean
-
-#=============================================================================
-# Target rules for target tests/CMakeFiles/valgrind.dir
-
-# All Build rule for target.
-tests/CMakeFiles/valgrind.dir/all: tests/CMakeFiles/valgrind_test_small.dir/all
-tests/CMakeFiles/valgrind.dir/all: tests/CMakeFiles/valgrind_test_fairness.dir/all
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind.dir/build.make tests/CMakeFiles/valgrind.dir/depend
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind.dir/build.make tests/CMakeFiles/valgrind.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/sankha/ccs-artifact/build/CMakeFiles --progress-num=16 "Built target valgrind"
-.PHONY : tests/CMakeFiles/valgrind.dir/all
-
-# Build rule for subdir invocation for target.
-tests/CMakeFiles/valgrind.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sankha/ccs-artifact/build/CMakeFiles 12
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/valgrind.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sankha/ccs-artifact/build/CMakeFiles 0
-.PHONY : tests/CMakeFiles/valgrind.dir/rule
-
-# Convenience name for target.
-valgrind: tests/CMakeFiles/valgrind.dir/rule
-.PHONY : valgrind
-
-# clean rule for target.
-tests/CMakeFiles/valgrind.dir/clean:
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind.dir/build.make tests/CMakeFiles/valgrind.dir/clean
-.PHONY : tests/CMakeFiles/valgrind.dir/clean
+tests/CMakeFiles/cleartext_accuracy.dir/clean:
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/cleartext_accuracy.dir/build.make tests/CMakeFiles/cleartext_accuracy.dir/clean
+.PHONY : tests/CMakeFiles/cleartext_accuracy.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

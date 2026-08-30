@@ -549,108 +549,43 @@ ContinuousSubmit/fast:
 .PHONY : ContinuousSubmit/fast
 
 #=============================================================================
-# Target rules for targets named test_small
+# Target rules for targets named robustness
 
 # Build rule for target.
-test_small: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_small
-.PHONY : test_small
+robustness: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 robustness
+.PHONY : robustness
 
 # fast build rule for target.
-test_small/fast:
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small.dir/build.make tests/CMakeFiles/test_small.dir/build
-.PHONY : test_small/fast
+robustness/fast:
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/robustness.dir/build.make tests/CMakeFiles/robustness.dir/build
+.PHONY : robustness/fast
 
 #=============================================================================
-# Target rules for targets named test_fairness
+# Target rules for targets named fairness
 
 # Build rule for target.
-test_fairness: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_fairness
-.PHONY : test_fairness
+fairness: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 fairness
+.PHONY : fairness
 
 # fast build rule for target.
-test_fairness/fast:
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_fairness.dir/build.make tests/CMakeFiles/test_fairness.dir/build
-.PHONY : test_fairness/fast
+fairness/fast:
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/fairness.dir/build.make tests/CMakeFiles/fairness.dir/build
+.PHONY : fairness/fast
 
 #=============================================================================
-# Target rules for targets named test_small_fp
+# Target rules for targets named cleartext_accuracy
 
 # Build rule for target.
-test_small_fp: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_small_fp
-.PHONY : test_small_fp
+cleartext_accuracy: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 cleartext_accuracy
+.PHONY : cleartext_accuracy
 
 # fast build rule for target.
-test_small_fp/fast:
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_small_fp.dir/build.make tests/CMakeFiles/test_small_fp.dir/build
-.PHONY : test_small_fp/fast
-
-#=============================================================================
-# Target rules for targets named test_configurable
-
-# Build rule for target.
-test_configurable: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_configurable
-.PHONY : test_configurable
-
-# fast build rule for target.
-test_configurable/fast:
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_configurable.dir/build.make tests/CMakeFiles/test_configurable.dir/build
-.PHONY : test_configurable/fast
-
-#=============================================================================
-# Target rules for targets named test_fairness_configurable
-
-# Build rule for target.
-test_fairness_configurable: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_fairness_configurable
-.PHONY : test_fairness_configurable
-
-# fast build rule for target.
-test_fairness_configurable/fast:
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_fairness_configurable.dir/build.make tests/CMakeFiles/test_fairness_configurable.dir/build
-.PHONY : test_fairness_configurable/fast
-
-#=============================================================================
-# Target rules for targets named valgrind_test_small
-
-# Build rule for target.
-valgrind_test_small: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 valgrind_test_small
-.PHONY : valgrind_test_small
-
-# fast build rule for target.
-valgrind_test_small/fast:
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind_test_small.dir/build.make tests/CMakeFiles/valgrind_test_small.dir/build
-.PHONY : valgrind_test_small/fast
-
-#=============================================================================
-# Target rules for targets named valgrind_test_fairness
-
-# Build rule for target.
-valgrind_test_fairness: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 valgrind_test_fairness
-.PHONY : valgrind_test_fairness
-
-# fast build rule for target.
-valgrind_test_fairness/fast:
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind_test_fairness.dir/build.make tests/CMakeFiles/valgrind_test_fairness.dir/build
-.PHONY : valgrind_test_fairness/fast
-
-#=============================================================================
-# Target rules for targets named valgrind
-
-# Build rule for target.
-valgrind: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 valgrind
-.PHONY : valgrind
-
-# fast build rule for target.
-valgrind/fast:
-	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/valgrind.dir/build.make tests/CMakeFiles/valgrind.dir/build
-.PHONY : valgrind/fast
+cleartext_accuracy/fast:
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/cleartext_accuracy.dir/build.make tests/CMakeFiles/cleartext_accuracy.dir/build
+.PHONY : cleartext_accuracy/fast
 
 src/emp-zk-math/ZKmath-functions.o: src/emp-zk-math/ZKmath-functions.cpp.o
 .PHONY : src/emp-zk-math/ZKmath-functions.o
@@ -789,15 +724,10 @@ help:
 	@echo "... NightlySubmit"
 	@echo "... NightlyTest"
 	@echo "... NightlyUpdate"
-	@echo "... valgrind"
-	@echo "... valgrind_test_fairness"
-	@echo "... valgrind_test_small"
+	@echo "... cleartext_accuracy"
 	@echo "... emp-zono"
-	@echo "... test_configurable"
-	@echo "... test_fairness"
-	@echo "... test_fairness_configurable"
-	@echo "... test_small"
-	@echo "... test_small_fp"
+	@echo "... fairness"
+	@echo "... robustness"
 	@echo "... src/emp-zk-math/ZKmath-functions.o"
 	@echo "... src/emp-zk-math/ZKmath-functions.i"
 	@echo "... src/emp-zk-math/ZKmath-functions.s"

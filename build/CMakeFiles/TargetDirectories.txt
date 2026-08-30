@@ -34,14 +34,9 @@
 /home/sankha/ccs-artifact/build/CMakeFiles/install.dir
 /home/sankha/ccs-artifact/build/CMakeFiles/install/local.dir
 /home/sankha/ccs-artifact/build/CMakeFiles/install/strip.dir
-/home/sankha/ccs-artifact/build/tests/CMakeFiles/test_small.dir
-/home/sankha/ccs-artifact/build/tests/CMakeFiles/test_fairness.dir
-/home/sankha/ccs-artifact/build/tests/CMakeFiles/test_small_fp.dir
-/home/sankha/ccs-artifact/build/tests/CMakeFiles/test_configurable.dir
-/home/sankha/ccs-artifact/build/tests/CMakeFiles/test_fairness_configurable.dir
-/home/sankha/ccs-artifact/build/tests/CMakeFiles/valgrind_test_small.dir
-/home/sankha/ccs-artifact/build/tests/CMakeFiles/valgrind_test_fairness.dir
-/home/sankha/ccs-artifact/build/tests/CMakeFiles/valgrind.dir
+/home/sankha/ccs-artifact/build/tests/CMakeFiles/robustness.dir
+/home/sankha/ccs-artifact/build/tests/CMakeFiles/fairness.dir
+/home/sankha/ccs-artifact/build/tests/CMakeFiles/cleartext_accuracy.dir
 /home/sankha/ccs-artifact/build/tests/CMakeFiles/test.dir
 /home/sankha/ccs-artifact/build/tests/CMakeFiles/edit_cache.dir
 /home/sankha/ccs-artifact/build/tests/CMakeFiles/rebuild_cache.dir

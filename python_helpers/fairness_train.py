@@ -164,11 +164,11 @@ class CustomNN(nn.Module):
         
         
         layers = [
-            nn.Linear(input_size, 8),
+            nn.Linear(input_size, 2),
             nn.ReLU(),
-            nn.Linear(8, 2),
+            nn.Linear(2, 4),
             nn.ReLU(),
-            nn.Linear(2, 2),
+            nn.Linear(4, 2)
         ]
         self.model = nn.Sequential(*layers)
     
