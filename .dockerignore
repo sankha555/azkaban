@@ -1,0 +1,29 @@
+# Directories that must not be in the artifact image
+.agent
+.agents
+.codex
+datasets
+legacy
+python_helpers
+
+# Build products and environments: everything is rebuilt inside the image
+build
+venv
+deps
+results
+eran/gurobi_env.sh
+eran/ELINA/**/*.o
+eran/ELINA/**/*.so
+eran/__pycache__
+**/__pycache__
+*.pyc
+*.bak
+
+# Repository metadata
+.git
+.gitignore
+
+pack-artifact.sh
+install-docker-and-pull.sh
+*.gz
+*.sha256

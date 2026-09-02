@@ -12,7 +12,6 @@ extern LUTRangeIntFp *LUTRange[NUM_RANGE];  // 0~12
 // LUTdiv
 #define DIV_M ((SCALE - 2)/2)
 #define DIV_N 30
-// #define DIV_N 13
 extern LUTTwoValueIntFp *LUTdiv;
 extern LUTTwoValueIntFp *LUTdivLower;
 extern LUTTwoValueIntFp *LUTdivUpper;

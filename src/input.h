@@ -26,7 +26,6 @@ class Input : public Layer<T> {
            
             x_itvl = Interval<T>::intervalize_from_real(x[i]);
             
-            
             Zonotope<T>* node;
             if(this->sensitive_attrs.count(i)){
                 node = new Zonotope<T>(x_itvl, {GLOBAL_NOISE_SYMBOL_CTR++}, {zero_itvl});
@@ -34,10 +33,7 @@ class Input : public Layer<T> {
                 node = new Zonotope<T>(x_itvl, {GLOBAL_NOISE_SYMBOL_CTR++}, {eps_itvl});
             } 
            
-            // cout << i << ": " << x_itvl.to_string() << "\n";
-
             this->expressions.push_back(node);
-            // cout << this->expressions.back()->center.to_string() << "\n";
         }
     }
 

@@ -1,3 +1,6 @@
+import sys as _sys, os as _os
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from paths import project_path
 import onnx
 import numpy as np
 from onnx import numpy_helper
@@ -63,7 +66,7 @@ def describe_gemm(node):
     print()
 
 
-model_path = "test/eran_models/mnist_relu_conv_small.onnx"
+model_path = project_path('data/models/mnist_relu_conv_small.onnx')
 
 model = onnx.load(model_path)
 graph = model.graph

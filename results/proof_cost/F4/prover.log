@@ -1,0 +1,13 @@
+---------------------- Fairness Proof (PROVER) ------------------------
+Dataset: credit
+Model  : F4
+Neurons: 112
+Delta  : 0.05
+Sensitive attribute: gender
+connected
+Proof start time: 2026-08-30 17:35:14 UTC
+Example 1[gender = male] Safe: YES
+Example 1[gender = female] Safe: YES
+Fair: YES
+Proof end time: 2026-08-30 17:35:22 UTC
+End-to-End Proof Time: 7.849 seconds

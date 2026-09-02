@@ -29,7 +29,7 @@ void init_verification() {
 }
 
 json read_config(std::string config_name) {
-    std::string path = "data/configs/" + config_name + ".json";
+    std::string path = project_path("data/configs/" + config_name + ".json");
     std::ifstream file(path.c_str());
     if (!file) throw std::runtime_error("Cannot open config: " + std::string(path));
     json config;
@@ -91,12 +91,6 @@ std::string dataset_name(const std::string& input_file_path) {
     return name;
 }
 
-struct NeuronCounts {
-    size_t hidden = 0;
-    size_t output = 0;
-    size_t total() const { return hidden + output; }
-};
-
 size_t count_neurons(const json& layers) {
     size_t neurons = 0;
     for (const auto& spec : layers) {
@@ -104,7 +98,8 @@ size_t count_neurons(const json& layers) {
         if (type == "affine") {
             neurons += spec.at("outputs").get<size_t>();
         } else if (type == "conv2d") {
-            neurons += spec.at("out_channels").get<size_t>() * (((spec.at("image_height").get<size_t>() - spec.at("kernel_height").get<size_t>())/spec.at("stride_height").get<size_t>())+1);
+            size_t out_height = (((spec.at("image_height").get<size_t>() - spec.at("kernel_height").get<size_t>())/spec.at("stride_height").get<size_t>())+1);
+            neurons += spec.at("out_channels").get<size_t>() * out_height * out_height;
         }
     }
     return neurons;
@@ -166,14 +161,17 @@ int main(int argc, char** argv) {
         threads = config.value("threads", 1);
         port = config.value("port", 10000);
 
-        const std::string input_file = config.at("input_file").get<std::string>();
-        const std::string params_file = config.at("params_file").get<std::string>();
+        const std::string input_file = project_path(config.at("input_file").get<std::string>());
+        const std::string params_file = project_path(config.at("params_file").get<std::string>());
         const float delta = config.at("delta").get<float>();
         const size_t feature_count = config.at("input_features").get<size_t>();
         const size_t example_index_base = config.value("example_index_base", 1U);
         const auto examples = config.at("example_indices").get<vector<size_t>>();
+        if (examples.size() == 0){
+            std::cerr << "At least one example is required, check config" << "\n";
+            return 1;
+        }
 
-        // Fairness setup: exactly one sensitive attribute, certified once per value it can take.
         const int sensitive_attribute = config.at("sensitive_attribute").get<int>();
         if (sensitive_attribute < 0 || static_cast<size_t>(sensitive_attribute) >= feature_count) {
             throw std::runtime_error("sensitive_attribute is outside the feature range");
@@ -184,17 +182,15 @@ int main(int argc, char** argv) {
             throw std::runtime_error("sensitive_attribute_values needs at least two values");
         }
 
-        // The sensitive feature is pinned to a concrete value in each run, so it carries
-        // no epsilon perturbation: mark it sensitive for the input layer.
         const set<int> sensitive_attributes{sensitive_attribute};
         const size_t neurons = count_neurons(config.at("architecture"));
         const std::string dataset = dataset_name(input_file);
 
-        std::cout << "---------------------- Fairness Proof --------------------------\n";
-        std::cout << "Dataset: " << dataset << '\n';
-        std::cout << "Model: " << argv[2] << '\n';
-        std::cout << "Neurons: " << neurons << "\n";
-        std::cout << "Delta: " << delta << '\n';
+        std::cout << "---------------------- Fairness Proof (" << (party == 1 ? "PROVER" : "VERIFIER") << ") ------------------------\n";
+        std::cout << "Dataset: " << dataset_name(input_file) << '\n';
+        std::cout << "Model  : " << argv[2] << '\n';
+        std::cout << "Neurons: " << neurons << '\n';
+        std::cout << "Delta  : " << delta << std::endl;
         std::cout << "Sensitive attribute: " << sens_attr_names[dataset] << std::endl;
 
         BoolIO<NetIO>* ios[1];
@@ -210,19 +206,17 @@ int main(int argc, char** argv) {
 
         Model<T> model = build_model(config.at("architecture"));
         model.read_params(params_file.c_str());
-        std::cout << "Parameters loaded from " << params_file << '\n';
 
         NUM_VERIFIED = 0;
         size_t num_fair = 0;
         auto* output = static_cast<Output<T>*>(model.layers.back());
-        for (const size_t index : examples) {
+        for (const size_t index : {examples[0]}) { // only cost computation, so doing just one example's proof
             vector<float> record = load_input(input_file, index, example_index_base, feature_count);
             const int ground_truth = static_cast<int>(record.back());
             record.pop_back();
 
             output->set_output(ground_truth);
 
-            // The example is fair only if every value of the sensitive attribute certifies.
             bool fair = true; 
             int sens_attr_value_index = 0;
             for (const float value : sensitive_attribute_values) {
@@ -250,7 +244,6 @@ int main(int argc, char** argv) {
         const std::chrono::duration<double> elapsed = wall_end - wall_start;
 
         std::cout << "Proof end time: " << timestamp() << '\n';
-        std::cout << "Certified Fair: " << num_fair << "/" << examples.size() << "\n";
         std::cout << "End-to-End Proof Time: " << std::fixed << std::setprecision(3) << elapsed.count() << " seconds\n";
 
         NetIO* net = ios[0]->io;

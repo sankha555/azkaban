@@ -1,5 +1,5 @@
-#include "src_fp/model.h"
-#include "src_fp/inference.h"
+#include "src/cleartext/model.h"
+#include "src/cleartext/inference.h"
 
 #include <fstream>
 #include <iomanip>
@@ -15,7 +15,7 @@ using FpLayer = fp_inference::Layer;
 namespace {
 
 json read_config(std::string config_name) {
-    std::string path = "data/configs/" + config_name + ".json";
+    std::string path = project_path("data/configs/" + config_name + ".json");
     std::ifstream file(path.c_str());
     if (!file) throw std::runtime_error("Cannot open config: " + std::string(path));
     json config;
@@ -64,7 +64,8 @@ size_t count_neurons(const json& layers) {
         if (type == "affine") {
             neurons += spec.at("outputs").get<size_t>();
         } else if (type == "conv2d") {
-            neurons += spec.at("out_channels").get<size_t>() * (((spec.at("image_height").get<size_t>() - spec.at("kernel_height").get<size_t>())/spec.at("stride_height").get<size_t>())+1);
+            size_t out_height = (((spec.at("image_height").get<size_t>() - spec.at("kernel_height").get<size_t>())/spec.at("stride_height").get<size_t>())+1);
+            neurons += spec.at("out_channels").get<size_t>() * out_height * out_height;
         }
     }
     return neurons;
@@ -107,7 +108,7 @@ Model<T>* build_model(const json& layers) {
     return model;
 }
 
-}  // namespace
+} 
 
 int main(int argc, char** argv) {
     if (argc < 2 || argc > 4) {
@@ -122,13 +123,11 @@ int main(int argc, char** argv) {
     try {
         const json config = read_config(argv[1]);
 
-        const std::string input_file = config.at("input_file").get<std::string>();
-        const std::string params_file = config.at("params_file").get<std::string>();
+        const std::string input_file = project_path(config.at("input_file").get<std::string>());
+        const std::string params_file = project_path(config.at("params_file").get<std::string>());
         const size_t feature_count = config.at("input_features").get<size_t>();
         const size_t example_index_base = config.value("example_index_base", 1U);
         const auto examples = config.at("example_indices").get<vector<size_t>>();
-        const auto sensitive_values = config.value("sensitive_attributes", vector<int>{});
-        const set<int> sensitive_attributes(sensitive_values.begin(), sensitive_values.end());
         const size_t neurons = count_neurons(config.at("architecture"));
 
         float delta = config.at("delta").get<float>();
@@ -137,13 +136,12 @@ int main(int argc, char** argv) {
 
         std::cout << "------------------ Cleartext Evaluation -------------------\n";
         std::cout << "Dataset: " << dataset_name(input_file) << '\n';
-        std::cout << "Model: " << argv[1] << '\n';
+        std::cout << "Model:   " << argv[1] << '\n';
         std::cout << "Neurons: " << neurons << '\n';
-        std::cout << "Delta: " << delta << std::endl;
+        std::cout << "Delta:   " << delta << std::endl;
 
         model = build_model(config.at("architecture"));
         model->read_params(params_file.c_str());
-        std::cout << "Parameters loaded from " << params_file << '\n';
 
         vector<FpLayer> inference_layers = fp_inference::build_layers(config.at("architecture"));
         fp_inference::read_params(inference_layers, params_file);
@@ -151,7 +149,7 @@ int main(int argc, char** argv) {
         NUM_VERIFIED = 0;
         size_t num_correct = 0;
         auto* output = static_cast<Output<T>*>(model->layers.back());
-
+        size_t i = 0;
         for (const size_t index : examples) {
             vector<float> record = load_input(input_file, index, example_index_base, feature_count);
             const int ground_truth = static_cast<int>(record.back());
@@ -160,21 +158,19 @@ int main(int argc, char** argv) {
             const vector<Fp> logits = fp_inference::forward(inference_layers, record);
             const int prediction = fp_inference::argmax(logits);
 
-            std::cout << index << ": prediction: " << prediction << ", ground truth: " << ground_truth << " -> ";
-
             if (prediction != ground_truth) {
-                std::cout << "WRONG, certification skipped...\n";
                 continue;
             }
 
             num_correct++;
-            std::cout << "CORRECT, certifying...\n";
 
             output->set_output(ground_truth);
-            model->forward(record, delta, sensitive_attributes);
+            model->forward(record, delta, set<int>{});
             model->reset();
-        }
 
+            std::cout << "Progress: " << ++i << "/" << examples.size() << " examples\r";
+        }
+        std::cout << std::endl;
         std::cout << '\n';
         std::cout << "Examples evaluated     : " << examples.size() << '\n';
         std::cout << "Inference Accuracy     : " << std::fixed << std::setprecision(0)

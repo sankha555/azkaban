@@ -1,3 +1,6 @@
+import sys as _sys, os as _os
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from paths import project_path
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -224,10 +227,10 @@ def get_dataset(dataset_name, batch_size, is_conv, workers=0):
     
     if dataset_name == 'mnist':
         train_dataset = torchvision.datasets.MNIST(
-            root='./data', train=True, download=True, transform=transform
+            root=project_path('python_helpers/data'), train=True, download=True, transform=transform
         )
         test_dataset = torchvision.datasets.MNIST(
-            root='./data', train=False, download=True, transform=transform
+            root=project_path('python_helpers/data'), train=False, download=True, transform=transform
         )
         # Return (Channels, Height, Width)
         if is_conv:
@@ -239,10 +242,10 @@ def get_dataset(dataset_name, batch_size, is_conv, workers=0):
         
     elif dataset_name == 'cifar':
         train_dataset = torchvision.datasets.CIFAR10(
-            root='./data', train=True, download=True, transform=transform
+            root=project_path('python_helpers/data'), train=True, download=True, transform=transform
         )
         test_dataset = torchvision.datasets.CIFAR10(
-            root='./data', train=False, download=True, transform=transform
+            root=project_path('python_helpers/data'), train=False, download=True, transform=transform
         )
         
         # Return (Channels, Height, Width)
@@ -471,7 +474,7 @@ def main():
         print(f"  Test Adversarial Acc: {adv_acc:.2f}%")
     
     # Save as ONNX
-    args.output = f"eran_models/{model_name}.onnx"
+    args.output = project_path(f'data/models/{model_name}.onnx')
     print(f"\nSaving model to {args.output}")
     model.eval()
     if isinstance(input_size, tuple):

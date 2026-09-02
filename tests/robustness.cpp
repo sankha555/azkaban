@@ -23,7 +23,7 @@ void init_verification() {
 }
 
 json read_config(std::string config_name) {
-    std::string path = "data/configs/" + config_name + ".json";
+    std::string path = project_path("data/configs/" + config_name + ".json");
     std::ifstream file(path.c_str());
     if (!file) throw std::runtime_error("Cannot open config: " + std::string(path));
     json config;
@@ -75,12 +75,6 @@ std::string dataset_name(const std::string& input_file_path) {
     return name;
 }
 
-struct NeuronCounts {
-    size_t hidden = 0;
-    size_t output = 0;
-    size_t total() const { return hidden + output; }
-};
-
 size_t count_neurons(const json& layers) {
     size_t neurons = 0;
     for (const auto& spec : layers) {
@@ -88,7 +82,8 @@ size_t count_neurons(const json& layers) {
         if (type == "affine") {
             neurons += spec.at("outputs").get<size_t>();
         } else if (type == "conv2d") {
-            neurons += spec.at("out_channels").get<size_t>() * (((spec.at("image_height").get<size_t>() - spec.at("kernel_height").get<size_t>())/spec.at("stride_height").get<size_t>())+1);
+            size_t out_height = (((spec.at("image_height").get<size_t>() - spec.at("kernel_height").get<size_t>())/spec.at("stride_height").get<size_t>())+1);
+            neurons += spec.at("out_channels").get<size_t>() * out_height * out_height;
         }
     }
     return neurons;
@@ -123,8 +118,7 @@ Model<T> build_model(const json& layers) {
         }
     }
 
-    if (model.layers.front()->type != LAYER_TYPES::INPUT ||
-        model.layers.back()->type != LAYER_TYPES::OUTPUT) {
+    if (model.layers.front()->type != LAYER_TYPES::INPUT || model.layers.back()->type != LAYER_TYPES::OUTPUT) {
         throw std::runtime_error("architecture must start with input and end with output");
     }
     return model;
@@ -150,27 +144,31 @@ int main(int argc, char** argv) {
         threads = config.value("threads", 1);
         port = config.value("port", 10000);
 
-        const std::string input_file = config.at("input_file").get<std::string>();
-        const std::string params_file = config.at("params_file").get<std::string>();
+        const std::string input_file = project_path(config.at("input_file").get<std::string>());
+        const std::string params_file = project_path(config.at("params_file").get<std::string>());
         const float delta = config.at("delta").get<float>();
         const size_t feature_count = config.at("input_features").get<size_t>();
         const size_t example_index_base = config.value("example_index_base", 1U);
         const auto examples = config.at("example_indices").get<vector<size_t>>();
-        const auto sensitive_values = config.value("sensitive_attributes", vector<int>{});
-        const set<int> sensitive_attributes(sensitive_values.begin(), sensitive_values.end());
+        if (examples.size() == 0){
+            std::cerr << "At least one example is required, check config" << "\n";
+            return 1;
+        }
         const size_t neurons = count_neurons(config.at("architecture"));
 
-        std::cout << "---------------------- Robustness Proof ------------------------\n";
+        std::cout << "---------------------- Robustness Proof (" << (party == 1 ? "PROVER" : "VERIFIER") << ") ------------------------\n";
         std::cout << "Dataset: " << dataset_name(input_file) << '\n';
-        std::cout << "Model: " << argv[2] << '\n';
-        std::cout << "Neurons: " << neurons << "\n";
-        std::cout << "Delta:" << delta << std::endl;
+        std::cout << "Model  : " << argv[2] << '\n';
+        std::cout << "Neurons: " << neurons << '\n';
+        std::cout << "Delta  : " << delta << std::endl;
 
         BoolIO<NetIO>* ios[1];
         ios[0] = new BoolIO<NetIO>(new NetIO(party == ALICE ? nullptr : "127.0.0.1", port), party == ALICE);
 
         wall_start = std::chrono::steady_clock::now();
         std::cout << "Proof start time: " << timestamp() << '\n';
+
+        const uint64_t comm_start = ios[0]->io->counter;
 
         setup_plain_prot(false, "");
         setup_zk_arith<BoolIO<NetIO>>(ios, threads, party);
@@ -179,17 +177,16 @@ int main(int argc, char** argv) {
 
         Model<T> model = build_model(config.at("architecture"));
         model.read_params(params_file.c_str());
-        std::cout << "Parameters loaded from " << params_file << '\n';
 
         NUM_VERIFIED = 0;
         auto* output = static_cast<Output<T>*>(model.layers.back());
-        for (const size_t index : examples) {
+        for (const size_t index : {examples[0]}) {  // only cost computation, so doing just one example's proof
             vector<float> record = load_input(input_file, index, example_index_base, feature_count);
             const int ground_truth = static_cast<int>(record.back());
             record.pop_back();
 
             output->set_output(ground_truth);
-            model.forward(record, delta, sensitive_attributes);
+            model.forward(record, delta, set<int>{});
             model.reset();
         }
 
@@ -199,12 +196,17 @@ int main(int argc, char** argv) {
             std::cout << "\n" << (cheated ? "\033[31mVerification failed!" : "\033[32mVerification successful!") << "\033[0m\n";
         }
 
+        ios[0]->flush();
+        const uint64_t comm_end = ios[0]->io->counter;
+        const double comm_gb = static_cast<double>(comm_end - comm_start) / (1024.0 * 1024.0 * 1024.0);
+
         const std::chrono::_V2::steady_clock::time_point wall_end = std::chrono::steady_clock::now();
         const std::chrono::duration<double> elapsed = wall_end - wall_start;
 
         std::cout << "Proof end time: " << timestamp() << '\n';
-        std::cout << "Certification Accuracy: " << NUM_VERIFIED*100.0/examples.size() << "% \n";
         std::cout << "End-to-End Proof Time: " << std::fixed << std::setprecision(3) << elapsed.count() << " seconds\n";
+        std::cout << "End-to-End Communication (" << (party == ALICE ? "PROVER" : "VERIFIER")
+                  << " sent): " << std::fixed << std::setprecision(6) << comm_gb << " GB\n";
 
         NetIO* net = ios[0]->io;
         delete ios[0];

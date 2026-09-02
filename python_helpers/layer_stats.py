@@ -1,3 +1,6 @@
+import sys as _sys, os as _os
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from paths import project_path
 import matplotlib.pyplot as plt
 import numpy as np
 import re
@@ -220,7 +223,7 @@ def print_statistics(layer_data):
 
 def main():
     # Specify your input file
-    filename = 'test/ai/data/logs/mnist_relu_9_200/mnist_relu_9_200_float_worker_1.txt'  # Change this to your file path
+    filename = project_path('data/logs/mnist_relu_9_200/mnist_relu_9_200_float_worker_1.txt')  # Change this to your file path
     
     print(f"Reading data from '{filename}'...")
     

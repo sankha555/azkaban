@@ -1,9 +1,12 @@
+import sys as _sys, os as _os
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from paths import project_path
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 import json
 
-def load_and_preprocess_adult(filepath='adult.csv', save_scaler=True):
+def load_and_preprocess_adult(filepath=project_path('datasets/adult.csv'), save_scaler=True):
     """
     Load Adult dataset, preprocess it, and extract feature values
     Returns the preprocessed features in the same format as your example
@@ -95,7 +98,7 @@ def extract_sample_features(X, y, index=0, format='c_array'):
     
     return features, label
 
-def save_multiple_samples(X, y, output_file='adult_samples.txt', num_samples=10):
+def save_multiple_samples(X, y, output_file=project_path('data/inputs/adult_samples.txt'), num_samples=10):
     """
     Save multiple samples to a file
     """
@@ -151,7 +154,7 @@ def main():
     extract_sample_features(X, y, index=0, format='csv')
     
     # Save multiple samples
-    save_multiple_samples(X, y, output_file='test/ai/data/inputs/adult_test_1.txt', num_samples=1e9)
+    save_multiple_samples(X, y, output_file=project_path('data/inputs/adult_test_1.txt'), num_samples=1e9)
     
     # Example: Extract specific samples
     print("\n" + "="*80)
@@ -174,7 +177,7 @@ def main():
     print("="*80)
     
     # Get raw features (before scaling)
-    df = pd.read_csv('adult.csv', na_values=' ?', skipinitialspace=True) if pd.io.common.file_exists('adult.csv') else None
+    df = pd.read_csv(project_path('datasets/adult.csv'), na_values=' ?', skipinitialspace=True) if pd.io.common.file_exists(project_path('datasets/adult.csv')) else None
     if df is not None:
         df = df.dropna()
         df['income'] = df['income'].apply(lambda x: 1 if '>50K' in str(x) else 0)

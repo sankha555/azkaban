@@ -39,14 +39,7 @@ class Model {
         
         Layer<T>* prev_layer = this->layers[0];
         for(int i = 1; i < this->layers.size(); i++){
-            // cout << "\nLayer " << i << "\n";
-
             this->layers[i]->forward(prev_layer);
-
-            for(Zonotope<T>* zono : this->layers[i]->expressions){
-                // cout << zono->concrete().to_string() << "\n";
-            }
-
             prev_layer = this->layers[i];
         }
     }

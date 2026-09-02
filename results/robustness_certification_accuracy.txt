@@ -1,0 +1,14 @@
+Robustness certification accuracy
+generated 2026-08-30 07:13:21
+
++=========+=======+=========+=======+===================+======================+
+| Dataset | Model | Neurons | Delta | ERAN Accuracy (%) | Azkaban Accuracy (%) |
++=========+=======+=========+=======+===================+======================+
+| mnist   | R1    | 110     | 0.01  | 86                | 86                   |
+| mnist   | R2    | 210     | 0.01  | 73                | 73                   |
++=========+=======+=========+=======+===================+======================+
+
+ERAN    : floating-point zonotope (eran/test_deepzono.py)
+Azkaban : fixed-point zonotope (build/bin/cleartext_accuracy)
+Accuracy computed as: certified examples / correctly classified examples.
+Per-run logs found at: results/certification_accuracy/<MODEL>/{azkaban,eran}.txt

@@ -174,8 +174,6 @@ public:
   void andgate_correctness_check_manage() {
     io->flush();
 
-    // cerr << "AND check\n";
-
     vector<future<void>> fut;
 
     uint64_t U = 0, V = 0, W = 0;
@@ -236,11 +234,7 @@ public:
       check_sum[0] = add_mod(U, A0_star);
       check_sum[1] = add_mod(V, A1_star);
 
-      // cerr << "hoho\n";
-
       io->send_data(check_sum, 2 * sizeof(uint64_t));
-
-      // cerr << "hoho2\n";
 
     } else {
       __uint128_t ope_data;
@@ -249,12 +243,7 @@ public:
       W = add_mod(W, B_star);
       uint64_t check_sum[2];
 
-      // cerr << "hoho v\n";
-
       io->recv_data(check_sum, 2 * sizeof(uint64_t));
-
-      // cerr << "hoho v2\n";
-
 
       check_sum[1] = mult_mod(check_sum[1], delta);
       check_sum[1] = add_mod(check_sum[1], W);

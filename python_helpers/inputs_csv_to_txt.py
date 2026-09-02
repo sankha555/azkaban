@@ -1,3 +1,6 @@
+import sys as _sys, os as _os
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from paths import project_path
 import numpy as np
 
 
@@ -5,8 +8,8 @@ dataset = "cifar"
 
 if dataset == "mnist":
     # Input CSV file (each row is an MNIST image)
-    input_csv = "test/ai/data/inputs/mnist_test.csv"
-    output_txt = "test/ai/data/inputs/mnist_test.txt"
+    input_csv = project_path('data/inputs/mnist_test.csv')
+    output_txt = project_path('data/inputs/mnist_test.txt')
 
     # Load CSV
     data = np.loadtxt(input_csv, delimiter=",")
@@ -21,8 +24,8 @@ if dataset == "mnist":
 else:
     # Input CSV file (each row is an CIFAR image)
     is_conv = False
-    input_csv = "test/ai/data/inputs/cifar10_test.csv"
-    output_txt = "test/ai/data/inputs/cifar10_test" + (".txt" if is_conv else "_nonconv.txt")
+    input_csv = project_path('data/inputs/cifar10_test.csv')
+    output_txt = project_path('data/inputs/cifar10_test' + ('.txt' if is_conv else '_nonconv.txt'))
 
     # Load CSV
     data = np.loadtxt(input_csv, delimiter=",")

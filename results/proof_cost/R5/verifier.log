@@ -1,0 +1,15 @@
+---------------------- Robustness Proof (VERIFIER) ------------------------
+Dataset: cifar
+Model  : R5
+Neurons: 2312
+Delta  : 0.002
+connected
+Proof start time: 2026-09-01 21:45:32 UTC
+1800
+392
+Safe: NO
+
+[32mVerification successful![0m
+Proof end time: 2026-09-01 23:52:59 UTC
+End-to-End Proof Time: 7646.822 seconds
+End-to-End Communication (VERIFIER sent): 8.362452 GB

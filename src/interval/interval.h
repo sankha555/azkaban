@@ -22,27 +22,17 @@ int msnzb(int64_t x) {
 
 int64_t fxpdiv(int64_t x, int mode = 0)  //y=1/x
 {
-
-    // cerr << "x: " << x << "\n"; 
-
     // step 1: msnzb
     int k = msnzb(x);
-
-    // cerr << "k: " << k << "\n";
     
     // step 2: extend
     int64_t extendLen = DIV_N - 1 - k;
     int64_t z = x << extendLen;
 
-    // cerr << "z: " << z << "\n";
-
     // step 3: DigitDec
     uint64_t z1 = z & ((1 << (DIV_N - DIV_M - 1))-1);
     uint64_t z2 = z >> (DIV_N - DIV_M - 1);
     z2 = z2 & ((1 << DIV_M)-1);
-
-    // cerr << "z2: " << z2 << "\n";
-    // cerr << "z1: " << z1 << "\n";
 
     // step 4: LUT + y'trunc
     uint64_t a, b;
@@ -67,11 +57,7 @@ int64_t fxpdiv(int64_t x, int mode = 0)  //y=1/x
         b = (uint64_t)ceil(A1 * (1ULL << SCALE)); // Subtract more to stay below
     }
 
-    // cerr << "a: " << a << "\n";
-    // cerr << "b: " << b << "\n";
-
     int64_t y_prime = a - b * z1;
-    // cerr << "y': " << y_prime;
 
     if (mode == 1){
         int add_one = y_prime & ((1 << (DIV_N - 1))-1);
@@ -83,11 +69,7 @@ int64_t fxpdiv(int64_t x, int mode = 0)  //y=1/x
         y_prime = (y_prime >> (DIV_N - 1));
     }
 
-    // cerr << "y'_t: " << y_prime << "\n";
-
     y_prime = y_prime << extendLen;
-
-    // cerr << "y'_e: " << y_prime << "\n";
 
 
     if (mode == 1){
@@ -100,7 +82,6 @@ int64_t fxpdiv(int64_t x, int mode = 0)  //y=1/x
         y_prime = (y_prime >> (DIV_N - SCALE - 1));  
     }
 
-    // cerr << "y: " << y_prime << "\n\n";
     return y_prime;
 }
 
@@ -116,8 +97,6 @@ class Interval {
             this->inf = T(0);
             this->sup = T(0);
         } else {
-            // this->inf = IntFp(0, ALICE);
-            // this->sup = IntFp(0, ALICE);
             this->inf = FIELD_ZERO;
             this->sup = FIELD_ZERO;
         }
@@ -283,12 +262,12 @@ class Interval {
     }
 
     Interval<T> operator^(const Interval<T>& other) const {
-        // multiplication without truncation for int64_t and IntFp
+        // multiplication without truncation
 
         Interval<T> res;
 
         if constexpr (TYPE_EQ(T, float)) {
-            std::cerr << "Error: Operator ^ defined only for int64_t and IntFp";
+            std::cerr << "Error: Operator ^ not defined for float";
             exit(1);
         }
 
@@ -343,31 +322,6 @@ class Interval {
             res.sup = u;
         }
 
-        // if constexpr (TYPE_EQ(T, int64_t)) {
-        //     int64_t al = this->inf;
-        //     int64_t au = this->sup;
-        //     int64_t bl = other.inf;
-        //     int64_t bu = other.sup;
-
-        //     if (al < 0 || au < 0 || bl <= 0 || bu <= 0) {
-        //         cerr << al << " " << au << " " << bl << " " << bu << "\n";
-        //         std::cerr << "Error: Division operands must be strictly positive.\n";
-        //         exit(1);
-        //     }
-
-        //     __int128 dividend_l = (__int128)al << FXPSCALE;
-        //     int64_t res_l = static_cast<int64_t>(dividend_l / bu);
-
-        //     __int128 dividend_u = (__int128)au << FXPSCALE;
-        //     int64_t res_u = static_cast<int64_t>(dividend_u / bl);
-        //     if (dividend_u % bl != 0) {
-        //         res_u += 1; 
-        //     }
-
-        //     res.inf = res_l;
-        //     res.sup = res_u;
-        // }
-
         if constexpr (TYPE_EQ(T, int64_t)) {
             int64_t al = this->inf;
             int64_t au = this->sup;
@@ -397,13 +351,6 @@ class Interval {
             IntFp au = this->sup;
             IntFp bl = other.inf;
             IntFp bu = other.sup;
-
-            // if(party == ALICE){
-            //     assert(HIGH64(al.value) < (PR-1)/2);
-            //     assert(HIGH64(au.value) < (PR-1)/2);
-            //     assert(HIGH64(bl.value) < (PR-1)/2);
-            //     assert(HIGH64(bu.value) < (PR-1)/2);
-            // }
 
             IntFp reciprocal;
 
@@ -530,7 +477,6 @@ class Interval {
 
             IntFp diff = u + l.negate();
             ZKcmpRealVrfyPositive(party, &diff, ZERO_COMP_CONSTANT, &diff, 1); 
-            // cerr << "diff: " << diff.reveal() << "\n";
 
             interval = Interval<IntFp>(l, u);
         }
@@ -560,9 +506,6 @@ class Interval {
         
         if constexpr (TYPE_EQ(T, float)){
             for(size_t i = 0; i < n; i++){
-
-                // cout << "A: " << A[i].to_string() << " " << "; B: " << B[i].to_string() << "\n"; 
-
                 res = res + (A[i] * B[i]);
             }
         }
@@ -591,8 +534,6 @@ class Interval {
             int64_t final_inf = static_cast<int64_t>(acc_l >> FXPSCALE);
             int64_t final_sup = static_cast<int64_t>(acc_u >> FXPSCALE);
             
-            // Round up the upper bound if there are any fractional bits lost
-            // Using a mask for all bits below FXPSCALE for correct rounding
             unsigned __int128 mask = ((unsigned __int128)1 << FXPSCALE) - 1;
             if (acc_u & mask) {
                 final_sup += 1;
@@ -603,15 +544,8 @@ class Interval {
         }
 
         if constexpr (TYPE_EQ(T, IntFp)) {
-
-            // Empty inner product == 0. Return the zero interval without spending two
-            // ZK truncations on it (called on structurally-absent noise symbols).
-            // if(n == 0) return res;
-
             // accumulate
             for(size_t i = 0; i < n; i++){
-                // cout << "A: " << A[i].to_string() << " " << "; B: " << B[i].to_string() << "\n"; 
-
                 res += A[i] ^ B[i];
             }
 
@@ -623,11 +557,5 @@ class Interval {
         return res;
     }
 };
-
-class FloatInterval;
-class FXPInterval;
-
-#include "src/interval/float-interval.h"
-#include "src/interval/fixedpoint-interval.h"
 
 #endif

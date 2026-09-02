@@ -14,6 +14,9 @@
 # EXTERNAL cache entries
 ########################
 
+//architecture flags for the C++ build
+AZKABAN_ARCH_FLAGS:STRING=-march=native
+
 //Build the testing tree.
 BUILD_TESTING:BOOL=ON
 

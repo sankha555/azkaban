@@ -92,8 +92,6 @@ void startComputation(int party)
         A0 = 1.0 / p;
         val = (uint64_t)floor(A0 * (1ULL << scale_a));
 
-        // val = (uint64_t)floor((1ULL << SCALE))
-
         coff1.push_back(val);
 
         // A1 is the tangent slope at p: 1/p^2
@@ -114,12 +112,10 @@ void startComputation(int party)
         double z_sec = p * p_next;
 
         // 2. Intercept (A0): Round UP
-        // We add a +2 epsilon to buffer against Field Truncation errors
         double A0_val = (p_next) / z_sec;
         uint64_t A0_final = (uint64_t)ceil(A0_val * (1ULL << scale_a));
 
         // 3. Slope (A1): Round DOWN
-        // By subtracting a smaller number, the result (A0 - A1*Y) stays higher
         double A1_val = 1.0 / z_sec;
         uint64_t A1_final = (uint64_t)floor(A1_val * (1ULL << SCALE));
 

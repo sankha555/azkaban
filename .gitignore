@@ -2,3 +2,20 @@ data/cifar-10-python.tar.gz
 data/cifar-10-batches-py/
 datasets/
 build/
+# generated, machine-specific -- regenerate with eran/setup_gurobi.sh
+eran/gurobi_env.sh
+*.bak
+
+# python / cmake build leftovers
+__pycache__/
+*.pyc
+
+# local python env and third-party sources fetched by scripts/setup.sh
+venv/
+deps/
+.agents
+.codex
+
+*.gz
+*.sha256
+pack-artifact.sh

@@ -1,3 +1,6 @@
+import sys as _sys, os as _os
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from paths import project_path
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -51,7 +54,7 @@ import os
     
 #     return X, y, df.drop('income', axis=1).columns.tolist()\
     
-def load_adult_dataset(filepath='adult_samples.csv'):
+def load_adult_dataset(filepath=project_path('datasets/adult_samples.csv')):
     df = pd.read_csv(filepath, na_values=' ?', skipinitialspace=True)
     
     # Drop rows with missing values
@@ -77,7 +80,7 @@ def load_adult_dataset(filepath='adult_samples.csv'):
     return X, y, df.drop('income', axis=1).columns.tolist()
     
 
-def load_default_credit_dataset(filepath='default_credit.csv'):
+def load_default_credit_dataset(filepath=project_path('datasets/default_credit.csv')):
     """
     Load and preprocess Default of Credit Card Clients dataset
     Target: default payment (1=yes, 0=no)
@@ -102,7 +105,7 @@ def load_default_credit_dataset(filepath='default_credit.csv'):
     
     return X, y, df.drop(target_col, axis=1).columns.tolist()
 
-def load_german_credit_dataset(filepath='german_credit.csv'):
+def load_german_credit_dataset(filepath=project_path('datasets/german_credit.csv')):
     """
     Load and preprocess German Credit dataset
     Target: credit risk (1=good, 2=bad -> convert to 0=good, 1=bad)
@@ -338,7 +341,7 @@ def train_on_dataset(dataset_name, X, y, hidden_layers, num_epochs=100,
         torch.LongTensor(y_test)
     )
     
-    save_dataset_txt(test_dataset, f"test/ai/data/inputs/{dataset_name}_test_1.txt")
+    save_dataset_txt(test_dataset, project_path(f'data/inputs/{dataset_name}_test_1.txt'))
     
     
     # Create data loaders
@@ -367,7 +370,7 @@ def train_on_dataset(dataset_name, X, y, hidden_layers, num_epochs=100,
     test_accuracy = evaluate_model(model, test_loader, device=device)
     
     # Save model
-    model_path = f"{dataset_name}_model.onnx"
+    model_path = project_path(f'data/models/{dataset_name}_model.onnx')
     model.eval()
     dummy_input = torch.randn(1, X_test.shape[1], device = device)
     print(dummy_input.shape)

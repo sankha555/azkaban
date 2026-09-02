@@ -85,14 +85,12 @@ class Kernel2D {
                             j
                         ];
                     }
-                    // cout << "\n";
                 }
             }
         }
 
         for(size_t q = 0; q < this->out_c; q++){
             this->filter_matrix[this->out_c * this->params_per_out_channel + q] = params[this->out_c * this->params_per_out_channel + q];
-            // cout << format_EMP_IntFp(this->filter_matrix[this->out_c * this->params_per_out_channel + q], 1) << " ";
         }
     }
 

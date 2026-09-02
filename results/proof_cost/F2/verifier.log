@@ -1,0 +1,15 @@
+---------------------- Fairness Proof (VERIFIER) ------------------------
+Dataset: adult
+Model  : F2
+Neurons: 112
+Delta  : 0.05
+Sensitive attribute: gender
+connected
+Proof start time: 2026-08-30 17:35:05 UTC
+Example 1[gender = female] Safe: YES
+Example 1[gender = male] Safe: YES
+Fair: YES
+
+[32mVerification successful![0m
+Proof end time: 2026-08-30 17:35:11 UTC
+End-to-End Proof Time: 6.297 seconds

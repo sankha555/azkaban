@@ -7,7 +7,6 @@
   "delta": 0.05,
   "sensitive_attribute": 9,
   "sensitive_attribute_values": [-1.4224997, 0.70298783],
-  "port": 10000,
   "architecture": [
     {"type": "input", "size": 14},
     {"type": "affine", "inputs": 14, "outputs": 8},

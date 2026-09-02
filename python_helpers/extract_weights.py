@@ -1,3 +1,6 @@
+import sys as _sys, os as _os
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from paths import project_path
 import onnx
 import numpy as np
 from onnx import numpy_helper
@@ -22,8 +25,8 @@ def get_onnx_parameters_as_arrays(onnx_model):
 
 import sys
 model_name = sys.argv[1]
-model_path = f"eran_models/{model_name}.onnx"
-output_path = f"data/params/{model_name}_1.txt"
+model_path = project_path(f'data/models/{model_name}.onnx')
+output_path = project_path(f'data/params/{model_name}_1.txt')
 
 model, is_conv = read_onnx_net(model_path)
 params = get_onnx_parameters_as_arrays(model)

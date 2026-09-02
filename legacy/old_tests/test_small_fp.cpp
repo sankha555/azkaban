@@ -14,7 +14,7 @@
 // A field-overflow report is printed at the end.
 // ---------------------------------------------------------------------------
 
-#include "src_fp/model.h"
+#include "src/cleartext/model.h"
 
 int threads = 1;
 int port = 10000;

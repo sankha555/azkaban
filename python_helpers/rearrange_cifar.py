@@ -1,4 +1,7 @@
-params_file = "test/ai/data/parameters/cifar_relu_4_100.txt"
+import sys as _sys, os as _os
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from paths import project_path
+params_file = project_path('data/params/cifar_relu_4_100.txt')
 num_neurons_in_first_layer = 100
 
 new_lines = []
@@ -20,6 +23,6 @@ with open(params_file, "r") as file:
     
 print(len(new_lines))
 
-new_params_file = "test/ai/data/parameters/cifar_relu_4_100_1.txt"
+new_params_file = project_path('data/params/cifar_relu_4_100_1.txt')
 with open(new_params_file, "w") as file:
     file.writelines(new_lines)

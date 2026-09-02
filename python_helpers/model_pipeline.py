@@ -1,3 +1,6 @@
+import sys as _sys, os as _os
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from paths import project_path
 import sys
 import subprocess
 import onnx
@@ -14,9 +17,9 @@ model_name = sys.argv[1]
 
 if '-d' in sys.argv:
     print('Deleting:')
-    onnx_path = f'test/eran_models/{model_name}.onnx'
-    config_path = f'test/ai/data/configs/{model_name}_1.json'
-    params_path = f'test/ai/data/parameters/{model_name}_1.json'
+    onnx_path = project_path(f'data/models/{model_name}.onnx')
+    config_path = project_path(f'data/configs/{model_name}_1.json')
+    params_path = project_path(f'data/params/{model_name}_1.json')
     
     paths = [onnx_path, config_path]
     for path in paths:
@@ -34,9 +37,9 @@ if '-d' in sys.argv:
     
 
 # extract weights from onnx
-onnx_path = f'test/eran_models/{model_name}.onnx'
+onnx_path = project_path(f'data/models/{model_name}.onnx')
 try:
-    result = subprocess.run(f"python3 test/ai/python_helpers/extract_weights.py {model_name}", shell=True)
+    result = subprocess.run(f"python3 {project_path('python_helpers/extract_weights.py')} {model_name}", shell=True)
 except Exception as e:
     print(f"Weight extraction failed: {e}")
     
@@ -186,7 +189,7 @@ config = {
     "bs_waiver_thresholds2": get_default_thresholds()
 }
 
-config_path = f'test/ai/data/configs/{model_name}_1.json'
+config_path = project_path(f'data/configs/{model_name}_1.json')
 with open(config_path, 'w') as config_file:
     config_file.write(jsbeautifier.beautify(json.dumps(config)))
     

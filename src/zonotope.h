@@ -49,11 +49,7 @@ class Zonotope {
             }
 
             if constexpr (TYPE_EQ(T, IntFp)){
-
                 if(mode >= 0){  
-
-                    // cerr << coeff.to_string() << "\n";
-
                     IntFp cmp[3];
                     cmp[0] = coeff.inf;
                     cmp[1] = coeff.sup;
@@ -61,12 +57,9 @@ class Zonotope {
 
                     ZKcmpPositive(party, cmp, ZERO_COMP_CONSTANT, cmp, 3);
                     
-
                     mag = cmp[0] * coeff.sup +
                     NOT(cmp[1]) * coeff.inf.negate() +
                     NOT(cmp[0]) * (cmp[1]) * (cmp[2] * (coeff.inf + coeff.sup) + coeff.inf.negate());
-
-                    
                     
                     bounds.inf = bounds.inf + mag.negate();
                     bounds.sup = bounds.sup + mag;

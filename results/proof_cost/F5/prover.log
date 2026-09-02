@@ -1,0 +1,13 @@
+---------------------- Fairness Proof (PROVER) ------------------------
+Dataset: german
+Model  : F5
+Neurons: 8
+Delta  : 0.05
+Sensitive attribute: foreign_worker
+connected
+Proof start time: 2026-08-30 17:35:23 UTC
+Example 1[foreign_worker = yes] Safe: YES
+Example 1[foreign_worker = no] Safe: YES
+Fair: YES
+Proof end time: 2026-08-30 17:35:24 UTC
+End-to-End Proof Time: 1.296 seconds

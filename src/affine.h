@@ -25,65 +25,18 @@ class Affine : public Layer<T> {
 
         std::vector<float> read_buffer(num_params);
         if(party == ALICE){
-            cout << "reading params\n";
             read_next_elements(num_params, read_buffer.data(), layer_offset, PARAMS_FILE_PATH);
         }
 
         vector<Interval<T>> params_itvl(num_params);
         for(int i = 0; i < num_params; i++){
             params_itvl[i] = Interval<T>::intervalize_from_real(read_buffer[i]);
-            // cout << params_itvl[i].to_string() << "\n";
         }
 
         this->params = new Parameters<T>(this->output_size, this->input_size, params_itvl.data());
 
         return num_params;
     }
-
-    // void forward(Layer<T>* prev_layer){
-
-    //     Interval<T> w, b;
-    //     size_t m = this->input_size;
-
-    //     Interval<T> new_centre;
-    //     Zonotope<T>* input_zono;
-
-    //     cerr << prev_layer->expressions.size() << "\n";
-        
-
-    //     for(size_t i = 0; i < this->output_size; i++){
-    //         b = this->params->params_matrix[i][m];
-
-    //         new_centre = b;
-    //         map<size_t, Interval<T>> new_noise_symbols;
-
-    //         for(size_t j = 0; j < this->input_size; j++){
-    //             w = this->params->params_matrix[i][j];
-
-    //             // get the input zonotope
-    //             input_zono = prev_layer->expressions[j];
-    //             // if(input_zono->is_zero()){
-    //             //     continue;
-    //             // }
-
-    //             // centre computation
-    //             Interval<T> add = w * input_zono->center;    
-    //             // cout << input_zono->center.to_string() << " " << w.to_string() << " " << add.to_string() << "\n";
-
-    //             new_centre = new_centre + add;
-                
-
-    //             // noise symbols computation as linear recombination of previous symbols
-    //             for (const auto& [index, coeff] : input_zono->noise_symbols) {
-    //                 new_noise_symbols[index] = new_noise_symbols[index] + w * coeff;            
-    //             }
-    //         }
-
-    //         Zonotope<T>* new_zono = new Zonotope<T>(new_centre, new_noise_symbols);
-    //         this->expressions.push_back(new_zono);
-    //     }
-    //     // exit(0);
-    // }
 
     void forward(Layer<T>* prev_layer) {
         size_t m = this->input_size;
@@ -103,10 +56,7 @@ class Affine : public Layer<T> {
                 // \sum_{j = 1}^{m}{w_ij * c_j}
                 A.push_back(this->params->params_matrix[i][j]);
                 B.push_back(prev_layer->expressions[j]->center);
-                // cerr << prev_layer->expressions[j]->concrete().to_string() << "\n";
             }
-
-            // exit(0);
 
             Interval<T> ip = Interval<T>::inner_product(m, A, B);
             new_center += ip;

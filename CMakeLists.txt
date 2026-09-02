@@ -5,8 +5,19 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_BUILD_TYPE "Debug")
-set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb -fopenmp -O3 -march=native -ffast-math -w -Wfatal-errors")
-set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -Wall -g2 -ggdb -fopenmp -O3 -march=native -ffast-math -w -Wfatal-errors")
+# CPU tuning. "native" is fastest but produces binaries that only run on a CPU
+# like this one; the artifact Docker image overrides it with a portable
+# baseline, e.g.
+# -DAZKABAN_ARCH_FLAGS="-march=x86-64-v2 -maes -mpclmul -mavx2 -mrdseed".
+set(AZKABAN_ARCH_FLAGS "-march=native" CACHE STRING "architecture flags for the C++ build")
+message(STATUS "Azkaban architecture flags: ${AZKABAN_ARCH_FLAGS}")
+
+set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb -fopenmp -O3 ${AZKABAN_ARCH_FLAGS} -ffast-math -w -Wfatal-errors")
+set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -Wall -g2 -ggdb -fopenmp -O3 ${AZKABAN_ARCH_FLAGS} -ffast-math -w -Wfatal-errors")
+
+# Repository root, baked in so the binaries resolve data/config paths
+# independently of the working directory they are launched from.
+add_compile_definitions(PROJECT_ROOT="${CMAKE_SOURCE_DIR}")
 
 # System emp config
 find_path(CMAKE_FOLDER NAMES cmake/emp-tool-config.cmake)

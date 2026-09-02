@@ -23,7 +23,6 @@ class Output : public Layer<T> {
     void forward(Layer<T>* prev_layer){
         vector<T> lbs, ubs;
 
-        // cout << setprecision(6) << "\n-- OUTPUT --\n";
         for(size_t i = 0; i < this->input_size; i++){
             Interval<T> bounds = prev_layer->expressions[i]->concrete();
 
@@ -94,8 +93,6 @@ class Output : public Layer<T> {
 
                 IntFp cmp(bound.inf);
                 ZKcmpPositive(party, &cmp, ZERO_COMP_CONSTANT, &cmp, 1);
-
-                // cerr << cmp.reveal() << "\n";
 
                 if (!cmp.reveal()) {
                     this->verified = false;

@@ -38,6 +38,9 @@ Examples::
     python fair_arch_train.py --dataset all --method eo --onnx-dir eran_models
 """
 
+import sys as _sys, os as _os
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from paths import project_path
 import argparse
 import os
 import sys
@@ -86,7 +89,7 @@ def _encode_categoricals(df, skip):
     return df
 
 
-def load_adult(filepath='adult.csv', drop_sensitive=False):
+def load_adult(filepath=project_path('datasets/adult.csv'), drop_sensitive=False):
     """Adult Income.  Label: income > 50K.  Protected: sex (1 = Male)."""
     if os.path.exists(filepath):
         df = pd.read_csv(filepath, na_values=' ?', skipinitialspace=True)
@@ -111,7 +114,7 @@ def load_adult(filepath='adult.csv', drop_sensitive=False):
     return feats.values.astype(np.float32), y, s, feats.columns.tolist()
 
 
-def load_credit(filepath='default_credit.csv', drop_sensitive=False):
+def load_credit(filepath=project_path('datasets/default_credit.csv'), drop_sensitive=False):
     """Default of Credit Card Clients.  Label: 1 = no default (favourable).
 
     Protected: SEX (1 = male in the raw encoding, 2 = female)."""
@@ -142,7 +145,7 @@ def load_credit(filepath='default_credit.csv', drop_sensitive=False):
     return feats.values.astype(np.float32), y, s, feats.columns.tolist()
 
 
-def load_german(filepath='german_credit.csv', drop_sensitive=False):
+def load_german(filepath=project_path('datasets/german_credit.csv'), drop_sensitive=False):
     """Statlog German Credit.  Label: 1 = good credit risk.
 
     Protected: foreign_worker (A201 = yes, A202 = no; 1 = non-foreign, i.e.
@@ -177,9 +180,9 @@ def load_german(filepath='german_credit.csv', drop_sensitive=False):
 
 
 DATASETS = {
-    'adult':  dict(loader=load_adult,  default_path='adult.csv',          attr='sex'),
-    'credit': dict(loader=load_credit, default_path='default_credit.csv', attr='SEX'),
-    'german': dict(loader=load_german, default_path='german_credit.csv',  attr='foreign_worker'),
+    'adult':  dict(loader=load_adult,  default_path=project_path('datasets/adult.csv'),          attr='sex'),
+    'credit': dict(loader=load_credit, default_path=project_path('datasets/default_credit.csv'), attr='SEX'),
+    'german': dict(loader=load_german, default_path=project_path('datasets/german_credit.csv'),  attr='foreign_worker'),
 }
 
 # ==================== Architecture specification ====================
@@ -737,12 +740,12 @@ def parse_args(argv=None):
     p.add_argument('--patience', type=int, default=25)
     p.add_argument('--test-size', type=float, default=0.2)
     p.add_argument('--seed', type=int, default=42)
-    p.add_argument('--outdir', default='fair_models',
+    p.add_argument('--outdir', default=project_path('data/models'),
                    help="where the .pt checkpoint (weights + metrics) goes")
-    p.add_argument('--onnx-dir', default='eran_models',
+    p.add_argument('--onnx-dir', default=project_path('data/models'),
                    help="where <dataset>_<hidden widths>.onnx goes")
     p.add_argument('--no-onnx', action='store_true', help="skip the ONNX export")
-    p.add_argument('--txt-dir', default='data/inputs',
+    p.add_argument('--txt-dir', default=project_path('data/inputs'),
                    help="where <dataset>_new.txt goes")
     p.add_argument('--txt-split', default='all',
                    choices=['all', 'train', 'val', 'test'],

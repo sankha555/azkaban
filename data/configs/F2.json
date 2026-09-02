@@ -7,14 +7,15 @@
   "delta": 0.05,
   "sensitive_attribute": 9,
   "sensitive_attribute_values": [-1.4224997, 0.70298783],
-  "port": 10000,
   "architecture": [
     {"type": "input", "size": 14},
     {"type": "affine", "inputs": 14, "outputs": 50},
     {"type": "relu", "size": 50},
     {"type": "affine", "inputs": 50, "outputs": 50},
     {"type": "relu", "size": 50},
-    {"type": "affine", "inputs": 50, "outputs": 2},
+    {"type": "affine", "inputs": 50, "outputs": 10},
+    {"type": "relu", "size": 10},
+    {"type": "affine", "inputs": 10, "outputs": 2},
     {"type": "output", "size": 2}
   ]
 }
