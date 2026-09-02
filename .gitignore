@@ -19,3 +19,8 @@ deps/
 *.gz
 *.sha256
 pack-artifact.sh
+install-docker-and-pull.sh
+legacy/
+results/
+python_helpers/
+!python_helpers/extract_weights.py
