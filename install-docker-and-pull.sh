@@ -154,3 +154,15 @@ else
     echo "NET_ADMIN is required: the proof-cost experiment shapes the"
     echo "container's loopback to 1 Gbit with tc."
 fi
+
+ARCH_HOST="$(uname -m 2>/dev/null || true)"
+if [ "${ARCH_HOST}" != "x86_64" ] && [ "${ARCH_HOST}" != "amd64" ]; then
+    echo ""
+    echo "WARNING: This host architecture appears to be ${ARCH_HOST}."
+    echo "The artifact image is built for x86-64 (amd64) and may not run on ${ARCH_HOST}"
+    echo "unless you have multi-arch emulation enabled (qemu/binfmt)."
+    echo "To enable emulation using the Docker helper image, run as root on this host:"
+    echo "  docker run --rm --privileged multiarch/qemu-user-static --reset -p yes"
+    echo "After that, retry the container run with the --platform linux/amd64 flag, for example:"
+    echo "  docker run --rm --platform linux/amd64 --cap-add=NET_ADMIN -v \"\$PWD/results:/artifact/results\" \"$IMAGE\" --quick"
+fi
