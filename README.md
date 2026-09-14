@@ -323,7 +323,7 @@ A non-zero exit code names the failed experiment; per-model logs are under
 ---
 
 ## E. Acknowledgements
-We used Claude Code towards preparing this artifact, specifically for scripting and code polishing. All AI-generated content has been human-validated. We thank the maintainers of `emp-toolkit`, `eth-sri`, `CryptMatrix/ZKMath` and `nlohmann/json` for open-sourcing their work, all of which from this artifact draws and builds upon.
+We used Claude Code towards preparing this artifact, specifically for scripting and code polishing. All AI-generated content has been human-validated. Our artifact builds upon code from repositories available at `emp-toolkit`, `eth-sri/eran`, `CryptMatrix/ZKMath` and `nlohmann/json`. We thank the maintainers of these repositories for open-sourcing their work.
 
 Please direct all communication to Sankha Das at [sdas435@gatech.edu](mailto:sdas435@gatech.edu)
 
