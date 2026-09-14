@@ -149,8 +149,6 @@ class Conv2D : public Layer<T> {
             }
 
         }
-
-        cerr << t << "\n";
     }
 };
 
