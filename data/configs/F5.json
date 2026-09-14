@@ -2,7 +2,6 @@
   "input_file": "data/inputs/german_test.txt",
   "params_file": "data/params/F5.txt",
   "input_features": 20,
-  "example_index_base": 1,
   "example_indices": [1],
   "delta": 0.05,
   "sensitive_attribute": 19,

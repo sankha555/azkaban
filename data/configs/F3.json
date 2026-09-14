@@ -2,7 +2,6 @@
   "input_file": "data/inputs/credit_test.txt",
   "params_file": "data/params/F3.txt",
   "input_features": 23,
-  "example_index_base": 1,
   "example_indices": [1],
   "delta": 0.05,
   "sensitive_attribute": 1,

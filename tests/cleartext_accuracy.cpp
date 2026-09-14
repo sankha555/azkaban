@@ -23,13 +23,13 @@ json read_config(std::string config_name) {
     return config;
 }
 
-vector<float> load_input(const std::string& path, size_t example_index, size_t example_index_base, size_t feature_count) {
-    if (example_index < example_index_base) {
-        throw std::runtime_error("Example index is below example_index_base");
+vector<float> load_input(const std::string& path, size_t example_index, size_t feature_count) {
+    if (example_index < 1) {
+        throw std::runtime_error("Example indices are 1-based, so 0 is not a valid index");
     }
 
     const size_t record_size = feature_count + 1;  // ground-truth label + features
-    const size_t offset = (example_index - example_index_base) * record_size;
+    const size_t offset = (example_index - 1) * record_size;
 
     float ground_truth = 0;
     read_next_elements(1, &ground_truth, offset, path.c_str());
@@ -126,7 +126,6 @@ int main(int argc, char** argv) {
         const std::string input_file = project_path(config.at("input_file").get<std::string>());
         const std::string params_file = project_path(config.at("params_file").get<std::string>());
         const size_t feature_count = config.at("input_features").get<size_t>();
-        const size_t example_index_base = config.value("example_index_base", 1U);
         const auto examples = config.at("example_indices").get<vector<size_t>>();
         const size_t neurons = count_neurons(config.at("architecture"));
 
@@ -151,7 +150,7 @@ int main(int argc, char** argv) {
         auto* output = static_cast<Output<T>*>(model->layers.back());
         size_t i = 0;
         for (const size_t index : examples) {
-            vector<float> record = load_input(input_file, index, example_index_base, feature_count);
+            vector<float> record = load_input(input_file, index, feature_count);
             const int ground_truth = static_cast<int>(record.back());
             record.pop_back();
 

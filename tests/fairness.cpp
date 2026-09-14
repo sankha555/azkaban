@@ -46,14 +46,13 @@ std::string timestamp() {
     return result.str();
 }
 
-vector<float> load_input(const std::string& path, size_t example_index,
-                         size_t example_index_base, size_t feature_count) {
-    if (example_index < example_index_base) {
-        throw std::runtime_error("Example index is below example_index_base");
+vector<float> load_input(const std::string& path, size_t example_index, size_t feature_count) {
+    if (example_index < 1) {
+        throw std::runtime_error("Example indices are 1-based, so 0 is not a valid index");
     }
 
     const size_t record_size = feature_count + 1;  // ground-truth label + features
-    const size_t offset = (example_index - example_index_base) * record_size;
+    const size_t offset = (example_index - 1) * record_size;
 
     float ground_truth = 0;
     read_next_elements(1, &ground_truth, offset, path.c_str());
@@ -165,7 +164,6 @@ int main(int argc, char** argv) {
         const std::string params_file = project_path(config.at("params_file").get<std::string>());
         const float delta = config.at("delta").get<float>();
         const size_t feature_count = config.at("input_features").get<size_t>();
-        const size_t example_index_base = config.value("example_index_base", 1U);
         const auto examples = config.at("example_indices").get<vector<size_t>>();
         if (examples.size() == 0){
             std::cerr << "At least one example is required, check config" << "\n";
@@ -210,29 +208,29 @@ int main(int argc, char** argv) {
         NUM_VERIFIED = 0;
         size_t num_fair = 0;
         auto* output = static_cast<Output<T>*>(model.layers.back());
-        for (const size_t index : {examples[0]}) { // only cost computation, so doing just one example's proof
-            vector<float> record = load_input(input_file, index, example_index_base, feature_count);
-            const int ground_truth = static_cast<int>(record.back());
-            record.pop_back();
+        // Only the proof cost is measured, so the proof covers just the first example.
+        const size_t index = examples.front();
+        vector<float> record = load_input(input_file, index, feature_count);
+        const int ground_truth = static_cast<int>(record.back());
+        record.pop_back();
 
-            output->set_output(ground_truth);
+        output->set_output(ground_truth);
 
-            bool fair = true; 
-            int sens_attr_value_index = 0;
-            for (const float value : sensitive_attribute_values) {
-                record[sensitive_attribute] = value;
+        bool fair = true; 
+        int sens_attr_value_index = 0;
+        for (const float value : sensitive_attribute_values) {
+            record[sensitive_attribute] = value;
 
-                std::cout << "Example " << index << "[" << sens_attr_names[dataset] << " = " << sens_values_semantic_names[dataset][sens_attr_value_index] << "] ";
-                model.forward(record, delta, sensitive_attributes);
-                fair = fair && output->verified;
-                model.reset();
+            std::cout << "Example " << index << "[" << sens_attr_names[dataset] << " = " << sens_values_semantic_names[dataset][sens_attr_value_index] << "] ";
+            model.forward(record, delta, sensitive_attributes);
+            fair = fair && output->verified;
+            model.reset();
 
-                sens_attr_value_index++;
-            }
-
-            if (fair) num_fair++;
-            std::cout << "Fair: " << (fair ? "YES" : "NO") << "\n";
+            sens_attr_value_index++;
         }
+
+        if (fair) num_fair++;
+        std::cout << "Fair: " << (fair ? "YES" : "NO") << "\n";
 
         endComputation(party);
         const bool cheated = finalize_zk_arith<BoolIO<NetIO>>();

@@ -123,8 +123,7 @@ root = os.environ['EXPERIMENT_ROOT']
 with open(os.path.join(root, 'data', 'configs', model + '.json')) as handle:
     config = json.load(handle)
 if field == 'dataset':
-    name = os.path.basename(config['input_file']).split('_')[0]
-    print('cifar10' if name.startswith('cifar') else name)
+    print(os.path.basename(config['input_file']).split('_')[0])
 elif field == 'delta':
     print(config['delta'])
 elif field == 'num_tests':
