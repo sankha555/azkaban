@@ -221,6 +221,7 @@ Output tables can be found at `results/`. Please reference these tables with Tab
 To run the experiments using Docker, please first read the instructions end-to-end below, then run the required commands. A troubleshooting guide 
 has been provided in [DOCKER_TROUBLESHOOTING.md](DOCKER_TROUBLESHOOTING.md).
 
+The Docker image can be found at [https://hub.docker.com/repository/docker/sankha555/azkaban-ccs/general](https://hub.docker.com/repository/docker/sankha555/azkaban-ccs/general). Please use the `ccs` tag for evaluation (the installation script `./scripts/install-docker-and-pull.sh` does this for you automatically). 
 The image is `linux/amd64` only. On ARM see [DOCKER_TROUBLESHOOTING.md](DOCKER_TROUBLESHOOTING.md#f-non-x86-64-host)) .
 
 ### 0. Start a `tmux` session
