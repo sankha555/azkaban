@@ -37,6 +37,7 @@ azkaban/
     |-- .dockerignore
     |-- .gitignore
     |-- CMakeLists.txt
+    |-- DOCKER_TROUBLESHOOTING.md
     |-- Dockerfile
     |-- README.md
 ```
