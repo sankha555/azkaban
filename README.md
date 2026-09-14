@@ -135,7 +135,41 @@ NOTE: Docker is one possible way to evaluate the artifact. The other one is manu
 
 ---
 
-## D.1. Running Manually
+
+## D. Running Experiments
+To run the experiments below (either manually or using Docker), first clone this repository and move to the root of this repository.
+```
+git clone https://github.com/sankha555/azkaban.git
+cd azkaban
+```
+
+
+## D.1. Manual Run
+
+### 0. Start a `tmux` session
+Setup and experiments can take long to complete. It is recommended to run each step below in a `tmux` session. 
+
+- Install `tmux` (if not already installed)
+```
+sudo apt install tmux
+```
+
+- Start a new `tmux` session
+```
+tmux new -s artifact-eval
+```
+
+- (only after running the Setup or Running Experiments steps below) detach the `tmux` session
+```
+(Press Ctrl+B)
+(Press D)
+```
+
+- (if detached from tmux session) Attach back to the `tmux` session to see experiment progress
+```
+tmux attach -t artifact-eval
+```
+
 ### 1. Setup
 First run `scripts/setup.sh`. This scripts installs dependencies, builds executables and sets up virtual environments. It should take roughly ~20 mins to run.
 
@@ -151,7 +185,8 @@ bash scripts/setup.sh        # ~20 min: system packages, emp-toolkit, ELINA,
 It is safe to re-run: every step it has already done is skipped. Nothing else
 needs to be installed or configured by hand.
 <br>
-### 2. Running experiments
+
+### 2. Running Experiments
 - **Both Experiments (Least Effort Option)**: `scripts/run_all.sh`
   - Quick Usage (~15-20 mins)
   ```bash
@@ -182,11 +217,35 @@ Output tables can be found at `results/`. Please reference these tables with Tab
 
 ---
 
-## D.2. Running using Docker
+## D.2. Run using Docker
 To run the experiments using Docker, please first read the instructions end-to-end below, then run the required commands. A troubleshooting guide 
 has been provided in [DOCKER_TROUBLESHOOTING.md](DOCKER_TROUBLESHOOTING.md).
 
-The image is `linux/amd64` only. On ARM see [DOCKER_TROUBLESHOOTING.md](DOCKER_TROUBLESHOOTING.md#[§F](#f-non-x86-64-host)) .
+The image is `linux/amd64` only. On ARM see [DOCKER_TROUBLESHOOTING.md](DOCKER_TROUBLESHOOTING.md#f-non-x86-64-host)) .
+
+### 0. Start a `tmux` session
+Installation and experiments can take long to complete. It is recommended to run each step below in a `tmux` session. 
+
+- Install `tmux` (if not already installed)
+```
+sudo apt install tmux
+```
+
+- Start a new `tmux` session
+```
+tmux new -s artifact-eval
+```
+
+- (only after running the Setup or Running Experiments steps below) detach the `tmux` session
+```
+(Press Ctrl+B)
+(Press D)
+```
+
+- (if detached from tmux session) Attach back to the `tmux` session to see experiment progress
+```
+tmux attach -t artifact-eval
+```
 
 ### 1. Install
 
@@ -201,7 +260,7 @@ whether your host can give containers a private network namespace.
 
 **Read the last few lines of its output.** It prints the exact `docker run`
 command for your machine, including a `--network host` flag if your host needs
-it (for troubleshooting, see [DOCKER_TROUBLESHOOTING.md](DOCKER_TROUBLESHOOTING.md)[§B](#b-error-during-container-init--open-sysctl--permission-denied)).
+it (for troubleshooting, see [DOCKER_TROUBLESHOOTING.md](DOCKER_TROUBLESHOOTING.md#b-error-during-container-init--open-sysctl--permission-denied)).
 
 If it just added you to the `docker` group, that group is not active in your
 current shell. Either log out and back in — **a new terminal tab in an

@@ -2,7 +2,6 @@
 
 ## Check Requirements First
 
-| | |
 |---|---|
 | OS | Linux (Ubuntu/Debian tested). The install script handles both. |
 | CPU | x86-64 with **AES-NI, PCLMUL, AVX2, RDSEED** — Intel Broadwell / AMD Excavator (2015) or newer. |
@@ -13,10 +12,6 @@
 The image is `linux/amd64` only. On ARM see [Troubleshooting §F](#f-non-x86-64-host).
 
 ---
-
-
-
-# Troubleshooting for Running the Docker Image
 
 ## A. `permission denied while trying to connect to the docker API at unix:///var/run/docker.sock`
 
