@@ -131,6 +131,34 @@ echo "image pulled:"
 $SUDO docker images "${IMAGE%:*}"
 
 # ---------------------------------------------------------------
+# 2b. Detect host permission issue that prevents containers from
+# writing net.ipv4.ip_unprivileged_port_start (causes init failure).
+# Offer to apply a permanent host sysctl fix if requested.
+# ---------------------------------------------------------------
+echo ""
+echo "=== Checking container sysctl permissions ==="
+echo "Testing whether a container can set net.ipv4.ip_unprivileged_port_start..."
+if $SUDO docker run --rm --cap-add=NET_ADMIN --entrypoint sh busybox -c 'sysctl -w net.ipv4.ip_unprivileged_port_start=0' >/dev/null 2>&1; then
+    echo "Container can set the sysctl; no host change needed."
+else
+    echo "WARNING: containers cannot set net.ipv4.ip_unprivileged_port_start on this host."
+    echo "This prevents the artifact from starting (permission denied on sysctl)."
+    if [ "${AUTO_FIX_SYSCTL:-}" = "yes" ]; then
+        echo "AUTO_FIX_SYSCTL=yes detected; applying host sysctl change now (requires sudo)."
+        $SUDO sysctl -w net.ipv4.ip_unprivileged_port_start=0 || true
+        echo "net.ipv4.ip_unprivileged_port_start = 0" | $SUDO tee /etc/sysctl.d/99-azkaban.conf >/dev/null
+        $SUDO sysctl --system || true
+        echo "Host sysctl updated. Retry running the container."
+    else
+        echo "To permanently fix this, run as root on the host:"
+        echo "  echo 'net.ipv4.ip_unprivileged_port_start = 0' > /etc/sysctl.d/99-azkaban.conf" \
+             "&& sysctl --system"
+        echo "Or re-run this script with AUTO_FIX_SYSCTL=yes to apply the change automatically."
+        echo "Note: modifying host sysctls requires root privileges and affects system behavior." 
+    fi
+fi
+
+# ---------------------------------------------------------------
 # 3. run the experiments
 # ---------------------------------------------------------------
 mkdir -p results
