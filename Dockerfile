@@ -1,7 +1,7 @@
 # ---------------------------------------------------------------------------
 # Azkaban artifact image.
 #
-# Build (on an x86-64 host; ~40 min, mostly ELINA and the python wheels):
+# Build (on an x86-64 host; ~20 min, mostly ELINA and the python wheels):
 #     docker build --platform linux/amd64 -t azkaban:ccs .
 #
 # Run (NET_ADMIN is required: the proof-cost experiment shapes the container's
@@ -19,58 +19,30 @@ FROM ubuntu:24.04
 # AVX2 or RDSEED, all of which emp-toolkit uses (emp-tool's f2k GF(2^128)
 # multiply needs PCLMUL), so they are requested explicitly on top of it.
 ARG AZKABAN_ARCH_FLAGS="-march=x86-64-v2 -maes -mpclmul -mavx2 -mrdseed"
-ARG GUROBI_VERSION=9.1.2
-ARG CDDLIB_VERSION=0.94m
 
 ENV DEBIAN_FRONTEND=noninteractive \
     ARTIFACT=/artifact \
-    GUROBI_HOME=/opt/gurobi912/linux64 \
-    LD_LIBRARY_PATH=/opt/gurobi912/linux64/lib:/usr/local/lib
+    LD_LIBRARY_PATH=/usr/local/lib
 
 # ---------------------------------------------------------------------------
 # 1. System packages
 # ---------------------------------------------------------------------------
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential cmake git wget curl ca-certificates m4 \
-        libssl-dev libgmp-dev libmpfr-dev \
+        libssl-dev libgmp-dev libmpfr-dev libcdd-dev \
         python3 python3-pip python3-venv python3-dev \
         iperf3 iproute2 \
     && rm -rf /var/lib/apt/lists/*
 
 # ---------------------------------------------------------------------------
-# 2. Gurobi runtime (ELINA's fppoly links libgurobi91.so)
-#    No licence is needed for the experiments in this artifact: the DeepZono
-#    domain never constructs a Gurobi model.
-# ---------------------------------------------------------------------------
-RUN mkdir -p /opt \
-    && curl -fL "https://packages.gurobi.com/9.1/gurobi${GUROBI_VERSION}_linux64.tar.gz" \
-         -o /tmp/gurobi.tar.gz \
-    && tar -xzf /tmp/gurobi.tar.gz -C /opt \
-    && rm /tmp/gurobi.tar.gz \
-    && cp "${GUROBI_HOME}/lib/libgurobi91.so" /usr/local/lib/ \
-    && ldconfig
-
-# ---------------------------------------------------------------------------
-# 3. cddlib (needed by ELINA's fconv)
-# ---------------------------------------------------------------------------
-RUN cd /tmp \
-    && wget -q "https://github.com/cddlib/cddlib/releases/download/${CDDLIB_VERSION}/cddlib-${CDDLIB_VERSION}.tar.gz" \
-    && tar -xzf "cddlib-${CDDLIB_VERSION}.tar.gz" \
-    && cd "cddlib-${CDDLIB_VERSION}" \
-    && ./configure --prefix=/usr/local > /dev/null \
-    && make -j"$(nproc)" > /dev/null && make install > /dev/null \
-    && ldconfig \
-    && rm -rf /tmp/cddlib*
-
-# ---------------------------------------------------------------------------
-# 4. emp-toolkit, from the copies vendored in this repository
+# 2. emp-toolkit, from the copies vendored in this repository
 #    (src/emp-tool and src/emp-ot; nothing is fetched from GitHub, so the build
 #    is unaffected by upstream changes). They are copied to a scratch directory
 #    first, on their own, so editing the project's own sources does not
 #    invalidate this layer, and the build tree is thrown away afterwards.
 #
 #    emp-base.cmake hard-codes -march=native, which would make the compiled
-#    binaries crash with SIGILL on a reviewer's older CPU, so it is patched to
+#    binaries crash with SIGILL on an older CPU, so it is patched to
 #    the portable baseline before emp-tool is built. Only the library target is
 #    built (emp-tool's own test binaries are not needed); emp-ot is header-only,
 #    so it is just installed.
@@ -92,46 +64,47 @@ RUN cd /tmp/emp/emp-tool \
     && rm -rf /tmp/emp
 
 # ---------------------------------------------------------------------------
-# 5. The rest of the artifact (see .dockerignore for what is left out)
+# 3. The rest of the artifact (see .dockerignore for what is left out)
 # ---------------------------------------------------------------------------
 WORKDIR ${ARTIFACT}
 COPY . ${ARTIFACT}
 
 # ---------------------------------------------------------------------------
-# 6. ELINA (built in place: eran/python_helpers loads the .so files from the
+# 4. ELINA (built in place: eran/python_helpers loads the .so files from the
 #    source tree, relative to eran/ELINA/python_interface)
 # ---------------------------------------------------------------------------
-# configure probes the build CPU and writes "HAS_NATIVE = -march=native" into
-# Makefile.config; replace it with the portable baseline. fppoly picks Gurobi up
-# from $(GUROBI_HOME), which is passed explicitly to make.
+# test_deepzono.py's import chain reaches zonoml (DeepZono), fppoly (via
+# deeppoly_nodes.py) and fconv (via krelu.py), so the whole C half of ELINA has
+# to be built -- hence 'make c' and '-use-deeppoly -use-fconv'. Gurobi is not
+# enabled: it only guards the spatial-constraint path in compute_bounds.c,
+# which L_infinity certification never reaches.
+#
+# Two places hard-code -march=native and would make the image crash with SIGILL
+# on an older CPU: HAS_NATIVE, which configure writes into Makefile.config, and
+# fconv's own CXXFLAGS. Both are rewritten to the portable baseline.
 RUN cd ${ARTIFACT}/eran/ELINA \
-    && if [ -f fppoly/libfppoly.so ]; then \
-           echo "libfppoly.so already present; skipping ELINA rebuild"; \
-       else \
-           echo "libfppoly.so missing; attempting to build ELINA fppoly"; \
-           # Some ELINA trees provide a configure script; others ship a ready-made
-           # Makefile.config. Prefer not to run a non-existent ./configure.
-           if [ -f Makefile.config ]; then \
-               sed -i "s|^HAS_NATIVE = .*|HAS_NATIVE = ${AZKABAN_ARCH_FLAGS}|" Makefile.config || true; \
-           fi; \
-           # Try a targeted build of fppoly; if this fails, leave a warning but
-           # continue so the image build can still succeed when the .so is
-           # prebuilt in the source tree.
-           make -C fppoly -j"$(nproc)" GUROBI_HOME="${GUROBI_HOME}" || true; \
-           make -C fppoly install GUROBI_HOME="${GUROBI_HOME}" || true; \
-       fi \
+    && ./configure -prefix /usr/local -use-deeppoly -use-fconv \
+                   -cdd-prefix /usr/include/cddlib \
+    && sed -i "s|^HAS_NATIVE = .*|HAS_NATIVE = ${AZKABAN_ARCH_FLAGS}|" Makefile.config \
+    && sed -i "s|-DNDEBUG -O3 -march=native|-DNDEBUG -O3 ${AZKABAN_ARCH_FLAGS}|" fconv/Makefile \
+    && grep -q -- "-march=x86-64-v2" Makefile.config \
+    && grep -q -- "-march=x86-64-v2" fconv/Makefile \
+    && make -j"$(nproc)" c \
+    && make install \
     && ldconfig \
-    && test -f ${ARTIFACT}/eran/ELINA/fppoly/libfppoly.so
+    && test -f zonoml/libzonoml.so \
+    && test -f fppoly/libfppoly.so \
+    && test -f fconv/libfconv.so
 
 # ---------------------------------------------------------------------------
-# 7. Python environment (ERAN)
+# 5. Python environment (ERAN)
 # ---------------------------------------------------------------------------
 RUN python3 -m venv ${ARTIFACT}/venv \
     && ${ARTIFACT}/venv/bin/pip install --no-cache-dir --upgrade pip \
     && ${ARTIFACT}/venv/bin/pip install --no-cache-dir -r ${ARTIFACT}/eran/requirements.txt
 
 # ---------------------------------------------------------------------------
-# 8. The C++ executables, built for the portable baseline
+# 6. The C++ executables, built for the portable baseline
 # ---------------------------------------------------------------------------
 RUN cmake -S ${ARTIFACT} -B ${ARTIFACT}/build \
         -DAZKABAN_ARCH_FLAGS="${AZKABAN_ARCH_FLAGS}" \
@@ -139,15 +112,16 @@ RUN cmake -S ${ARTIFACT} -B ${ARTIFACT}/build \
     && ls ${ARTIFACT}/build/bin/robustness ${ARTIFACT}/build/bin/fairness \
           ${ARTIFACT}/build/bin/cleartext_accuracy
 
-# Bind-mount target for the reviewer's host directory.
+# Bind-mount target for the host directory.
 RUN mkdir -p ${ARTIFACT}/results
 
-# The experiment scripts look for eran/gurobi_env.sh; write the in-image one.
+# The experiment scripts source eran/env.sh (scripts/setup.sh writes it on a
+# bare host); write the in-image one.
 RUN printf '%s\n' \
         '# generated at image build time' \
-        'export GUROBI_HOME="/opt/gurobi912/linux64"' \
-        'export LD_LIBRARY_PATH="/opt/gurobi912/linux64/lib:/usr/local/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"' \
-        > ${ARTIFACT}/eran/gurobi_env.sh
+        'export LD_LIBRARY_PATH="/usr/local/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"' \
+        'export PYTHONPATH="/artifact/eran/ELINA/python_interface:/artifact/eran/python_helpers${PYTHONPATH:+:${PYTHONPATH}}"' \
+        > ${ARTIFACT}/eran/env.sh
 
 ENTRYPOINT ["/artifact/scripts/run_all.sh"]
 CMD ["--quick"]

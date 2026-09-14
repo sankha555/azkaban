@@ -2,8 +2,17 @@ data/cifar-10-python.tar.gz
 data/cifar-10-batches-py/
 datasets/
 build/
-# generated, machine-specific -- regenerate with eran/setup_gurobi.sh
+# generated, machine-specific -- regenerate with scripts/setup.sh
+eran/env.sh
 eran/gurobi_env.sh
+
+# ELINA is compiled in place by scripts/setup.sh (its python bindings load the
+# .so files straight out of the source tree); none of that is checked in.
+eran/ELINA/Makefile.config
+eran/ELINA/**/*.o
+eran/ELINA/**/*.a
+eran/ELINA/**/*.so
+eran/ELINA/fconv/tests
 *.bak
 
 # python / cmake build leftovers

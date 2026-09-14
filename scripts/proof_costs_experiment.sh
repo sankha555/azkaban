@@ -5,9 +5,9 @@ set -e
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 cd "$ROOT"
 
-BANDWIDTH="unlimited"
+BANDWIDTH="1gbit"
 
-echo "=== Removing any bandwidth limit on loopback ==="
+echo "=== Shaping the loopback link to $BANDWIDTH ==="
 
 run_tc() {
     if [ "$(id -u)" -eq 0 ]; then
@@ -20,11 +20,19 @@ run_tc() {
     fi
 }
 
-if tc qdisc show dev lo | grep -q netem; then
-    echo "a netem qdisc is shaping lo, deleting it."
-    run_tc qdisc del dev lo root
+# 'replace' is idempotent: it adds the qdisc when lo is unshaped and rewrites it
+# when scripts/setup.sh or an earlier run already left one behind.
+if run_tc qdisc replace dev lo root netem rate "$BANDWIDTH"; then
+    echo "lo shaped to $BANDWIDTH."
 else
-    echo "lo is not shaped, nothing to do."
+    echo "" >&2
+    echo "ERROR: could not shape lo to $BANDWIDTH." >&2
+    echo "  In Docker this needs --cap-add=NET_ADMIN; on a bare host it needs" >&2
+    echo "  root, or the passwordless-tc rule that scripts/setup.sh installs." >&2
+    echo "" >&2
+    echo "  Refusing to continue: the proof costs would be measured over an" >&2
+    echo "  unshaped link and would not be comparable to the reported numbers." >&2
+    exit 1
 fi
 
 tc qdisc show dev lo
@@ -159,7 +167,7 @@ make_table() {
 
     {
         echo "$TITLE"
-        echo "(measured over an $BANDWIDTH network -- link is left unshaped)"
+        echo "(measured over a $BANDWIDTH loopback link, shaped with tc netem)"
         echo ""
         echo "$LINE"
         if [ "$SHOW_DELTA" = "yes" ]; then

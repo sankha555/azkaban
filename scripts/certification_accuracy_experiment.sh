@@ -51,26 +51,32 @@ PYDEPS
     if [ -n "${missing}" ]; then
         fail "missing python packages: ${missing}"
         info "the ERAN runs cannot work without them. Install everything with:"
-        info "    ${ROOT}/scripts/setup.sh"
-        info "or, into the environment you are using now:"
-        info "    ${PY} -m pip install -r ${ROOT}/eran/requirements.txt"
+        info "    bash ${ROOT}/scripts/setup.sh"
         exit 1
     fi
     ok "python dependencies present (numpy, onnx, tensorflow, gurobipy)"
 
-    if [ -f "${ROOT}/eran/gurobi_env.sh" ]; then
-        source "${ROOT}/eran/gurobi_env.sh"
-        ok "sourced eran/gurobi_env.sh"
-    elif [ -x "${ROOT}/eran/setup_gurobi.sh" ]; then
-        warn "eran/gurobi_env.sh missing; run:  bash ${ROOT}/eran/setup_gurobi.sh"
+    # Written by scripts/setup.sh; puts the installed ELINA libraries and the
+    # ERAN python packages on the loader and import paths.
+    if [ -f "${ROOT}/eran/env.sh" ]; then
+        source "${ROOT}/eran/env.sh"
+        ok "sourced eran/env.sh"
+    else
+        warn "eran/env.sh missing (scripts/setup.sh writes it)"
     fi
 
+    # The ERAN driver dies on these three ctypes imports before it looks at a
+    # single model, so check them here rather than once per model.
     if PYTHONPATH="${ROOT}/eran/ELINA/python_interface:${ROOT}/eran/python_helpers" \
-       "${PY}" -c "import fppoly_imports" >/dev/null 2>&1; then
+       "${PY}" -c "import zonoml, fppoly, fconv" >/dev/null 2>&1; then
         ok "ERAN/ELINA bindings load"
     else
-        warn "ELINA bindings do not load -- the ERAN runs will fail."
-        info "build and install ELINA, then run:  bash ${ROOT}/eran/setup_gurobi.sh"
+        fail "the ERAN/ELINA python bindings do not load, so every ERAN run would fail:"
+        PYTHONPATH="${ROOT}/eran/ELINA/python_interface:${ROOT}/eran/python_helpers" \
+            "${PY}" -c "import zonoml, fppoly, fconv" 2>&1 | tail -3 | sed 's/^/         /'
+        info "ELINA has not been built. Build it (and everything else) with:"
+        info "    bash ${ROOT}/scripts/setup.sh"
+        exit 1
     fi
 }
 

@@ -109,13 +109,17 @@ else
     echo ""
     echo "=== Checking the install with hello-world ==="
     $SUDO docker run --rm hello-world > /dev/null && echo "docker works."
+fi
 
-    # let the current user run docker without sudo from the next login onwards
-    if [ -n "$SUDO" ] && ! id -nG "$USER" | grep -qw docker; then
-        echo ""
-        echo "adding $USER to the docker group (takes effect at the next login)."
-        $SUDO usermod -aG docker "$USER"
-    fi
+# Let the current user run docker without sudo. This is deliberately outside the
+# install branch above: on a machine that already had Docker the install is
+# skipped, but the account still may not be in the docker group.
+if [ -n "$SUDO" ] && getent group docker > /dev/null \
+   && ! getent group docker | grep -qw "$USER"; then
+    echo ""
+    echo "adding $USER to the docker group."
+    $SUDO usermod -aG docker "$USER"
+    ADDED_TO_GROUP="yes"
 fi
 
 # ---------------------------------------------------------------
@@ -131,31 +135,39 @@ echo "image pulled:"
 $SUDO docker images "${IMAGE%:*}"
 
 # ---------------------------------------------------------------
-# 2b. Detect host permission issue that prevents containers from
-# writing net.ipv4.ip_unprivileged_port_start (causes init failure).
-# Offer to apply a permanent host sysctl fix if requested.
-# ---------------------------------------------------------------
+# 2b. Can a container get its own network namespace?
+#
+# Docker writes net.ipv4.ip_unprivileged_port_start into every container that
+# gets a private netns. Inside a nested/unprivileged environment (LXC, LXD, some
+# VPS and CI runners) /proc/sys belongs to a user namespace the container does
+# not own, so that write is refused and *every* container fails to start with:
+#
+#     error during container init: open sysctl
+#     net.ipv4.ip_unprivileged_port_start file: reopen fd N: permission denied
+#
+# There is no host-side fix available from in here: the sysctl cannot be written
+# on such a host either, and runc performs the write regardless of its value.
+# Docker skips that sysctl entirely for --network host, so that is the fallback.
+# ---------------------------------------------------------------------------
+NETWORK_FLAG=""
 echo ""
-echo "=== Checking container sysctl permissions ==="
-echo "Testing whether a container can set net.ipv4.ip_unprivileged_port_start..."
-if $SUDO docker run --rm --cap-add=NET_ADMIN --entrypoint sh busybox -c 'sysctl -w net.ipv4.ip_unprivileged_port_start=0' >/dev/null 2>&1; then
-    echo "Container can set the sysctl; no host change needed."
+echo "=== Checking whether containers can use a private network namespace ==="
+if $SUDO docker run --rm --entrypoint true "$IMAGE" >/dev/null 2>&1; then
+    echo "Private netns works; no extra flags needed."
 else
-    echo "WARNING: containers cannot set net.ipv4.ip_unprivileged_port_start on this host."
-    echo "This prevents the artifact from starting (permission denied on sysctl)."
-    if [ "${AUTO_FIX_SYSCTL:-}" = "yes" ]; then
-        echo "AUTO_FIX_SYSCTL=yes detected; applying host sysctl change now (requires sudo)."
-        $SUDO sysctl -w net.ipv4.ip_unprivileged_port_start=0 || true
-        echo "net.ipv4.ip_unprivileged_port_start = 0" | $SUDO tee /etc/sysctl.d/99-azkaban.conf >/dev/null
-        $SUDO sysctl --system || true
-        echo "Host sysctl updated. Retry running the container."
-    else
-        echo "To permanently fix this, run as root on the host:"
-        echo "  echo 'net.ipv4.ip_unprivileged_port_start = 0' > /etc/sysctl.d/99-azkaban.conf" \
-             "&& sysctl --system"
-        echo "Or re-run this script with AUTO_FIX_SYSCTL=yes to apply the change automatically."
-        echo "Note: modifying host sysctls requires root privileges and affects system behavior." 
-    fi
+    NETWORK_FLAG="--network host"
+    VIRT="$(systemd-detect-virt 2>/dev/null || echo unknown)"
+    echo "Containers cannot get a private network namespace on this host"
+    echo "(virtualisation reported as: $VIRT)."
+    echo "Falling back to --network host, which avoids the sysctl Docker sets"
+    echo "for private namespaces."
+    echo ""
+    echo "NOTE: with --network host the proof-cost experiment shapes THIS"
+    echo "machine's loopback to 1 Gbit instead of a throwaway container one."
+    echo "Anything using localhost here is affected while the run is going, and"
+    echo "the qdisc is left in place afterwards. Remove it with:"
+    echo ""
+    echo "    ${SUDO:+sudo }tc qdisc del dev lo root"
 fi
 
 # ---------------------------------------------------------------
@@ -166,7 +178,7 @@ mkdir -p results
 if [ "$RUN_AFTER" = "yes" ]; then
     echo ""
     echo "=== Running the quick experiments ==="
-    $SUDO docker run --rm --cap-add=NET_ADMIN \
+    $SUDO docker run --rm --cap-add=NET_ADMIN $NETWORK_FLAG \
         -v "$PWD/results:/artifact/results" "$IMAGE" --quick
     echo ""
     echo "results are in $PWD/results"
@@ -174,13 +186,22 @@ else
     echo ""
     echo "All set. To run the experiments:"
     echo ""
-    echo "    ${SUDO:+sudo }docker run --rm --cap-add=NET_ADMIN \\"
+    echo "    ${SUDO:+sudo }docker run --rm --cap-add=NET_ADMIN ${NETWORK_FLAG:+$NETWORK_FLAG }\\"
     echo "        -v \"\$PWD/results:/artifact/results\" \\"
     echo "        $IMAGE --quick"
     echo ""
     echo "use --all instead of --quick for the full sweep (hours)."
     echo "NET_ADMIN is required: the proof-cost experiment shapes the"
-    echo "container's loopback to 1 Gbit with tc."
+    echo "loopback link to 1 Gbit with tc, and aborts if it cannot."
+
+    if [ "${ADDED_TO_GROUP:-}" = "yes" ]; then
+        echo ""
+        echo "You were just added to the docker group, which this shell does not"
+        echo "see yet. Either log out and back in (a new terminal tab in an"
+        echo "already-running editor is NOT enough), or prefix the command with:"
+        echo ""
+        echo "    sg docker -c '<the docker run command above>'"
+    fi
 fi
 
 ARCH_HOST="$(uname -m 2>/dev/null || true)"

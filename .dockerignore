@@ -11,9 +11,13 @@ build
 venv
 deps
 results
+eran/env.sh
 eran/gurobi_env.sh
+eran/ELINA/Makefile.config
 eran/ELINA/**/*.o
+eran/ELINA/**/*.a
 eran/ELINA/**/*.so
+eran/ELINA/fconv/tests
 eran/__pycache__
 **/__pycache__
 *.pyc
@@ -27,6 +31,3 @@ pack-artifact.sh
 install-docker-and-pull.sh
 *.gz
 *.sha256
-
-# Allow the prebuilt ELINA fppoly shared object to be copied into the image
-!eran/ELINA/fppoly/libfppoly.so

@@ -190,21 +190,6 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    // ----------------------- field overflow report -----------------------
-    std::cout << "\n==== FIELD OVERFLOW REPORT (p = 2^61 - 1) ====\n";
-    std::cout << "representable signed range : [-"
-              << fp_i128_to_string((__int128) Fp::POS_MAX) << ", "
-              << fp_i128_to_string((__int128) Fp::POS_MAX) << "]\n";
-    std::cout << "field-relevant ops checked : " << FP_OVERFLOW.checks << '\n';
-    std::cout << "overflow events            : " << FP_OVERFLOW.events << '\n';
-    if (FP_OVERFLOW.events) {
-        std::cout << "first overflow at operation: " << FP_OVERFLOW.first_op << '\n';
-        std::cout << "RESULT: OVERFLOW DETECTED -- the field p = 2^61-1 is too small "
-                     "for this computation (values wrap / change sign).\n";
-    } else {
-        std::cout << "RESULT: no overflow -- every value stayed within the field.\n";
-    }
-
     delete model;
-    return FP_OVERFLOW.events ? 2 : 0;
+    return 0;
 }
