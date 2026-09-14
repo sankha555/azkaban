@@ -214,7 +214,9 @@ needs to be installed or configured by hand.
 
 
 ### 3. Verifying Outputs
-Output tables can be found at `results/`. Please reference these tables with Table 2 and Table 3 from the paper to check for result reproduction.
+Output tables can be found at `results/`. Please reference these tables with Table 2 and Table 3 from the paper to check for result reproduction. Output tables are also printed to `stdout` on successful completion of each experiment. 
+
+**NOTE:** There may be minor changes in proof times from Table 2, depending on the machine on which the artifact is evaluated. Table 2 in the paper was compiled based on experimental runs on an x86_64 machine running Ubuntu 24.04 LTS with an `AMD EPYC 8434P 48-Core` processor and `1.5-3.1 GHz` CPU frequency.
 
 ---
 
@@ -315,6 +317,8 @@ Each cost table states its network condition in the header; it should read
 
 A non-zero exit code names the failed experiment; per-model logs are under
 `results/`.
+
+**NOTE:** There may be minor changes in proof times from Table 2, depending on the machine on which the artifact is evaluated. Table 2 in the paper was compiled based on experimental runs on an x86_64 machine running Ubuntu 24.04 LTS with an `AMD EPYC 8434P 48-Core` processor and `1.5-3.1 GHz` CPU frequency.
 
 ---
 
