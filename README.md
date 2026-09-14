@@ -172,12 +172,12 @@ tmux attach -t artifact-eval
 ```
 
 ### 1. Setup
-First run `scripts/setup.sh`. This scripts installs dependencies, builds executables and sets up virtual environments. It should take roughly ~20 mins to run.
+First run `scripts/setup.sh`. This scripts installs dependencies, builds executables and sets up virtual environments. It should take roughly ~10-20 mins to run.
 
-   **NOTE: Make sure you have `sudo` access.**
+   **NOTE: Make sure you have `sudo` access.** You will have to enter your sudo password once for `scripts/setup.sh` to proceed.
 
 ```bash
-bash scripts/setup.sh        # ~20 min: system packages, emp-toolkit, ELINA,
+bash scripts/setup.sh        # ~1o-20 min: system packages, emp-toolkit, ELINA,
                              # the C++ binaries, the python venv, loopback
                              # shaping. Asks for sudo once, up front.
 ```
